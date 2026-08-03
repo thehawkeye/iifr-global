@@ -1,0 +1,142 @@
+---
+/**
+ * programmes.astro — the programmes page.
+ *
+ * Phase 2 T2: full Programmes page content ported from `app/programmes.php`.
+ *
+ * Sections: Hero → Programme portfolio (4 cards) → Why Choose IIFR (4) →
+ * Who These Programmes Are For (4 + CTA).
+ *
+ * Asset references go through `assetUrl()` so the static assets stay on
+ * Hostinger (per M5). Internal links use clean Astro paths (no `.php`).
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { assetUrl } from "../lib/assetUrl";
+---
+
+<SiteLayout path="/programmes" bodyClass="iifr-redesign-scope">
+  <!-- ============ HERO ============ -->
+  <div class="iifr-page-hero">
+    <div
+      class="iifr-page-hero__bg"
+      style={`background-image:url('${assetUrl("assets/images/academy/5.jpeg")}');`}
+    ></div>
+    <div class="iifr-page-hero__inner">
+      <span class="iifr-page-hero__eyebrow">Programmes</span>
+      <h1>Programmes for the Practice-Driven Educator</h1>
+      <p>High-impact pathways for educators, senior professionals, and institutions building long-term academic and institutional capability.</p>
+      <div class="iifr-page-hero__cta">
+        <a href="#our-programmes" class="iifr-btn-primary">Explore Programmes</a>
+        <a href="/contact" class="iifr-btn-outline">Engage with Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ OUR PROGRAMME PORTFOLIO ============ -->
+  <section class="iifr-section iifr-cream" id="our-programmes">
+    <div class="iifr-section__head iifr-section__head--center">
+      <span class="iifr-eyebrow">Our Programmes</span>
+      <h2>Choose the pathway that matches your role</h2>
+      <hr class="iifr-gold-line-center">
+    </div>
+
+    <div class="iifr-programmes iifr-programmes--four">
+      <a href="/ecp" class="iifr-programme">
+        <img src={assetUrl("assets/images/ecp/ecp-card.png")} alt="" class="iifr-programme__img" />
+        <span class="iifr-programme__overlay" aria-hidden="true"></span>
+        <h3 class="iifr-programme__title">Educators' Certificate Programme</h3>
+        <p class="iifr-programme__desc">For professionals moving from industry to teaching through EFMD-aligned, practice-led curriculum and AI-ready pedagogy.</p>
+        <span class="iifr-programme__more">View Details</span>
+      </a>
+      <a href="/efm" class="iifr-programme">
+        <img src={assetUrl("assets/images/efm/efm-card.png")} alt="" class="iifr-programme__img" />
+        <span class="iifr-programme__overlay" aria-hidden="true"></span>
+        <h3 class="iifr-programme__title">Executive Fellow in Management</h3>
+        <p class="iifr-programme__desc">A doctoral-equivalent pathway for senior professionals developing rigorous scholarship and academic credibility.</p>
+        <span class="iifr-programme__more">View Details</span>
+      </a>
+      <a href="/faculty" class="iifr-programme">
+        <img src={assetUrl("assets/images/faculty/ashish-sinha.jpg")} alt="" class="iifr-programme__img" />
+        <span class="iifr-programme__overlay" aria-hidden="true"></span>
+        <h3 class="iifr-programme__title">Research &amp; Faculty Development</h3>
+        <p class="iifr-programme__desc">Workshops and mentoring to strengthen faculty development, teaching, and institutional capability.</p>
+        <span class="iifr-programme__more">View Details</span>
+      </a>
+      <a href="/contact" class="iifr-programme">
+        <img src={assetUrl("assets/images/academy/3.jpeg")} alt="" class="iifr-programme__img" />
+        <span class="iifr-programme__overlay" aria-hidden="true"></span>
+        <h3 class="iifr-programme__title">Custom Executive &amp; Institutional Programmes</h3>
+        <p class="iifr-programme__desc">Tailored tracks for universities, institutions, and corporates requiring focused faculty capability building.</p>
+        <span class="iifr-programme__more">View Details</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ WHY CHOOSE IIFR ============ -->
+  <section class="iifr-section">
+    <div class="iifr-section__head iifr-section__head--center">
+      <span class="iifr-eyebrow">Why IIFR</span>
+      <h2>Why Choose IIFR Programmes</h2>
+      <hr class="iifr-gold-line-center">
+    </div>
+
+    <div class="iifr-pathways-rich iifr-grid--4">
+      <article class="iifr-pathway">
+        <div class="iifr-pathway__icon"><i class="fa-light fa-scale-balanced" aria-hidden="true"></i></div>
+        <h3 class="iifr-pathway__title">Balancing Relevance &amp; Rigour</h3>
+        <p class="iifr-pathway__body">Our programmes combine academic depth with practical applicability to create meaningful, real-world impact.</p>
+      </article>
+      <article class="iifr-pathway">
+        <div class="iifr-pathway__icon"><i class="fa-light fa-brain" aria-hidden="true"></i></div>
+        <h3 class="iifr-pathway__title">Fostering Multi-disciplinary Thinking</h3>
+        <p class="iifr-pathway__body">Gain integrated perspectives across strategy, marketing, finance, technology, leadership, and other functional domains to solve complex contemporary challenges.</p>
+      </article>
+      <article class="iifr-pathway">
+        <div class="iifr-pathway__icon"><i class="fa-light fa-handshake" aria-hidden="true"></i></div>
+        <h3 class="iifr-pathway__title">Enabling Industry-Academia-Policy Collaboration</h3>
+        <p class="iifr-pathway__body">Bridge the gap between what industry knows, what policy makers do, and what academia teaches through practice-based learning experiences.</p>
+      </article>
+      <article class="iifr-pathway">
+        <div class="iifr-pathway__icon"><i class="fa-light fa-earth-asia" aria-hidden="true"></i></div>
+        <h3 class="iifr-pathway__title">Global Perspectives, Global South Implications</h3>
+        <p class="iifr-pathway__body">International exposure with faculty from across India, the US, Europe, Asia, and Australia — creating a channel for knowledge exchange and academic dialogue.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ WHO THESE PROGRAMMES ARE FOR ============ -->
+  <section class="iifr-section iifr-cream">
+    <div class="iifr-section__head iifr-section__head--center">
+      <span class="iifr-eyebrow">Audience</span>
+      <h2>Who These Programmes Are For</h2>
+      <hr class="iifr-gold-line-center">
+    </div>
+
+    <div class="iifr-pathways-rich iifr-grid--2">
+      <article class="iifr-pathway">
+        <div class="iifr-pathway__icon"><i class="fa-light fa-graduation-cap" aria-hidden="true"></i></div>
+        <h3 class="iifr-pathway__title">Educators &amp; Faculty</h3>
+        <p class="iifr-pathway__body">Build teaching excellence, research capability, and academic influence.</p>
+      </article>
+      <article class="iifr-pathway">
+        <div class="iifr-pathway__icon"><i class="fa-light fa-users" aria-hidden="true"></i></div>
+        <h3 class="iifr-pathway__title">Academic Leaders</h3>
+        <p class="iifr-pathway__body">For deans, directors, HoDs, and institutional decision-makers.</p>
+      </article>
+      <article class="iifr-pathway">
+        <div class="iifr-pathway__icon"><i class="fa-light fa-flask" aria-hidden="true"></i></div>
+        <h3 class="iifr-pathway__title">Researchers &amp; Scholars</h3>
+        <p class="iifr-pathway__body">Strengthen publishing readiness, grants, and applied research impact.</p>
+      </article>
+      <article class="iifr-pathway">
+        <div class="iifr-pathway__icon"><i class="fa-light fa-building-columns" aria-hidden="true"></i></div>
+        <h3 class="iifr-pathway__title">Institutions &amp; Universities</h3>
+        <p class="iifr-pathway__body">Partner for customised faculty development and transformation programmes.</p>
+      </article>
+    </div>
+
+    <div class="iifr-section__cta" style="margin-top:14px;text-align:center;">
+      <a href="/contact" class="iifr-btn-primary">Not sure which programme fits? Ask us</a>
+    </div>
+  </section>
+</SiteLayout>

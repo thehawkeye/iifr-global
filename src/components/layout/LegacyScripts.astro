@@ -1,0 +1,47 @@
+---
+/**
+ * LegacyScripts — script tags that load the Hostinger-hosted JS bundle.
+ *
+ * Mirrors `partials/scripts.php` line-for-line (jQuery, Bootstrap 5,
+ * metismenu, magnific popup, swiper, counterup, etc.). The `assets/js/`
+ * tree stays on Hostinger per M5; the only deviation from the PHP source
+ * is that we strip the `?v={filemtime}` cache-buster (Vercel's edge
+ * handles versioning and the Hostinger filemtimes are not accessible
+ * from this build). If we need versioning, it will be reintroduced in
+ * the T7 redirect/SEO pass.
+ *
+ * Component-level overlays (apply modal, offcanvas toggles, etc.) live
+ * alongside this script block and run after the legacy bundle so they
+ * can attach to jQuery/Bootstrap globals.
+ */
+import { assetUrl } from "../../lib/assetUrl";
+---
+
+<!-- jQuery -->
+<script is:inline src={assetUrl("assets/js/vendor/jquery.min.js")}></script>
+<!-- Bootstrap 5.0.2 -->
+<script is:inline src={assetUrl("assets/js/plugins/bootstrap.min.js")}></script>
+<!-- jQuery UI -->
+<script is:inline src={assetUrl("assets/js/vendor/jquery-ui.js")}></script>
+<!-- mobile menu (metismenu) -->
+<script is:inline src={assetUrl("assets/js/vendor/metismenu.js")}></script>
+<!-- magnific popup -->
+<script is:inline src={assetUrl("assets/js/vendor/magnifying-popup.js")}></script>
+<!-- swiper JS 10.2.0 -->
+<script is:inline src={assetUrl("assets/js/plugins/swiper.js")}></script>
+<!-- counterup + waypoint -->
+<script is:inline src={assetUrl("assets/js/plugins/counterup.js")}></script>
+<script is:inline src={assetUrl("assets/js/vendor/waypoint.js")}></script>
+<!-- isotop / mesonary -->
+<script is:inline src={assetUrl("assets/js/plugins/isotop.js")}></script>
+<script is:inline src={assetUrl("assets/js/plugins/imagesloaded.pkgd.min.js")}></script>
+<!-- sticky sidebar + resize sensor -->
+<script is:inline src={assetUrl("assets/js/plugins/sticky-sidebar.js")}></script>
+<script is:inline src={assetUrl("assets/js/plugins/resize-sensor.js")}></script>
+<script is:inline src={assetUrl("assets/js/plugins/twinmax.js")}></script>
+<!-- dymanic Contact Form -->
+<script is:inline src={assetUrl("assets/js/plugins/contact.form.js")}></script>
+<script is:inline src={assetUrl("assets/js/plugins/nice-select.min.js")}></script>
+<!-- main Js -->
+<script is:inline src={assetUrl("assets/js/main.js")}></script>
+<script is:inline src={assetUrl("assets/js/iifr-analytics.js")}></script>

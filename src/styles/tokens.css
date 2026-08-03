@@ -1,0 +1,48 @@
+/* ================================================================
+ * IIFR design tokens (extracted per webdev-build-spec.md §2.7)
+ *
+ * IMPORTANT (Phase 2): this file is **documentation only**. Pages link
+ * the Hostinger-hosted `assets/css/iifr-redesign.css` (and the rest of
+ * the legacy stylesheet bundle) directly via `LegacyStyles.astro` per
+ * M5 — the 91 MB `assets/` tree is NOT recompiled into the Astro repo.
+ * The variables below mirror what `iifr-redesign.css` and the existing
+ * components already use, so future in-repo CSS can stay consistent.
+ *
+ * When the site is rebuilt design-system-first (Phase 7+), the
+ * `iifr-redesign.css` source is moved into `src/styles/` and these
+ * tokens become the canonical source of truth.
+ * ================================================================ */
+
+:root {
+  /* ---- Brand colour palette ---- */
+  --iifr-navy: #0a1a3a;        /* primary institutional navy */
+  --iifr-navy-soft: #1c2a55;   /* hover / depth */
+  --iifr-gold: #c8a253;        /* CTA, accent */
+  --iifr-gold-deep: #a8862f;   /* hover on gold */
+  --iifr-cream: #faf6ee;       /* soft section background */
+  --iifr-cream-deep: #f1ead8;  /* deeper cream, dividers */
+
+  /* ---- Neutrals ---- */
+  --iifr-ink: #1f2937;         /* body copy */
+  --iifr-ink-soft: #4b5563;    /* secondary copy */
+  --iifr-muted: #6b7280;       /* meta / captions */
+  --iifr-line: #e5e7eb;        /* hairlines */
+  --iifr-bg: #ffffff;          /* page surface */
+
+  /* ---- Feedback ---- */
+  --iifr-success: #1f7a4d;
+  --iifr-danger:  #b3261e;
+  --iifr-warning: #b8860b;
+
+  /* ---- Typography (matches the Google Fonts preconnect in style.php) ---- */
+  --iifr-font-sans: "Roboto", system-ui, -apple-system, "Segoe UI",
+    "Helvetica Neue", Arial, sans-serif;
+  --iifr-font-serif: "Roboto Slab", Georgia, "Times New Roman", serif;
+
+  /* ---- Bootstrap 5 breakpoints (kept in sync with the legacy CSS) ---- */
+  --iifr-bp-sm: 576px;
+  --iifr-bp-md: 768px;
+  --iifr-bp-lg: 992px;
+  --iifr-bp-xl: 1200px;
+  --iifr-bp-xxl: 1400px;
+}

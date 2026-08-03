@@ -1,0 +1,113 @@
+---
+/**
+ * InquiryForm — embedded enquiry form, markup-only port of
+ * `partials/components/inquiry-form.php`.
+ *
+ * Phase 2 keeps the form markup and field names but posts to `#` (see
+ * T1 constraints: do not wire Zoho until Phase 4). The Bootstrap grid,
+ * honeypot, success / error banners, and field validation hints are
+ * preserved so when Phase 4 swaps the action the visual + behavioural
+ * surface is unchanged.
+ *
+ * Props mirror the PHP variables:
+ *   - heading (default "Send us a message")
+ *   - intro  (default "Share your question or enquiry and we will get back to you.")
+ *   - context (e.g. "Contact", "ECP")  → sent in hidden input
+ *   - returnTo (path to navigate back to after submit)
+ */
+
+interface Props {
+  heading?: string;
+  intro?: string;
+  context?: string;
+  returnTo?: string;
+}
+
+const {
+  heading = "Send us a message",
+  intro = "Share your question or enquiry and we will get back to you.",
+  context = "Contact",
+  returnTo = "/contact",
+} = Astro.props as Props;
+---
+
+<div class="iifr-inquiry-shell">
+  <div class="iifr-inquiry-panel">
+    <div class="iifr-section__head iifr-section__head--center iifr-inquiry-head">
+      <span class="iifr-eyebrow">Inquiry</span>
+      <h2>{heading}</h2>
+      <p class="iifr-inquiry-intro">{intro}</p>
+    </div>
+
+    <form class="iifr-inquiry-form" method="post" action="#" novalidate>
+      <input type="hidden" name="return_to" value={returnTo} />
+      <input type="hidden" name="context" value={context} />
+
+      <div class="iifr-form-hp" aria-hidden="true">
+        <label for="iifr-hp-website">Website</label>
+        <input
+          type="text"
+          name="website"
+          id="iifr-hp-website"
+          tabindex="-1"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="form-group mb-0">
+            <label for="iifr-name">Name <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              name="name"
+              id="iifr-name"
+              required
+              maxlength="200"
+              autocomplete="name"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group mb-0">
+            <label for="iifr-email">Email <span class="text-danger">*</span></label>
+            <input
+              type="email"
+              name="email"
+              id="iifr-email"
+              required
+              maxlength="320"
+              autocomplete="email"
+            />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group mb-0">
+            <label for="iifr-phone">Phone <span class="text-muted">(optional)</span></label>
+            <input
+              type="tel"
+              name="phone"
+              id="iifr-phone"
+              maxlength="40"
+              autocomplete="tel"
+            />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-group mb-0">
+            <label for="iifr-message">Message <span class="text-danger">*</span></label>
+            <textarea
+              name="message"
+              id="iifr-message"
+              required
+              maxlength="8000"
+              placeholder="How can we help?"></textarea>
+          </div>
+        </div>
+        <div class="col-12 iifr-inquiry-actions">
+          <button type="submit" class="iifr-btn-primary">Send message</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

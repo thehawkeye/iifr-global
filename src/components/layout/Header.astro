@@ -1,0 +1,84 @@
+---
+/**
+ * Header — fixed white navbar, IIFR logo image, original nav set.
+ *
+ * Port of `partials/header/transparent-header.php`. Markup matches the
+ * production site 1:1 so the existing `iifr-nav`, `iifr-btn-engage`, and
+ * the offcanvas-burger toggles keep working off the existing stylesheet.
+ *
+ * Active state is computed in `src/lib/nav.ts` (which mirrors the PHP
+ * `iifr_nav_active` logic: `ecp/efm/applied-research/programmes` group
+ * under "programmes"; `faculty` under "research"). Paths are clean
+ * (Astro file-based) so we pass them through without `.php`.
+ */
+
+import { isActive } from "../../lib/nav";
+import { assetUrl } from "../../lib/assetUrl";
+
+interface Props {
+  /** Current request path, e.g. "/about" or "/ecp". Used for active-state. */
+  path: string;
+}
+
+const { path } = Astro.props as Props;
+const active = (g: Parameters<typeof isActive>[1]) => isActive(path, g).trim();
+---
+
+<header class="header header__sticky v__1" id="iifrHeader">
+  <nav class="iifr-nav" aria-label="Primary">
+    <a href="/" class="iifr-nav-logo logo" aria-label="IIFR — Home">
+      <img
+        class="logo-emblem"
+        src={assetUrl("assets/logo.webp")}
+        alt="IIFR emblem"
+        width="500"
+        height="500"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <span class="logo-mark">IIFR<span class="dot">.</span></span>
+    </a>
+
+    <ul class="iifr-nav-links">
+      <li>
+        <a href="/about" class={active("about")}>About Us</a>
+      </li>
+      <li class="iifr-nav-has-sub">
+        <a href="/programmes" class={active("programmes")}>
+          Programmes <span class="iifr-nav-caret" aria-hidden="true"></span>
+        </a>
+        <ul class="iifr-nav-submenu">
+          <li><a href="/ecp">ECP</a></li>
+          <li><a href="/efm">EFM</a></li>
+          <li><a href="/applied-research">Applied Research</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="/research" class={active("research")}>Research and Faculty</a>
+      </li>
+      <li>
+        <a href="/insights" class={active("insights")}>Insights</a>
+      </li>
+    </ul>
+
+    <div class="iifr-nav-ctas">
+      <a
+        href="/apply"
+        class="iifr-btn-engage"
+        data-bs-toggle="modal"
+        data-bs-target="#iifrApplyModal"
+        data-iifr-lead-intent="apply">Apply</a>
+      <a href="/contact" class="iifr-btn-engage iifr-btn-engage--dark">Contact Us</a>
+    </div>
+
+    <button
+      type="button"
+      class="iifr-nav__burger"
+      aria-label="Open menu"
+      onclick="document.getElementById('side-bar').classList.add('show');document.getElementById('anywhere-home').classList.add('bgshow');"
+    >
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+    </button>
+  </nav>
+</header>
+<!-- header end -->

@@ -1,0 +1,303 @@
+---
+/**
+ * ApplyModal — site-wide application modal used by every Apply / Register
+ * button on the site.
+ *
+ * Port of `partials/components/apply-modal.php`. The Zoho formperma
+ * (`JIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs`) and the iframe-creation
+ * script are preserved verbatim — they are responsible for:
+ *   - opening the modal in the right intent (apply vs brochure)
+ *   - reading UTM / click-id params from the current URL
+ *   - building the iframe `src` with `zf_*` query params
+ *   - listening for the Zoho postMessage + auto-resizing the iframe
+ *   - pushing GTM lead events at the right points
+ *
+ * `dataLayer` is initialised on `window` so the legacy `iifr-analytics.js`
+ * picks up the events without further changes. The Phase 4 GTM wiring will
+ * provide the actual container id; today no container is injected (T1
+ * constraints).
+ */
+---
+
+<div
+  class="modal fade"
+  id="iifrApplyModal"
+  tabindex="-1"
+  aria-labelledby="iifrApplyModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl iifr-apply-modal-dialog">
+    <div class="modal-content iifr-apply-modal-content">
+      <div class="modal-header">
+        <div>
+          <h5 class="modal-title" id="iifrApplyModalLabel">
+            Apply for the Educators' Certificate Programme
+          </h5>
+          <p class="iifr-apply-modal-subtitle" id="iifrApplyModalSubtitle">
+            Submit your details through the IIFR admissions form.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div
+          class="iifr-zoho-frame-wrap"
+          id="zf_div_JIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs"
+          data-zoho-form
+        ></div>
+        <div class="iifr-brochure-success" id="iifrBrochureSuccess" hidden>
+          <p>
+            Your details have been received. If the brochure did not open
+            automatically, use the button below.
+          </p>
+          <a
+            class="iifr-btn-primary"
+            href="admissions/ecp/downloads/IIFR-ECP-Brochure.pdf"
+            target="_blank"
+            rel="noopener"
+          >Download ECP Brochure</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var containerId = "zf_div_JIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs";
+    var formPerma = "JIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs";
+    var container = document.getElementById(containerId);
+    var modal = document.getElementById("iifrApplyModal");
+    var modalTitle = document.getElementById("iifrApplyModalLabel");
+    var modalSubtitle = document.getElementById("iifrApplyModalSubtitle");
+    var brochureSuccess = document.getElementById("iifrBrochureSuccess");
+    var brochureUrl = "admissions/ecp/downloads/IIFR-ECP-Brochure.pdf";
+    var currentIntent = "apply";
+    var intentCopy = {
+      apply: {
+        title: "Apply for the Educators' Certificate Programme",
+        subtitle: "Submit your details through the IIFR admissions form.",
+      },
+      brochure: {
+        title: "Download the ECP Brochure",
+        subtitle:
+          "Share your details through the IIFR admissions form to access the brochure.",
+      },
+    };
+
+    if (!container || container.querySelector("iframe")) {
+      return;
+    }
+
+    function pushLeadEvent(eventName, data) {
+      var payload = data || {};
+      payload.event = eventName;
+      payload.lead_intent = currentIntent;
+      payload.page_location = window.location.href;
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(payload);
+    }
+
+    function setModalIntent(intent) {
+      currentIntent = intent === "brochure" ? "brochure" : "apply";
+      var copy = intentCopy[currentIntent];
+
+      if (modalTitle) {
+        modalTitle.textContent = copy.title;
+      }
+
+      if (modalSubtitle) {
+        modalSubtitle.textContent = copy.subtitle;
+      }
+
+      if (brochureSuccess) {
+        brochureSuccess.hidden = true;
+      }
+    }
+
+    if (modal) {
+      modal.addEventListener("show.bs.modal", function (event) {
+        var trigger = event.relatedTarget;
+        var intent = trigger && trigger.getAttribute("data-iifr-lead-intent");
+        var sideBar = document.getElementById("side-bar");
+        var overlay = document.getElementById("anywhere-home");
+
+        setModalIntent(intent);
+
+        if (sideBar) {
+          sideBar.classList.remove("show");
+        }
+
+        if (overlay) {
+          overlay.classList.remove("bgshow");
+        }
+
+        pushLeadEvent("lead_modal_open", {
+          event_category: "lead",
+          event_label: currentIntent,
+          link_text: trigger
+            ? (trigger.textContent || "").replace(/\s+/g, " ").trim()
+            : "",
+        });
+        pushLeadEvent(
+          currentIntent === "brochure"
+            ? "brochure_lead_modal_open"
+            : "apply_lead_modal_open",
+          { event_category: "lead", event_label: currentIntent }
+        );
+      });
+    }
+
+    function addParam(sourceUrl, paramName, targetParamName) {
+      var paramValue = "";
+      var sourceIndex = sourceUrl.indexOf("?");
+
+      if (sourceIndex > -1) {
+        var queryString = sourceUrl.substr(sourceIndex + 1);
+        var params = queryString.split("&");
+
+        for (var i = 0; i < params.length; i++) {
+          var pair = params[i].split("=");
+          if (pair[0] === paramName) {
+            paramValue = pair[1];
+            break;
+          }
+        }
+      }
+
+      return paramValue ? "&" + targetParamName + "=" + paramValue : "";
+    }
+
+    function buildIframeSource() {
+      var iframeSrc =
+        "https://forms.zohopublic.in/infoii1/form/LandingPageLeadGen/formperma/" +
+        formPerma +
+        "?zf_rszfm=1";
+      var pageUrl = window.location.href;
+      var referrer = document.referrer || "";
+      var trackingParams = [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_term",
+        "utm_content",
+        "gclid",
+        "gbraid",
+        "wbraid",
+        "fbclid",
+        "li_fat_id",
+        "msclkid",
+      ];
+
+      for (var i = 0; i < trackingParams.length; i++) {
+        var targetParam =
+          trackingParams[i].indexOf("utm_") === 0
+            ? "zf_" + trackingParams[i]
+            : trackingParams[i];
+        iframeSrc += addParam(pageUrl, trackingParams[i], targetParam);
+      }
+
+      if (referrer) {
+        iframeSrc += "&referrername=" + encodeURIComponent(referrer);
+      }
+
+      var leadParams = "";
+      if (typeof ZFAdvLead !== "undefined" && typeof ZFAdvLead.utmPVal !== "undefined") {
+        leadParams = ZFAdvLead.utmPVal;
+      } else if (typeof ZFLead !== "undefined" && typeof ZFLead.utmPVal !== "undefined") {
+        leadParams = ZFLead.utmPVal;
+      }
+
+      if (leadParams) {
+        iframeSrc += leadParams;
+      }
+
+      return iframeSrc;
+    }
+
+    var iframe = document.createElement("iframe");
+    iframe.src = buildIframeSource();
+    iframe.style.border = "none";
+    iframe.style.height = "756px";
+    iframe.style.width = "100%";
+    iframe.style.transition = "all 0.5s ease";
+    iframe.setAttribute("aria-label", "IIFR Educators Certificate Program");
+    iframe.setAttribute("allow", "geolocation;");
+    container.appendChild(iframe);
+
+    window.addEventListener(
+      "message",
+      function (event) {
+        var eventData = event.data;
+
+        if (eventData && typeof eventData === "object" && eventData.type === "zf_gtm" && eventData.payload) {
+          var zohoEvent = eventData.payload.e || "";
+
+          if (zohoEvent === "zf_submitform") {
+            pushLeadEvent("zoho_lead_submit", {
+              event_category: "lead",
+              event_label: eventData.payload.n || "LandingPageLeadGen",
+              form_provider: "Zoho",
+              form_name: eventData.payload.n || "LandingPageLeadGen",
+            });
+            pushLeadEvent(
+              currentIntent === "brochure"
+                ? "brochure_lead_submit"
+                : "apply_lead_submit",
+              { event_category: "lead", event_label: currentIntent, form_provider: "Zoho" }
+            );
+
+            if (currentIntent === "brochure") {
+              if (brochureSuccess) {
+                brochureSuccess.hidden = false;
+              }
+
+              var downloadWindow = window.open(brochureUrl, "_blank", "noopener");
+              pushLeadEvent("brochure_download", {
+                event_category: "lead",
+                event_label: "ECP Brochure",
+                brochure_url: brochureUrl,
+                download_auto_opened: !!downloadWindow,
+              });
+            }
+          }
+
+          return;
+        }
+
+        if (typeof eventData !== "string" || eventData.indexOf("|") === -1) {
+          return;
+        }
+
+        var fields = eventData.split("|");
+        var iframeElement = container.getElementsByTagName("iframe")[0];
+
+        if (
+          !iframeElement ||
+          fields.length < 2 ||
+          fields[0] !== "formperma" ||
+          fields[1] !== formPerma
+        ) {
+          return;
+        }
+
+        if (fields.length === 3) {
+          iframeElement.scrollIntoView({ block: "start", behavior: "smooth" });
+        }
+
+        if (fields.length === 2 || fields.length === 3) {
+          var newHeight = parseInt(fields[fields.length - 1], 10);
+          if (!Number.isNaN(newHeight)) {
+            iframeElement.style.height = newHeight + "px";
+          }
+        }
+      },
+      false
+    );
+  })();
+</script>

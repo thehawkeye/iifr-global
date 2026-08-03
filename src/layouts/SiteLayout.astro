@@ -1,0 +1,73 @@
+---
+/**
+ * SiteLayout — composes Header, Footer, FloatCta, OffcanvasMenu,
+ * SearchOverlay, LegacyStyles, LegacyScripts, ApplyModal + a content slot.
+ *
+ * Every public marketing page (T2–T5) wraps its content in this layout so
+ * the chrome is identical across the site. Pages pass their request path
+ * through the `path` prop so the header can compute the active nav state
+ * and the SEO head can pull the right metadata.
+ *
+ * The `bodyClass` prop forwards to <body class> so a page can add its own
+ * scope classes (the production PHP source uses `iifr-redesign-scope`,
+ * `iifr-home-optimized`, etc.) without us baking every variant in.
+ */
+
+import "../styles/global.css";
+import "../styles/tokens.css";
+
+import Header from "../components/layout/Header.astro";
+import Footer from "../components/layout/Footer.astro";
+import FloatCta from "../components/layout/FloatCta.astro";
+import OffcanvasMenu from "../components/layout/OffcanvasMenu.astro";
+import SearchOverlay from "../components/layout/SearchOverlay.astro";
+import ApplyModal from "../components/forms/ApplyModal.astro";
+import LegacyStyles from "../components/layout/LegacyStyles.astro";
+import LegacyScripts from "../components/layout/LegacyScripts.astro";
+import SeoHead from "../components/seo/SeoHead.astro";
+
+interface Props {
+  /** Request path, e.g. "/about" or "/ecp". Used for nav + SEO. */
+  path: string;
+  /** Page-specific body class (e.g. "iifr-redesign-scope iifr-home-optimized"). */
+  bodyClass?: string;
+}
+
+const { path, bodyClass = "iifr-redesign-scope" } = Astro.props as Props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SeoHead path={path} />
+    <LegacyStyles />
+  </head>
+  <body class={bodyClass}>
+    <Header path={path} />
+    <OffcanvasMenu />
+    <SearchOverlay />
+    <main>
+      <slot />
+    </main>
+    <FloatCta />
+    <Footer />
+    <ApplyModal />
+
+    <!-- back-to-top + anywhere-home overlay (mirror of partials/scripts.php) -->
+    <div class="progress-wrap" aria-hidden="true">
+      <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+        <path
+          d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"
+          style="transition: stroke-dashoffset 10ms linear 0s; stroke-dasharray: 307.919, 307.919; stroke-dashoffset: 307.919;"
+        ></path>
+      </svg>
+    </div>
+    <div id="anywhere-home" class=""></div>
+
+    <LegacyScripts />
+  </body>
+</html>

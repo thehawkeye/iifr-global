@@ -1,0 +1,80 @@
+---
+/**
+ * BlogLayout — wraps the three IIFR insights blog posts (T5).
+ *
+ * Inherits all the site chrome from SiteLayout and adds a hero band
+ * (eyebrow + title + optional deck) plus a "related posts" footer.
+ * The actual post body is rendered by the page via the default slot;
+ * the hero and related-posts slots are optional so a page can omit
+ * either when not applicable.
+ */
+
+import SiteLayout from "./SiteLayout.astro";
+import { assetUrl } from "../lib/assetUrl";
+
+interface RelatedPost {
+  title: string;
+  href: string;
+  image: string;
+  date?: string;
+  excerpt?: string;
+}
+
+interface Props {
+  /** Request path, e.g. "/blog/faculty-development". */
+  path: string;
+  /** Page title rendered in the hero <h1>. */
+  title: string;
+  /** Short eyebrow text above the title (e.g. "Insights"). */
+  eyebrow?: string;
+  /** Optional deck paragraph under the title. */
+  deck?: string;
+  /** Related posts shown at the bottom of the article. */
+  related?: RelatedPost[];
+}
+
+const { path, title, eyebrow = "Insights", deck, related = [] } =
+  Astro.props as Props;
+---
+
+<SiteLayout path={path} bodyClass="iifr-redesign-scope iifr-blog-scope">
+  <article class="iifr-blog-post">
+    <header class="iifr-blog-hero">
+      <div class="container">
+        <span class="iifr-blog-hero__eyebrow">{eyebrow}</span>
+        <h1 class="iifr-blog-hero__title">{title}</h1>
+        {deck && <p class="iifr-blog-hero__deck">{deck}</p>}
+      </div>
+    </header>
+
+    <div class="iifr-blog-body container">
+      <slot />
+    </div>
+
+    {related.length > 0 && (
+      <section class="iifr-blog-related" aria-label="Related posts">
+        <div class="container">
+          <h2 class="iifr-blog-related__title">Continue reading</h2>
+          <div class="iifr-blog-related__grid">
+            {related.map((p) => (
+              <a class="iifr-blog-related__card" href={p.href}>
+                <img
+                  class="iifr-blog-related__thumb"
+                  src={assetUrl(p.image)}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+                <h3 class="iifr-blog-related__heading">{p.title}</h3>
+                {p.date && (
+                  <span class="iifr-blog-related__date">{p.date}</span>
+                )}
+                {p.excerpt && <p class="iifr-blog-related__excerpt">{p.excerpt}</p>}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+  </article>
+</SiteLayout>

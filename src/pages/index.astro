@@ -1,28 +1,73 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+/**
+ * index.astro — the home page.
+ *
+ * Phase 2 placeholder: this file proves the design foundation works end
+ * to end — header active state, footer rendering, assetUrl resolving,
+ * apply modal, offcanvas, search overlay, legacy styles, and the SEO
+ * head. T2 will replace this with the full home page content.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { assetUrl } from "../lib/assetUrl";
 ---
 
-<BaseLayout
-  title="iifr.global — coming soon"
-  description="iifr.global rebuild — Phase 1 placeholder"
->
-  <main class="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-6 px-6 py-24 text-center">
-    <p class="text-xs font-semibold uppercase tracking-[0.4em] text-slate-500">
-      Phase 1 · Foundation
-    </p>
-    <h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
-      iifr.global — coming soon
-    </h1>
-    <p class="max-w-xl text-base text-slate-600">
-      The new site is being built on Astro + Keystatic + Vercel. This page
-      confirms the skeleton deploys. The Keystatic admin is available at
-      <a class="font-medium text-slate-900 underline" href="/keystatic">/keystatic</a>
-      once a deployment is live.
-    </p>
-    <p class="text-sm text-slate-500">
-      Content migration starts in Phase 2. See
-      <code class="rounded bg-slate-100 px-2 py-0.5 text-xs text-slate-700">webdev-stack-plan-v3.md</code>
-      for the full plan.
-    </p>
-  </main>
-</BaseLayout>
+<SiteLayout path="/" bodyClass="iifr-redesign-scope iifr-home-optimized">
+  <!-- HERO -->
+  <div class="iifr-page-hero iifr-home-hero">
+    <div
+      class="iifr-page-hero__bg iifr-page-hero__bg--home"
+      style={`background-image:url('${assetUrl("assets/images/hero-home.webp")}');`}
+    ></div>
+    <div class="iifr-page-hero__inner">
+      <span class="iifr-page-hero__eyebrow">International Institute for Faculty &amp; Research</span>
+      <h1>Advancing Faculty, Research, and Academic Leadership</h1>
+      <p>
+        IIFR strengthens teaching excellence, applied research, and
+        practice-academic collaboration for institutions, educators, and
+        experienced professionals across India and the Global South.
+      </p>
+      <div class="iifr-page-hero__cta">
+        <a href="/programmes" class="iifr-btn-primary">Explore Programmes</a>
+        <a href="/about" class="iifr-btn-outline">About IIFR</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust band -->
+  <section class="iifr-home-trust" aria-label="Institutional credibility">
+    <div class="iifr-home-trust__inner">
+      <div class="iifr-home-trust__item">
+        <span>Established by</span>
+        <strong>Bharatiya Vidya Bhavan</strong>
+      </div>
+      <div class="iifr-home-trust__item">
+        <span>Certification</span>
+        <strong>EFMD Certification</strong>
+      </div>
+      <div class="iifr-home-trust__item">
+        <span>Faculty model</span>
+        <strong>Academics and Professors of Practice</strong>
+      </div>
+      <div class="iifr-home-trust__item">
+        <span>Focus</span>
+        <strong>India and the Global South</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- T1 foundation marker (T2 replaces with real copy) -->
+  <section class="iifr-section" aria-label="Phase 2 status">
+    <div class="container">
+      <span class="iifr-eyebrow">Phase 2 · Status</span>
+      <h2>Design foundation online</h2>
+      <p>
+        T1 (design foundation) is live on Vercel preview. Header, footer,
+        offcanvas, search overlay, apply modal, and SEO head are wired and
+        rendering. Tier-1 page content lands in T2.
+      </p>
+      <p>
+        <a class="iifr-btn-primary" href="/keystatic">Open Keystatic admin</a>
+      </p>
+    </div>
+  </section>
+</SiteLayout>

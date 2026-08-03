@@ -1,0 +1,44 @@
+---
+/**
+ * LegacyStyles — link tags that point at the Hostinger-hosted stylesheet
+ * bundle. Per M5 (locked): the 91 MB `assets/` tree stays on Hostinger; we
+ * do not duplicate it into the Astro repo.
+ *
+ * Mirrors `partials/style.php` line-for-line so the rebuilt pages render
+ * against the same CSS the production PHP site uses today. When the design
+ * system migrates fully (Phase 7+), the stylesheet bundle moves into
+ * `src/styles/` and this component becomes the only loader to change.
+ */
+import { assetUrl } from "../../lib/assetUrl";
+---
+
+<link rel="shortcut icon" type="image/x-icon" href={assetUrl("assets/images/fav.svg")} />
+<!-- animate css -->
+<link rel="stylesheet" href={assetUrl("assets/css/plugins/animate.min.css")} />
+<!-- fontawesome 6.4.2 -->
+<link rel="stylesheet" href={assetUrl("assets/css/plugins/fontawesome.min.css")} />
+<!-- bootstrap min css -->
+<link rel="stylesheet" href={assetUrl("assets/css/vendor/bootstrap.min.css")} />
+<!-- swiper Css 10.2.0 -->
+<link rel="stylesheet" href={assetUrl("assets/css/plugins/swiper.min.css")} />
+<!-- Bootstrap 5.0.2 -->
+<link rel="stylesheet" href={assetUrl("assets/css/vendor/magnific-popup.css")} />
+<!-- metismenu scss -->
+<link rel="stylesheet" href={assetUrl("assets/css/vendor/metismenu.css")} />
+<!-- nice select js -->
+<link rel="stylesheet" href={assetUrl("assets/css/plugins/nice-select.css")} />
+<link rel="stylesheet" href={assetUrl("assets/css/plugins/jquery-ui.css")} />
+<!-- custom style css -->
+<link rel="stylesheet" href={assetUrl("assets/css/style.css")} />
+
+<!-- IIFR redesign 2026: design system + component overrides -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href={assetUrl("assets/css/iifr-redesign.css")}
+/>

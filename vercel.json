@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "$comment": "Phase 1 Vercel config for the iifr.global rebuild. Replaces the legacy PHP staging/vercel.json model with a static-first Astro + Keystatic project.",
+  "$comment": "Vercel is TEST/PREVIEW ONLY — production is Hostinger. noindex on all preview deploys.",
   "cleanUrls": true,
   "trailingSlash": false,
   "github": {
@@ -12,7 +12,8 @@
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
       ]
     },
     {

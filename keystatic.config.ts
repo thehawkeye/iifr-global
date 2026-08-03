@@ -6,7 +6,7 @@
 // references) is Phase 3 work and will be added without breaking the path /
 // slug layout defined here.
 //
-// Storage is `local` for Phase 1 so SSU can develop against the file system.
+// Storage is `local` for Phase 1 so Akshat can develop against the file system.
 // Phase 3 will flip storage to `github` once the GitHub OAuth app and the
 // `iifr-global` GitHub repo are wired up.
 

@@ -1,0 +1,105 @@
+---
+/**
+ * Footer — v1 layout.
+ *
+ * Port of `partials/footer/footer__default.php`. The PHP source embeds
+ * the apply-modal markup at the end of the file; that lives in its own
+ * `ApplyModal.astro` component in this build, so we render the chrome
+ * here and let the layout compose the modal.
+ */
+
+import { assetUrl } from "../../lib/assetUrl";
+import { INFO_EMAIL, PHONE } from "../../lib/seo";
+---
+
+<footer class="iifr-v1-footer">
+  <div class="iifr-foot-cta">
+    <div class="wrap iifr-foot-cta__inner">
+      <div class="iifr-foot-cta__left">
+        <span class="iifr-foot-cta__icon" aria-hidden="true">
+          <i class="fa-light fa-building-columns"></i>
+        </span>
+        <div>
+          <h3 class="iifr-foot-cta__title">
+            Let's Build the Future of Education, <span>Together.</span>
+          </h3>
+          <p class="iifr-foot-cta__sub">
+            Partner, learn, collaborate, and lead transformation with IIFR.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="/" class="logo" aria-label="IIFR — Home">
+          <img
+            class="logo-emblem"
+            src={assetUrl("assets/logo.webp")}
+            alt="IIFR emblem"
+            width="500"
+            height="500"
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="logo-mark">IIFR<span class="dot">.</span></span>
+        </a>
+        <address class="meta">
+          <a
+            href="https://www.google.com/maps?q=Bharatiya+Vidya+Bhavan+Campus%2C+KG+Marg%2C+Copernicus+Marg%2C+New+Delhi+110001"
+            target="_blank"
+            rel="noopener">
+            <b>Bharatiya Vidya Bhavan Campus</b>,<br />
+            KG Marg, Copernicus Marg,<br />
+            New Delhi 110001
+          </a><br />
+          <a href={`tel:${PHONE}`}>{PHONE}</a>
+          ·
+          <a href={`mailto:${INFO_EMAIL}`}>{INFO_EMAIL}</a>
+        </address>
+      </div>
+
+      <div>
+        <h5>Navigate</h5>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/research">Research and Faculty</a></li>
+          <li><a href="/programmes">Programmes</a></li>
+          <li><a href="/insights">Insights</a></li>
+          <li><a href="/privacy-policy">Privacy Policy</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-newscol">
+        <h5>Get Started</h5>
+        <p>Speak with our team about programmes, partnerships, and admissions.</p>
+        <div class="iifr-v1-footer__ctas">
+          <a class="btn btn-out-white" href="/contact">Contact Us</a>
+          <a class="btn btn-gold" href="/programmes">Explore Programmes</a>
+        </div>
+        <div class="socials" aria-label="Social links">
+          <a
+            class="soc"
+            href="https://www.linkedin.com/company/international-institute-for-faculty-research/"
+            target="_blank"
+            rel="noopener"
+            aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+            </svg>
+          </a>
+          <a class="soc" href={`mailto:${INFO_EMAIL}`} aria-label="Email">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 6-10 7L2 6" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- footer end -->

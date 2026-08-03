@@ -1,0 +1,30 @@
+---
+/**
+ * SearchOverlay — markup port of `partials/components/search.php`.
+ *
+ * Phase 2 keeps the markup; the actual search handler (jQuery UI
+ * autocomplete) is wired in the legacy `main.js` bundle on the user's
+ * browser. We do not reinvent the search backend here.
+ */
+---
+
+<div class="search-input-area">
+  <div class="container">
+    <div class="search-input-inner">
+      <div class="input-div">
+        <input
+          class="search-input autocomplete ui-autocomplete-input"
+          type="text"
+          placeholder="Search by keyword or #"
+          autocomplete="off"
+        />
+        <button aria-label="Search">
+          <i class="far fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div id="close" class="search-close-icon" aria-label="Close search">
+    <i class="far fa-times"></i>
+  </div>
+</div>

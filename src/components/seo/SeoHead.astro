@@ -1,0 +1,63 @@
+---
+/**
+ * SeoHead — meta + OG + Twitter + JSON-LD for a single page.
+ *
+ * Pass the page's URL pathname as the `path` prop; everything else is
+ * derived from `seoContext(path)` in `src/lib/seo.ts`. Astro will
+ * automatically inject this block into <head> when the component is
+ * placed in a layout.
+ *
+ * Phase 2 keeps the same SEO footprint as the production PHP site so
+ * search-engine signals are preserved. Phase 4 will layer GTM and the
+ * cookie consent gate on top of this; today both are intentionally
+ * absent (do NOT add them — see T1 constraints).
+ */
+
+import { seoContext, schemaGraph, SITE_NAME } from "../../lib/seo";
+
+interface Props {
+  /** Request path, e.g. "/about" or "/ecp". The leading slash is optional. */
+  path: string;
+}
+
+const { path } = Astro.props as Props;
+const seo = seoContext(path);
+const jsonLd = JSON.stringify(schemaGraph(seo));
+---
+
+<title>{seo.title}</title>
+<meta name="description" content={seo.description} />
+<meta name="keywords" content={seo.keywords} />
+<meta
+  name="robots"
+  content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+/>
+<meta name="author" content="International Institute for Faculty & Research" />
+<link rel="canonical" href={seo.canonical} />
+<link rel="alternate" hreflang="en-IN" href={seo.canonical} />
+<link rel="alternate" hreflang="x-default" href={seo.canonical} />
+
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:type" content={seo.type} />
+<meta property="og:title" content={seo.title} />
+<meta property="og:description" content={seo.description} />
+<meta property="og:url" content={seo.canonical} />
+<meta property="og:image" content={seo.image} />
+<meta property="og:locale" content="en_IN" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={seo.title} />
+<meta name="twitter:description" content={seo.description} />
+<meta name="twitter:image" content={seo.image} />
+
+<script type="application/ld+json" set:html={jsonLd} />
+
+{seo.path === "/" && (
+  <link
+    rel="preload"
+    as="image"
+    href="https://iifr.global/assets/images/hero-home.webp"
+    type="image/webp"
+    fetchpriority="high"
+  />
+)}

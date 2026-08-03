@@ -1,0 +1,36 @@
+---
+/**
+ * AdmissionsLayout — minimal wrapper for the `public/admissions/ecp/`
+ * static micro-site (T6). The micro-site keeps its own `style.css` and
+ * `responsive.css` (per build spec §2.4) so we intentionally do NOT
+ * include the global SiteLayout chrome (Header / Footer / FloatCta /
+ * ApplyModal) here — those would conflict with the micro-site's own
+ * navigation and form handling.
+ *
+ * Phase 2 only needs the wrapper so the micro-site pages can be moved
+ * under `src/pages/admissions/` later if we want file-based routing; for
+ * now T6 ships them as static HTML under `public/admissions/ecp/` and
+ * this layout sits unused until that decision is made.
+ */
+
+interface Props {
+  path: string;
+  bodyClass?: string;
+}
+
+const { path, bodyClass = "iifr-admissions-scope" } = Astro.props as Props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Admissions — IIFR</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class={bodyClass}>
+    <slot />
+  </body>
+</html>

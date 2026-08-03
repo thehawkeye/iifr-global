@@ -1,6 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "$comment": "Vercel is TEST/PREVIEW ONLY — production is Hostinger. noindex on all preview deploys.",
   "cleanUrls": true,
   "trailingSlash": false,
   "github": {

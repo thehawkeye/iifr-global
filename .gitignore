@@ -1,0 +1,11 @@
+node_modules/
+.astro/
+.vercel/
+dist/
+.env
+.env.local
+.DS_Store
+*.log
+
+# Keystatic local-mode state
+.keystatic/

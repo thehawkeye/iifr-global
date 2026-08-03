@@ -9,3 +9,4 @@ dist/
 
 # Keystatic local-mode state
 .keystatic/
+.vercel

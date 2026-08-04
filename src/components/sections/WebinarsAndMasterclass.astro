@@ -1,0 +1,37 @@
+---
+const videos = [
+  { id: "NX90Hf8u1GY", url: "https://www.youtube-nocookie.com/embed/NX90Hf8u1GY?rel=0", title: "Why educators are making the pracademic shift", caption: "Explore the opportunity to translate experience into meaningful learning." },
+  { id: "rDgqBGB8wf4", url: "https://www.youtube-nocookie.com/embed/rDgqBGB8wf4?rel=0", title: "Teaching with practice and purpose", caption: "Hear how practice-led education connects classrooms to real-world impact." },
+  { id: "S1RCyVIayfA", url: "https://www.youtube-nocookie.com/embed/S1RCyVIayfA?rel=0", title: "Building your academic pathway", caption: "Discover the ECP approach to course design, cases, and academic influence." },
+];
+---
+<section class="iifr-section ecp-webinars" aria-labelledby="webinars-heading">
+  <div class="iifr-section__head iifr-section__head--center">
+    <span class="iifr-eyebrow">Webinars &amp; Masterclass</span>
+    <h2 id="webinars-heading">Learn from the Pracademic Community</h2>
+    <hr class="iifr-gold-line-center" />
+  </div>
+  <div class="ecp-webinars__grid">
+    {videos.map((video) => (
+      <article class="ecp-webinar-card">
+        <div class="ecp-webinar-card__frame">
+          <iframe src={video.url} title={video.title} loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <h3>{video.title}</h3>
+        <p>{video.caption}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .ecp-webinars { background: var(--iifr-navy, #102b44); color: #fff; }
+  .ecp-webinars .iifr-eyebrow, .ecp-webinars h2 { color: #fff; }
+  .ecp-webinars__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  .ecp-webinar-card { min-width: 0; }
+  .ecp-webinar-card__frame { aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid rgba(255,255,255,.35); background: #071a2b; }
+  .ecp-webinar-card iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .ecp-webinar-card h3 { margin: 1rem 0 .4rem; color: #fff; font-size: 1.15rem; }
+  .ecp-webinar-card p { margin: 0; color: rgba(255,255,255,.78); }
+  @media (max-width: 767px) { .ecp-webinars__grid { grid-template-columns: 1fr; } }
+</style>

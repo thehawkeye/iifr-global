@@ -1,0 +1,88 @@
+---
+/** ECP landing page — Phase 2 T3 rebuild. */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { assetUrl } from "../lib/assetUrl";
+import WebinarsAndMasterclass from "../components/sections/WebinarsAndMasterclass.astro";
+
+const faqs = [
+  { q: "Who is the ECP designed for?", a: "The programme is designed for senior industry professionals, faculty and educators, Professors of Practice aspirants, and academic or L&D leaders." },
+  { q: "What is the programme format?", a: "ECP is a 4-month programme with 8 classroom days across 3 residencies, followed by 2 capstone projects with faculty mentorship." },
+  { q: "What will I work on during the capstones?", a: "Participants develop a course design and a live case that translate their expertise into rigorous, practice-linked learning." },
+  { q: "Does the programme include an EFMD certification?", a: "The ECP is certified by the European Foundation for Management Development (EFMD)." },
+];
+
+const modules = [
+  ["Module 1: Curriculum & Course Design", "Understanding academic organisations; curriculum design; AI-empowered course and learning experience design; classroom, online, and hybrid pedagogies."],
+  ["Module 2: Academic Writing & Case Development", "AI-enabled content development, applied research articles, contemporary publishing, case study development, and pracademic writing."],
+  ["Module 3: Teaching Methods", "Live case studies, experiential learning, interactive facilitation, gamification, and personalised learning experiences."],
+  ["Module 4: Framework of Frameworks", "Integrating academic and strategic frameworks with multidisciplinary approaches to complex problems."],
+  ["Module 5: Enhancing Corporate Impact", "Business performance, growth imperatives, governance, and translating industry realities into classroom learning."],
+  ["Module 6: Academic Leadership", "Building and managing institutions, faculty and learner engagement, research productivity, and teaching excellence."],
+  ["Module 7: Academia-Industry-Policy Interchange", "Business and policy dialogues, issue-based research, stronger collaboration, and real-world impact."],
+  ["Module 8: Building Your Pracademic Brand", "Credibility, practitioner publishing, thought leadership, long-form writing, and a distinctive pracademic identity."],
+];
+---
+
+<SiteLayout path="/ecp" bodyClass="iifr-redesign-scope ecp-page">
+  <div class="iifr-page-hero ecp-landing-hero">
+    <div class="iifr-page-hero__bg" style={`background-image:url('${assetUrl("assets/images/ecp/landing/iifr_image_01.webp")}');background-position:center 42%;`}></div>
+    <div class="iifr-page-hero__inner">
+      <span class="iifr-page-hero__eyebrow">Educators' Certificate Programme (ECP)</span>
+      <h1>From the boardroom to the classroom lectern.</h1>
+      <p>The Educators' Certificate Programme helps senior professionals, faculty, and L&amp;D leaders translate expertise into teaching, executive education, and academic influence.</p>
+      <div class="iifr-page-hero__cta"><a href="#" class="iifr-btn-primary" data-bs-toggle="modal" data-bs-target="#iifrApplyModal" data-iifr-lead-intent="apply" role="button">Apply for August 2026 Cohort</a><a href="#" class="iifr-btn-outline" data-bs-toggle="modal" data-bs-target="#iifrApplyModal" data-iifr-lead-intent="brochure" role="button">Download Brochure</a></div>
+    </div>
+  </div>
+
+  <div class="ecp-facts-wrap ecp-facts-wrap--aligned">
+    <div class="ecp-facts ecp-facts--wide">
+      <div class="ecp-fact"><span class="ecp-fact__label">Duration</span><span class="ecp-fact__value">4 months</span><span class="ecp-fact__sub">8 classroom days across 3 residencies</span></div>
+      <div class="ecp-fact"><span class="ecp-fact__label">Format</span><span class="ecp-fact__value">On Campus</span><span class="ecp-fact__sub">New Delhi</span></div>
+      <div class="ecp-fact"><span class="ecp-fact__label">Start Date</span><span class="ecp-fact__value">21 Aug 2026</span><span class="ecp-fact__sub">August cohort</span></div>
+      <div class="ecp-fact"><span class="ecp-fact__label">Certification</span><span class="ecp-fact__value">IIFR + EFMD</span><span class="ecp-fact__sub">EFMD Certification</span></div>
+      <div class="ecp-fact ecp-fact--fee"><span class="ecp-fact__label">Fee</span><span class="ecp-fact__value">Rs. 5,00,000 + GST</span><span class="ecp-fact__sub">Full programme fee</span></div>
+    </div>
+    <div class="ecp-facts ecp-facts--scholarship"><div class="ecp-fact ecp-fact--scholarship"><span class="ecp-fact__label">Scholarship</span><span class="ecp-fact__value">50% Scholarship</span><span class="ecp-fact__sub">For applications from NGOs, academic institutions and the government sector.</span></div></div>
+  </div>
+
+  <section class="iifr-section"><div class="ecp-split ecp-split--align-start"><div class="ecp-split__content"><span class="iifr-eyebrow">Why Now</span><h2 class="ecp-overview__title">The Management Classroom is Changing</h2><hr class="iifr-gold-line"><p>The National Education Policy 2020 recommends that institutions onboard Professors of Practice to bring greater industry relevance and contemporary business perspectives into the classroom.</p><p>For experienced professionals, academicians, and learning leaders, this moment creates a unique opportunity to extend expertise into the classroom and shape future-ready leaders.</p></div><div class="ecp-why-card"><h3>Faculty demand is real.</h3><div class="ecp-stat-grid"><div><strong>28%</strong><span>overall teaching vacancy rate across these institutions</span></div><div><strong>56%</strong><span>professor-level posts vacant in India's premier educational institutions</span></div></div><p class="ecp-source">Source: Detailed Demand for Grants by Department of Higher Education, Parliamentary Standing Committee report.</p></div></div></section>
+
+  <section class="iifr-section iifr-paper"><div class="ecp-overview"><div class="ecp-overview__text"><span class="iifr-eyebrow">Career Value</span><h2 class="ecp-overview__title">Unlock Multidimensional Value for Your Career</h2><hr class="iifr-gold-line"><p>Whether you are an academic seeking to drive business impact or a practitioner seeking to institutionalise your expertise, the ECP is designed to unlock cross-functional pathways across the education ecosystem.</p><ul class="iifr-list"><li>Take on teaching roles as visiting faculty or Professor of Practice.</li><li>Design and deliver executive education programmes.</li><li>Contribute to curriculum development across institutions.</li><li>Prepare for academic leadership roles.</li></ul></div><div class="ecp-overview__media ecp-overview__media--video"><iframe src="https://www.youtube-nocookie.com/embed/4ZjzDD7V_No" title="Educators' Certificate Programme video" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></div></section>
+
+  <section class="iifr-section"><div class="iifr-section__head iifr-section__head--center"><h2>Who Should Attend?</h2><hr class="iifr-gold-line-center"></div><div class="ecp-audience ecp-audience--four">{["Senior Industry Professionals","Professors of Practice Aspirants","Faculty & Educators","Academic Leaders & L&D Professionals"].map((title) => <article class="ecp-aud-card"><span class="ecp-aud-card__icon" aria-hidden="true"><i class="fa-light fa-user-graduate"></i></span><h3 class="ecp-aud-card__title">{title}</h3><p class="ecp-aud-card__desc">Professionals and educators seeking to translate expertise into impactful teaching and academic contribution.</p></article>)}</div></section>
+
+  <section class="iifr-section ecp-cert-band-section"><div class="ecp-cert-band"><div class="ecp-cert-band__logos" aria-label="EFMD Global"><span class="ecp-cert-band__logo ecp-cert-band__logo--efmd"><img src={assetUrl("assets/images/logo/efmd.png")} alt="EFMD Global" loading="lazy" /></span></div><div class="ecp-cert-band__copy"><h2>Global Certification</h2><p>The ECP is certified by the European Foundation for Management Development (EFMD), making it one of the first programmes of its kind aligned with globally benchmarked management education standards.</p></div></div></section>
+
+  <section class="iifr-section iifr-cream"><div class="iifr-section__head iifr-section__head--center"><span class="iifr-eyebrow">Why ECP?</span><h2>Make the Shift with Confidence</h2><hr class="iifr-gold-line-center"></div><div class="ecp-diff-grid"><article class="ecp-diff-card"><h3>Global Certification</h3><p>Learn against globally benchmarked management education standards.</p></article><article class="ecp-diff-card"><h3>The AI Advantage</h3><p>AI is embedded across course design, case writing, assessment, and classroom engagement.</p></article><article class="ecp-diff-card"><h3>Practice-Led Learning</h3><p>Translate industry expertise into engaging classroom experiences and relevant learning outcomes.</p></article></div></section>
+
+  <WebinarsAndMasterclass />
+
+  <section class="iifr-section iifr-paper"><div class="iifr-section__head iifr-section__head--center"><span class="iifr-eyebrow">Structured Curriculum</span><h2>Eight Modules for Better Teaching and Academic Practice</h2><hr class="iifr-gold-line-center"><p class="iifr-lead">ECP is a 4-month programme with 8 classroom days across 3 residencies, followed by 2 capstone projects with faculty mentorship.</p></div><div class="ecp-module-grid">{modules.map(([title, body], index) => <article class="ecp-module-card"><div class="ecp-module-card__top"><span class="ecp-module-card__icon" aria-hidden="true"><i class="fa-light fa-layer-group"></i></span><span class="ecp-module-card__num">Module {index + 1}</span></div><h3>{title}</h3><p>{body}</p></article>)}</div><div class="ecp-capstones"><h2>Capstone Projects</h2><div class="ecp-capstones__grid"><article><h3>Capstone 1 — Course Design</h3><p>Create the course outline, learning objectives and session plan for a course where your expertise should be aligned with specific learning objectives.</p></article><article><h3>Capstone 2 — Case Writing</h3><p>Live cases that integrate real-world dynamics and academic frameworks, by leveraging public data and optionally your access to firms that exemplify the subject of learning.</p></article></div></div></section>
+
+  <section class="iifr-section ecp-scholarship"><div class="iifr-section__head iifr-section__head--center"><span class="iifr-eyebrow">Scholarship Support</span><h2>Support for Impactful Educators</h2><hr class="iifr-gold-line-center"></div><div class="ecp-opportunity-grid"><div><strong>1</strong><span>Academic Excellence</span></div><div><strong>2</strong><span>Public Service</span></div><div><strong>3</strong><span>Social Impact</span></div></div></section>
+
+  <section class="iifr-section"><div class="iifr-section__head iifr-section__head--center"><span class="iifr-eyebrow">Industry Opportunity</span><h2>Learn to Assess Industry Needs and Opportunities</h2><hr class="iifr-gold-line-center"><p class="iifr-lead">The programme helps participants unlock value throughout the industry-academia ecosystem.</p></div><div class="ecp-opportunity-grid"><div><strong>1</strong><span>Integrate live industry developments</span></div><div><strong>2</strong><span>Build interdisciplinary thinking</span></div><div><strong>3</strong><span>Leverage AI tools to teach better</span></div><div><strong>4</strong><span>Transition from case user to case creator</span></div><div><strong>5</strong><span>Influence policy through research</span></div></div></section>
+
+  <section class="iifr-section iifr-cream"><div class="iifr-section__head iifr-section__head--center"><span class="iifr-eyebrow">Faculty</span><h2>Learn from Leaders in Teaching and Innovation</h2><hr class="iifr-gold-line-center"><p class="iifr-lead">The faculty pool brings together distinguished academicians, globally recognised researchers, and accomplished industry leaders.</p></div><div class="ecp-faculty-grid ecp-faculty-grid--aligned">{[["Prof. Rajendra Srivastava","Vice Chairman, IIFR; Former Dean, ISB."],["Prof. Ashish Sinha","Professor of Marketing, UQ Business School."],["Prof. Ramakrishna Velamuri","Visiting Professor at ISB, IIMA, CEIBS, IESE Business School, Rotman-Bocconi GEMBA, and BITSoM."]].map(([name, bio], index) => <article class="ecp-faculty-card"><img src={assetUrl(`assets/images/ecp/landing/iifr_faculty_0${index === 2 ? 5 : index + 1}.png`)} alt={name} loading="lazy" /><div class="ecp-faculty-card__body"><h3>{name}</h3><p>{bio}</p></div></article>)}</div></section>
+
+  <section class="iifr-section iifr-paper" id="faq"><div class="iifr-section__head iifr-section__head--center"><span class="iifr-eyebrow">FAQ</span><h2 id="faq-heading">Frequently Asked Questions</h2><hr class="iifr-gold-line-center"></div><div class="iifr-faq">{faqs.map((faq) => <details class="iifr-faq__item"><summary class="iifr-faq__q">{faq.q}</summary><p class="iifr-faq__a">{faq.a}</p></details>)}</div></section>
+
+  <section class="iifr-section"><div class="ecp-legacy"><div class="ecp-legacy__content"><span class="iifr-eyebrow">Institutional Legacy</span><h2>Backed by Bharatiya Vidya Bhavan and EFMD Certification</h2><hr class="iifr-gold-line"><p>Backed by Bharatiya Vidya Bhavan, IIFR is building a future-focused ecosystem for practice-informed teaching, research, and academic leadership development.</p><div class="ecp-legacy__logos"><img src={assetUrl("assets/images/ecp/landing/iifr_image_08.png")} alt="Bharatiya Vidya Bhavan" loading="lazy" /><img class="ecp-legacy__efmd" src={assetUrl("assets/images/ecp/landing/iifr_image_09.png")} alt="EFMD" loading="lazy" /></div></div><div class="ecp-final-cta"><h2>Create your academic pathway. Build your legacy.</h2><p>Ready to embrace the pracademic journey?</p><button type="button" class="iifr-btn-primary" data-bs-toggle="modal" data-bs-target="#iifrApplyModal" data-iifr-lead-intent="apply">Apply Now</button></div></div></section>
+</SiteLayout>
+
+<style>
+  .ecp-page .iifr-page-hero__bg { background-size: cover; }
+  .ecp-facts-wrap--aligned { position: relative; z-index: 2; margin-top: -1rem; }
+  .ecp-facts-wrap--aligned .ecp-facts { align-items: stretch; }
+  .ecp-capstones { margin-top: 3.5rem; }
+  .ecp-capstones__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  .ecp-capstones__grid article { height: 100%; padding: 1.5rem; border: 1px solid rgba(16, 43, 68, .15); background: #fff; }
+  .ecp-faculty-grid--aligned { align-items: stretch; }
+  .ecp-faculty-grid--aligned .ecp-faculty-card { display: flex; flex-direction: column; }
+  .ecp-faculty-grid--aligned .ecp-faculty-card__body { display: flex; flex: 1; flex-direction: column; }
+  .ecp-faculty-grid--aligned .ecp-faculty-card__body p { flex: 1; }
+  .ecp-legacy__efmd { width: 8rem; height: auto; object-fit: contain; }
+  .ecp-final-cta { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+  .ecp-final-cta p { margin: 0; }
+  @media (max-width: 767px) { .ecp-facts-wrap--aligned { margin-top: 0; } .ecp-capstones__grid { grid-template-columns: 1fr; } .ecp-final-cta { align-items: flex-start; flex-direction: column; gap: .75rem; } .ecp-legacy__efmd { width: 7rem; } }
+</style>

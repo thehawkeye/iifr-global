@@ -1,0 +1,143 @@
+---
+/**
+ * Hero — homepage and top-of-page hero.
+ *
+ * Solid navy panel (no gradient). Documentary feel via copy and
+ * clear hierarchy, not via CSS. One primary CTA + one secondary
+ * CTA. Optional live-cohort signal — only shown when at least one
+ * programme cohort is `registration-open`.
+ */
+import { programmes } from "../lib/content";
+
+interface Cta {
+  href: string;
+  label: string;
+  variant?: "primary" | "outline" | "ghost" | "secondary";
+}
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  /** A one- or two-sentence value proposition. */
+  lead: string;
+  primary: Cta;
+  secondary?: Cta;
+  /** Optional: show a live-cohort signal below the buttons. */
+  showLiveCohort?: boolean;
+}
+
+const {
+  eyebrow,
+  title,
+  lead,
+  primary,
+  secondary,
+  showLiveCohort = false,
+} = Astro.props as Props;
+
+const liveCohort = programmes
+  .flatMap((p) => p.cohorts.map((c) => ({ programme: p, cohort: c })))
+  .find((pc) => pc.cohort.status === "registration-open" && pc.cohort.startDate);
+---
+
+<section class="cp-hero" aria-labelledby="cp-hero-title">
+  <div class="cp-container cp-container--wide cp-hero__inner">
+    <span class="cp-hero__eyebrow cp-eyebrow">{eyebrow}</span>
+    <h1 id="cp-hero-title" class="cp-hero__title">{title}</h1>
+    <p class="cp-hero__lead">{lead}</p>
+    <div class="cp-hero__actions">
+      <a class={`cp-button cp-button--${primary.variant ?? "primary"}`} href={primary.href}>
+        {primary.label}
+      </a>
+      {secondary && (
+        <a class={`cp-button cp-button--${secondary.variant ?? "outline"}`} href={secondary.href}>
+          {secondary.label}
+        </a>
+      )}
+    </div>
+    {showLiveCohort && liveCohort && (
+      <p class="cp-hero__signal">
+        <span class="cp-hero__signal-dot" aria-hidden="true"></span>
+        <span>
+          {liveCohort.programme.shortName} cohort begins {liveCohort.cohort.startDate} —
+          <a href={`/contemporary/programmes/${liveCohort.programme.slug}`}>
+            view programme details
+          </a>
+        </span>
+      </p>
+    )}
+  </div>
+</section>
+
+<style>
+  .cp-hero {
+    background: var(--cp-color-navy);
+    color: var(--cp-color-white);
+    padding: clamp(3rem, 1.5rem + 6vw, 6rem) 0;
+  }
+
+  .cp-hero__inner {
+    max-width: 920px;
+  }
+
+  .cp-hero .cp-eyebrow {
+    color: var(--cp-color-gold);
+  }
+
+  .cp-hero__title {
+    color: var(--cp-color-white);
+    font-size: var(--cp-font-size-title);
+    margin: 0 0 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .cp-hero__lead {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 60ch;
+    margin: 0 0 1.75rem;
+  }
+
+  .cp-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .cp-hero__actions .cp-button--outline {
+    color: var(--cp-color-white);
+    border-color: var(--cp-color-white);
+  }
+
+  .cp-hero__actions .cp-button--outline:hover,
+  .cp-hero__actions .cp-button--outline:focus-visible {
+    background: var(--cp-color-white);
+    color: var(--cp-color-navy);
+  }
+
+  .cp-hero__signal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 1.5rem 0 0;
+    padding: 0.5rem 0.9rem;
+    background: rgba(199, 153, 6, 0.12);
+    border: 1px solid rgba(199, 153, 6, 0.4);
+    color: rgba(255, 255, 255, 0.95);
+    border-radius: var(--cp-radius-pill);
+    font-size: 0.875rem;
+  }
+
+  .cp-hero__signal-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cp-color-gold);
+  }
+
+  .cp-hero__signal a {
+    color: var(--cp-color-gold);
+    text-decoration: underline;
+  }
+</style>

@@ -1,0 +1,120 @@
+---
+/**
+ * ProgrammeCard — used in the programmes index and homepage
+ * featured strip. Renders a programme's status, audience, duration,
+ * format, and an explicit next action.
+ */
+import type { Programme } from "../lib/content";
+
+interface Props {
+  programme: Programme;
+  featured?: boolean;
+}
+
+const { programme, featured = false } = Astro.props as Props;
+const cohort = programme.cohorts[0];
+
+const statusLabel: Record<Programme["status"], string> = {
+  "open": "Open",
+  "coming-soon": "Coming soon",
+  "by-enquiry": "By enquiry",
+  "archived": "Archived",
+};
+
+const statusClass: Record<Programme["status"], string> = {
+  "open": "cp-tag--maroon",
+  "coming-soon": "cp-tag--navy",
+  "by-enquiry": "cp-tag--gold",
+  "archived": "cp-tag",
+};
+---
+
+<a class={`cp-card cp-card--link cp-programme-card${featured ? " cp-programme-card--featured" : ""}`} href={`/contemporary/programmes/${programme.slug}`}>
+  <div class="cp-programme-card__head">
+    <span class={`cp-tag ${statusClass[programme.status]}`}>{statusLabel[programme.status]}</span>
+    <span class="cp-programme-card__type">{programme.programmeType}</span>
+  </div>
+  <h3>{programme.title}</h3>
+  <p class="cp-programme-card__proposition">{programme.proposition}</p>
+  <dl class="cp-programme-card__facts">
+    <div>
+      <dt>Duration</dt>
+      <dd>{programme.duration}</dd>
+    </div>
+    <div>
+      <dt>Format</dt>
+      <dd>{programme.format}</dd>
+    </div>
+    {cohort && cohort.startDate && (
+      <div>
+        <dt>Next start</dt>
+        <dd>{cohort.startDate}</dd>
+      </div>
+    )}
+    {cohort && (
+      <div>
+        <dt>Fee</dt>
+        <dd>{cohort.fee}</dd>
+      </div>
+    )}
+  </dl>
+  <div class="cp-card__cta">
+    <span>View programme</span> <span aria-hidden="true">→</span>
+  </div>
+</a>
+
+<style>
+  .cp-programme-card h3 {
+    margin: 0.75rem 0 0.5rem;
+  }
+
+  .cp-programme-card--featured {
+    border-color: var(--cp-color-maroon);
+    border-width: 2px;
+  }
+
+  .cp-programme-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cp-programme-card__type {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-programme-card__proposition {
+    color: var(--cp-color-text-muted);
+    margin: 0 0 1rem;
+  }
+
+  .cp-programme-card__facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 1rem;
+    margin: 0 0 1rem;
+  }
+
+  .cp-programme-card__facts div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cp-programme-card__facts dt {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-programme-card__facts dd {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--cp-color-navy);
+    font-weight: 500;
+  }
+</style>

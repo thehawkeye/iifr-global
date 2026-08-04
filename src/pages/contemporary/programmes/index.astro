@@ -1,0 +1,130 @@
+---
+/**
+ * /contemporary/programmes — programme index.
+ *
+ * Lists every programme with status, audience, format, duration,
+ * and a comparison CTA. Includes a quick filter section (open,
+ * coming-soon, by-enquiry) implemented as anchor links — the
+ * full filter UI is intentionally not built for the prototype.
+ */
+import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import ProgrammeCard from "../../../contemporary/components/ProgrammeCard.astro";
+import { programmes } from "../../../contemporary/lib/content";
+import { SITE_URL, programmesListSchema } from "../../../contemporary/lib/seo";
+
+const open = programmes.filter((p) => p.status === "open" || p.status === "coming-soon");
+const byEnquiry = programmes.filter((p) => p.status === "by-enquiry");
+
+const seo = {
+  title: "IIFR programmes | Compare ECP, EFM, and faculty development",
+  description:
+    "Explore IIFR programmes for individuals, faculty, and institutions. Compare ECP, EFM, faculty development workshops, and custom executive education.",
+  keywords:
+    "IIFR programmes, ECP, EFM, faculty development, executive education, custom programmes, compare programmes",
+  canonical: `${SITE_URL}/contemporary/programmes`,
+  image: `${SITE_URL}/assets/images/academy/5.jpeg`,
+  type: "website" as const,
+  schema: "ItemList" as const,
+};
+
+const schema = programmesListSchema(programmes);
+---
+
+<ContemporaryBaseLayout
+  path="/contemporary/programmes"
+  seo={seo}
+  schema={schema}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Programmes" },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container">
+      <span class="cp-eyebrow">Programmes</span>
+      <h1>Programmes designed for decision and capability.</h1>
+      <p class="cp-lead">
+        IIFR offers programmes for individuals moving into teaching and academic
+        influence, for faculty and academic leaders, and for institutions
+        building capability. Each programme page shows fit, outcomes, faculty,
+        cohorts, and a clear next step.
+      </p>
+    </div>
+  </header>
+
+  <section class="cp-section" id="open" aria-labelledby="cp-open-programmes">
+    <div class="cp-container">
+      <h2 id="cp-open-programmes">Open and coming soon</h2>
+      <p class="cp-section__intro">
+        Programmes with a live or upcoming cohort you can apply to.
+      </p>
+      <div class="cp-grid cp-grid--2">
+        {open.map((p) => <ProgrammeCard programme={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory" id="by-enquiry" aria-labelledby="cp-by-enquiry-programmes">
+    <div class="cp-container">
+      <h2 id="cp-by-enquiry-programmes">By enquiry</h2>
+      <p class="cp-section__intro">
+        Programmes designed per engagement. Talk to IIFR to scope what you need.
+      </p>
+      <div class="cp-grid cp-grid--2">
+        {byEnquiry.map((p) => <ProgrammeCard programme={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="cp-section" aria-labelledby="cp-programme-compare">
+    <div class="cp-container">
+      <div class="cp-card cp-card--ivory cp-compare-cta">
+        <h2 id="cp-programme-compare">Not sure which one fits?</h2>
+        <p>
+          Compare ECP, EFM, faculty development workshops, and custom programmes side by side — by audience, depth, duration, format, and next step.
+        </p>
+        <a class="cp-button cp-button--primary" href="/contemporary/programmes/compare">
+          Compare programmes
+        </a>
+      </div>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-page-header h1 {
+    margin: 0 0 1rem;
+  }
+
+  .cp-page-header .cp-lead {
+    max-width: 60ch;
+  }
+
+  .cp-section__intro {
+    color: var(--cp-color-text-muted);
+    max-width: 60ch;
+    margin: 0 0 1.5rem;
+  }
+
+  .cp-compare-cta {
+    text-align: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .cp-compare-cta h2 {
+    margin: 0 0 0.5rem;
+  }
+
+  .cp-compare-cta p {
+    color: var(--cp-color-text-muted);
+    max-width: 50ch;
+    margin: 0 auto 1.5rem;
+  }
+</style>

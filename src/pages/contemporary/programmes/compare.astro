@@ -1,0 +1,144 @@
+---
+/**
+ * /contemporary/programmes/compare — side-by-side comparison.
+ *
+ * Compares the four programmes by audience, depth, duration, format,
+ * certification, and next step. The dimensions are clearly labelled
+ * as "indicative" to avoid overclaiming, per design plan §5.
+ */
+import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { programmes } from "../../../contemporary/lib/content";
+import { SITE_URL } from "../../../contemporary/lib/seo";
+
+const seo = {
+  title: "Compare IIFR programmes | ECP vs EFM vs faculty development",
+  description:
+    "Compare IIFR programmes side by side: Educators' Certificate Programme (ECP), Executive Fellow in Management (EFM), faculty development workshops, and custom executive education.",
+  keywords:
+    "compare IIFR programmes, ECP vs EFM, faculty development vs executive fellowship, IIFR programme comparison",
+  canonical: `${SITE_URL}/contemporary/programmes/compare`,
+  image: `${SITE_URL}/assets/images/academy/5.jpeg`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+
+const dimensions: { label: string; values: (p: typeof programmes[number]) => string }[] = [
+  { label: "Programme type", values: (p) => p.programmeType },
+  { label: "Best for", values: (p) => p.audience.slice(0, 2).join("; ") },
+  { label: "Duration", values: (p) => p.duration },
+  { label: "Format", values: (p) => p.format },
+  { label: "Certification", values: (p) => p.certification.split(".")[0] + "." },
+  { label: "Current status", values: (p) => p.status },
+];
+---
+
+<ContemporaryBaseLayout
+  path="/contemporary/programmes/compare"
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Programmes", href: "/contemporary/programmes" },
+    { label: "Compare" },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container">
+      <span class="cp-eyebrow">Compare programmes</span>
+      <h1>Which IIFR programme fits your next step?</h1>
+      <p class="cp-lead">
+        Indicative comparison. Each programme has its own page with the full
+        curriculum, faculty, and cohort facts. Use this view to narrow your
+        shortlist, then read the programme detail page for the decision.
+      </p>
+    </div>
+  </header>
+
+  <section class="cp-section">
+    <div class="cp-container cp-container--wide">
+      <div class="cp-compare-table-wrap">
+        <table class="cp-compare-table">
+          <thead>
+            <tr>
+              <th scope="col">Dimension</th>
+              {programmes.map((p) => (
+                <th scope="col">
+                  <a href={`/contemporary/programmes/${p.slug}`}>{p.shortName}</a>
+                  <small>{p.title}</small>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {dimensions.map((d) => (
+              <tr>
+                <th scope="row">{d.label}</th>
+                {programmes.map((p) => (
+                  <td>{d.values(p)}</td>
+                ))}
+              </tr>
+            ))}
+            <tr>
+              <th scope="row">Next step</th>
+              {programmes.map((p) => (
+                <td>
+                  <a class="cp-button cp-button--primary" href={`/contemporary/start?intent=${p.status === "by-enquiry" ? "enquire" : "apply"}&programme=${p.slug}`}>
+                    {p.status === "by-enquiry" ? "Enquire" : "Apply"}
+                  </a>
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-compare-table-wrap {
+    overflow-x: auto;
+  }
+
+  .cp-compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+  }
+
+  .cp-compare-table th,
+  .cp-compare-table td {
+    padding: 0.9rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--cp-color-divider);
+    vertical-align: top;
+    font-size: 0.95rem;
+  }
+
+  .cp-compare-table thead th {
+    background: var(--cp-color-ivory);
+    color: var(--cp-color-navy);
+    font-family: var(--cp-font-heading);
+    vertical-align: bottom;
+  }
+
+  .cp-compare-table thead th small {
+    display: block;
+    font-family: var(--cp-font-body);
+    font-size: 0.75rem;
+    color: var(--cp-color-text-muted);
+    font-weight: 400;
+    margin-top: 0.2rem;
+  }
+
+  .cp-compare-table tbody th {
+    font-weight: 600;
+    color: var(--cp-color-navy);
+    background: rgba(239, 235, 229, 0.4);
+  }
+</style>

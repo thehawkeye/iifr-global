@@ -1,0 +1,136 @@
+---
+/**
+ * /contemporary/start — lead-capture PLACEHOLDER.
+ *
+ * Per the design plan §6.9 and the hard redlines on this card, the
+ * prototype intentionally does NOT wire a live form, CRM, or Zoho.
+ * This page:
+ *   1. Echoes the visitor's intent (`apply`, `enquire`, `partner`,
+ *      `brochure`) and selected programme.
+ *   2. Tells them clearly that the form is not yet wired.
+ *   3. Routes them to the right next step (programme page, contact,
+ *      partnership page).
+ *   4. Preserves the URL contract so a future form can be wired
+ *      without changing the call-to-action sites.
+ *
+ * The "Apply" CTA on programme pages, the "Find your pathway"
+ * selector, and the contact page all link here. The links remain
+ * functional and reviewable; what is missing is a real submission.
+ */
+import ContemporaryBaseLayout from "../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { programmes, institutionalSolutions } from "../../contemporary/lib/content";
+import { SITE_URL, INFO_EMAIL } from "../../contemporary/lib/seo";
+
+const url = new URL(Astro.request.url);
+const intent = url.searchParams.get("intent") ?? "apply";
+const programmeSlug = url.searchParams.get("programme");
+const topic = url.searchParams.get("topic");
+
+const programme = programmeSlug
+  ? programmes.find((p) => p.slug === programmeSlug)
+  : null;
+const solution = topic
+  ? institutionalSolutions.find((s) => s.slug === topic)
+  : null;
+
+interface IntentCopy {
+  title: string;
+  lead: string;
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+const copyByIntent: Record<string, IntentCopy> = {
+  apply: {
+    title: programme ? `Apply for ${programme.title}` : "Apply to IIFR",
+    lead: programme
+      ? `This prototype does not yet wire a live application form for ${programme.shortName}. Your request will be queued for the admissions team once the form goes live.`
+      : "This prototype does not yet wire a live application form. Your request will be queued for the admissions team once the form goes live.",
+    ctaLabel: "Read the programme page",
+    ctaHref: programme ? `/contemporary/programmes/${programme.slug}` : "/contemporary/programmes",
+  },
+  enquire: {
+    title: programme ? `Enquire about ${programme.title}` : "Enquire to IIFR",
+    lead: programme
+      ? `This prototype does not yet wire a live enquiry form for ${programme.shortName}. In the meantime, the admissions team can be reached by email.`
+      : "This prototype does not yet wire a live enquiry form. In the meantime, IIFR can be reached by email.",
+    ctaLabel: "Read the programme page",
+    ctaHref: programme ? `/contemporary/programmes/${programme.slug}` : "/contemporary/programmes",
+  },
+  brochure: {
+    title: programme ? `Request a brochure for ${programme.title}` : "Request a brochure",
+    lead: programme
+      ? `This prototype does not yet wire a live brochure request form for ${programme.shortName}.`
+      : "This prototype does not yet wire a live brochure request form.",
+    ctaLabel: "Read the programme page",
+    ctaHref: programme ? `/contemporary/programmes/${programme.slug}` : "/contemporary/programmes",
+  },
+  partner: {
+    title: solution ? solution.title : "Talk to IIFR about a partnership",
+    lead: solution
+      ? `This prototype does not yet wire a live partnership enquiry form for ${solution.title}.`
+      : "This prototype does not yet wire a live partnership enquiry form.",
+    ctaLabel: solution ? "Read the solution page" : "Read the for-institutions page",
+    ctaHref: solution
+      ? `/contemporary/for-institutions/${solution.slug}`
+      : "/contemporary/for-institutions",
+  },
+};
+
+const copy = copyByIntent[intent] ?? copyByIntent.apply;
+
+const seo = {
+  title: `${copy.title} | IIFR`,
+  description: copy.lead,
+  keywords: `${copy.title}, IIFR, ${intent}`,
+  canonical: `${SITE_URL}/contemporary/start?intent=${intent}${programme ? `&programme=${programme.slug}` : ""}${topic ? `&topic=${topic}` : ""}`,
+  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+---
+
+<ContemporaryBaseLayout
+  path="/contemporary/start"
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Start" },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container cp-container--narrow">
+      <span class="cp-eyebrow">Start</span>
+      <h1>{copy.title}</h1>
+      <p class="cp-lead">{copy.lead}</p>
+    </div>
+  </header>
+
+  <section class="cp-section">
+    <div class="cp-container cp-container--narrow">
+      <h2>What is intentional about this page</h2>
+      <ul>
+        <li>The CTA URL is preserved (the form will wire in a later phase).</li>
+        <li>Your intent and the selected programme or solution are echoed so a future wire-up can pre-fill them.</li>
+        <li>No personal data is collected in this prototype.</li>
+        <li>No CRM, Zoho, Formspree, or analytics event is fired in this prototype.</li>
+      </ul>
+      <p>
+        <a class="cp-button cp-button--primary" href={copy.ctaHref}>
+          {copy.ctaLabel}
+        </a>
+        <a class="cp-button cp-button--ghost" href={`mailto:${INFO_EMAIL}?subject=${encodeURIComponent(copy.title)}`}>
+          Email IIFR instead
+        </a>
+      </p>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+</style>

@@ -1,0 +1,189 @@
+---
+/**
+ * /contemporary/find-your-pathway — light-weight pathway selector.
+ *
+ * The design plan §6.3 calls for a "Find your pathway" CTA. Per the
+ * independent review, we do NOT build a full multi-step quiz. This
+ * page is a directory of the four pathways with a single
+ * "I am a…" radio set that filters which pathway to highlight, so
+ * the visitor gets a focused answer without an interaction before
+ * content.
+ */
+import ContemporaryBaseLayout from "../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { SITE_URL } from "../../contemporary/lib/seo";
+
+const seo = {
+  title: "Find your pathway | IIFR",
+  description:
+    "Tell us who you are. We will point you to the right IIFR programme, partnership, or research route.",
+  keywords: "IIFR pathway, find your IIFR route, IIFR for individuals, IIFR for institutions",
+  canonical: `${SITE_URL}/contemporary/find-your-pathway`,
+  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+
+interface PathwayOption {
+  id: string;
+  label: string;
+  description: string;
+  next: { href: string; label: string };
+}
+
+const pathways: PathwayOption[] = [
+  {
+    id: "individual-teaching",
+    label: "I want to teach or build academic influence",
+    description:
+      "Senior professionals, aspiring Professors of Practice, L&D leaders.",
+    next: { href: "/contemporary/programmes/compare", label: "Compare ECP and EFM" },
+  },
+  {
+    id: "faculty-strengthening",
+    label: "I want to strengthen teaching or research",
+    description: "Existing faculty, programme leads, academic leaders.",
+    next: { href: "/contemporary/programmes/faculty-development", label: "Explore faculty development" },
+  },
+  {
+    id: "institution",
+    label: "I lead an institution or L&D function",
+    description: "Universities, business schools, corporates, public institutions.",
+    next: { href: "/contemporary/for-institutions", label: "See institutional solutions" },
+  },
+  {
+    id: "researcher",
+    label: "I want to collaborate on applied research",
+    description: "Researchers, funders, policy bodies, sector partners.",
+    next: { href: "/contemporary/research-and-faculty", label: "Open the research and faculty hub" },
+  },
+];
+---
+
+<ContemporaryBaseLayout
+  path="/contemporary/find-your-pathway"
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Find your pathway" },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container cp-container--narrow">
+      <span class="cp-eyebrow">Find your pathway</span>
+      <h1>Where would you like to start?</h1>
+      <p class="cp-lead">
+        Pick the description closest to you. We will show you the
+        most useful next page.
+      </p>
+    </div>
+  </header>
+
+  <section class="cp-section">
+    <div class="cp-container cp-container--narrow">
+      <form class="cp-pathway-form" data-component="pathway">
+        <fieldset>
+          <legend>I am…</legend>
+          {pathways.map((p, i) => (
+            <label class="cp-pathway-option" data-target={p.next.href}>
+              <input
+                type="radio"
+                name="pathway"
+                value={p.id}
+                checked={i === 0}
+              />
+              <span class="cp-pathway-option__label">{p.label}</span>
+              <span class="cp-pathway-option__desc">{p.description}</span>
+            </label>
+          ))}
+        </fieldset>
+
+        <div class="cp-pathway-result" aria-live="polite">
+          <p data-pathway-next>Loading next step…</p>
+        </div>
+      </form>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-pathway-form fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .cp-pathway-form legend {
+    font-family: var(--cp-font-heading);
+    font-size: 1.25rem;
+    color: var(--cp-color-navy);
+    margin-bottom: 1rem;
+  }
+
+  .cp-pathway-option {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    align-items: start;
+    gap: 0.4rem 0.8rem;
+    background: var(--cp-color-white);
+    border: 1px solid var(--cp-color-border);
+    border-radius: var(--cp-radius-card);
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: border-color var(--cp-transition);
+  }
+
+  .cp-pathway-option:hover,
+  .cp-pathway-option:focus-within {
+    border-color: var(--cp-color-maroon);
+  }
+
+  .cp-pathway-option__label {
+    font-weight: 600;
+    color: var(--cp-color-navy);
+  }
+
+  .cp-pathway-option__desc {
+    grid-column: 2;
+    color: var(--cp-color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .cp-pathway-result {
+    margin-top: 1.5rem;
+    background: var(--cp-color-ivory);
+    border: 1px solid var(--cp-color-divider);
+    border-radius: var(--cp-radius-card);
+    padding: 1.25rem;
+  }
+</style>
+
+<script define:vars={{ pathways }}>
+  const form = document.querySelector('[data-component="pathway"]');
+  if (form) {
+    const update = () => {
+      const checked = form.querySelector('input[name="pathway"]:checked');
+      const target = checked
+        ? pathways.find((p) => p.id === checked.value)
+        : null;
+      const out = form.querySelector("[data-pathway-next]");
+      if (target && out) {
+        out.innerHTML =
+          '<strong>Next step: </strong>' +
+          '<a class="cp-button cp-button--primary" href="' +
+          target.next.href +
+          '">' +
+          target.next.label +
+          "</a>";
+      }
+    };
+    form.addEventListener("change", update);
+    update();
+  }
+</script>

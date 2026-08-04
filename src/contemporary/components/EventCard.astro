@@ -1,0 +1,117 @@
+---
+/**
+ * EventCard — used in events list, home, and insights-and-events
+ * landing. Date and time zone always shown.
+ */
+import type { Event } from "../lib/content";
+
+interface Props {
+  event: Event;
+}
+
+const { event } = Astro.props as Props;
+
+const start = new Date(event.dateTime);
+const dateLabel = start.toLocaleDateString("en-IN", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+const timeLabel = start.toLocaleTimeString("en-IN", {
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: event.timeZone,
+});
+const isPast = event.status === "past" || event.status === "archived";
+---
+
+<a class="cp-card cp-card--link cp-event-card" href={`/contemporary/events-and-insights/events/${event.slug}`}>
+  <div class="cp-event-card__date">
+    <span class="cp-event-card__day">{start.getDate()}</span>
+    <span class="cp-event-card__month">{start.toLocaleDateString("en-IN", { month: "short" })}</span>
+    <span class="cp-event-card__year">{start.getFullYear()}</span>
+  </div>
+  <div class="cp-event-card__body">
+    <span class="cp-tag">{event.eventType}</span>
+    <h3>{event.title}</h3>
+    <p>{event.summary}</p>
+    <ul class="cp-event-card__meta">
+      <li><strong>{dateLabel}</strong> · {timeLabel} {event.timeZone}</li>
+      <li>{event.format}</li>
+      {isPast && <li class="cp-event-card__archived">Past event</li>}
+    </ul>
+  </div>
+</a>
+
+<style>
+  .cp-event-card {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .cp-event-card__date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--cp-color-ivory);
+    border: 1px solid var(--cp-color-divider);
+    border-radius: var(--cp-radius-card);
+    padding: 0.6rem 0.4rem;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .cp-event-card__day {
+    font-family: var(--cp-font-heading);
+    font-size: 1.5rem;
+    color: var(--cp-color-maroon);
+    font-weight: 700;
+  }
+
+  .cp-event-card__month {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cp-color-navy);
+  }
+
+  .cp-event-card__year {
+    font-size: 0.7rem;
+    color: var(--cp-color-text-muted);
+    margin-top: 0.2rem;
+  }
+
+  .cp-event-card__body h3 {
+    margin: 0.5rem 0 0.4rem;
+    font-size: 1.1rem;
+  }
+
+  .cp-event-card__body p {
+    color: var(--cp-color-text-muted);
+    margin: 0 0 0.6rem;
+  }
+
+  .cp-event-card__meta {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-event-card__meta li {
+    margin: 0;
+  }
+
+  .cp-event-card__meta strong {
+    color: var(--cp-color-navy);
+  }
+
+  .cp-event-card__archived {
+    color: var(--cp-color-maroon);
+    font-weight: 500;
+  }
+</style>

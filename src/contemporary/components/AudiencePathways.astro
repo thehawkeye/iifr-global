@@ -1,0 +1,106 @@
+---
+/**
+ * AudiencePathways — the four audience pathways from design plan
+ * §6.3. Each card states who it is for, what decision it supports,
+ * and the next action.
+ */
+interface Pathway {
+  title: string;
+  description: string;
+  cta: string;
+  href: string;
+  /** Optional eyebrow tag, e.g. "Individuals" / "Institutions". */
+  audience: "Individuals" | "Faculty" | "Institutions" | "Researchers";
+}
+
+const pathways: Pathway[] = [
+  {
+    audience: "Individuals",
+    title: "I want to teach or build academic influence",
+    description:
+      "Move industry experience into credible teaching, executive education, and academic influence through ECP or EFM.",
+    cta: "Compare ECP and EFM",
+    href: "/contemporary/programmes/compare",
+  },
+  {
+    audience: "Faculty",
+    title: "I want to strengthen teaching or research",
+    description:
+      "Workshops and applied research support for existing faculty, programme leads, and academic leaders.",
+    cta: "Explore faculty development",
+    href: "/contemporary/programmes/faculty-development",
+  },
+  {
+    audience: "Institutions",
+    title: "I lead an institution or L&D function",
+    description:
+      "Co-designed faculty capability, executive education, and academic leadership programmes for institutions.",
+    cta: "Discuss an institutional need",
+    href: "/contemporary/for-institutions",
+  },
+  {
+    audience: "Researchers",
+    title: "I want to collaborate on applied research",
+    description:
+      "Research partnerships, residencies, and projects on practice-led questions with IIFR research faculty.",
+    cta: "Explore research and partnerships",
+    href: "/contemporary/research-and-faculty",
+  },
+];
+---
+
+<section class="cp-section cp-pathways" aria-labelledby="cp-pathways-title">
+  <div class="cp-container">
+    <header class="cp-pathways__head">
+      <span class="cp-eyebrow">Choose your pathway</span>
+      <h2 id="cp-pathways-title">Where would you like to start?</h2>
+      <p class="cp-lead">
+        Four routes into IIFR, organised around the decision you are trying to make.
+      </p>
+    </header>
+    <ul class="cp-pathways__grid">
+      {pathways.map((p) => (
+        <li class="cp-card cp-card--link cp-pathways__card">
+          <span class="cp-tag">{p.audience}</span>
+          <h3>{p.title}</h3>
+          <p>{p.description}</p>
+          <div class="cp-card__cta">
+            <a href={p.href}>{p.cta} <span aria-hidden="true">→</span></a>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cp-pathways__head {
+    text-align: center;
+    margin: 0 auto 2.5rem;
+    max-width: 720px;
+  }
+
+  .cp-pathways__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--cp-grid-gap);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .cp-pathways__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .cp-pathways__card h3 {
+    margin: 0.75rem 0 0.5rem;
+  }
+
+  .cp-pathways__card p {
+    color: var(--cp-color-text-muted);
+    margin: 0;
+  }
+</style>

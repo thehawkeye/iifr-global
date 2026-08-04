@@ -1,0 +1,114 @@
+---
+/**
+ * BridgeProof — four compact institutional proof facts.
+ *
+ * Design plan §6.2. Conservative: "Established by BVB", "EFMD
+ * certification language under review" (no overclaim), "Academics
+ * and Professors of Practice", "India and the Global South".
+ * No invented scale numbers, no embellishment.
+ */
+interface ProofItem {
+  label: string;
+  value: string;
+  href?: string;
+}
+
+const items: ProofItem[] = [
+  {
+    label: "Established by",
+    value: "Bharatiya Vidya Bhavan",
+    href: "/contemporary/about#partners",
+  },
+  {
+    label: "Certification",
+    value: "EFMD certification language under review",
+    href: "/contemporary/about#quality",
+  },
+  {
+    label: "Faculty model",
+    value: "Academics and Professors of Practice",
+    href: "/contemporary/research-and-faculty",
+  },
+  {
+    label: "Focus",
+    value: "India and the Global South",
+    href: "/contemporary/about",
+  },
+];
+---
+
+<section class="cp-bridge" aria-label="Institutional credibility">
+  <div class="cp-container cp-container--wide">
+    <ul class="cp-bridge__list">
+      {items.map((it) => (
+        <li class="cp-bridge__item">
+          <span class="cp-bridge__label">{it.label}</span>
+          <strong class="cp-bridge__value">
+            {it.href ? <a href={it.href}>{it.value}</a> : it.value}
+          </strong>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cp-bridge {
+    background: var(--cp-color-ivory);
+    border-top: 1px solid var(--cp-color-divider);
+    border-bottom: 1px solid var(--cp-color-divider);
+    padding: 1.5rem 0;
+  }
+
+  .cp-bridge__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .cp-bridge__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 992px) {
+    .cp-bridge__list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .cp-bridge__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .cp-bridge__label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-bridge__value {
+    font-family: var(--cp-font-heading);
+    font-size: 1.05rem;
+    color: var(--cp-color-navy);
+    font-weight: 600;
+  }
+
+  .cp-bridge__value a {
+    color: var(--cp-color-navy);
+    text-decoration: none;
+  }
+
+  .cp-bridge__value a:hover,
+  .cp-bridge__value a:focus-visible {
+    color: var(--cp-color-maroon);
+    text-decoration: underline;
+  }
+</style>

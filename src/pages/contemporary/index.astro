@@ -1,0 +1,315 @@
+---
+/**
+ * /contemporary — contemporary home page.
+ *
+ * Sequence (design plan §6):
+ *   1. Hero (name the bridge)
+ *   2. Bridge proof strip
+ *   3. Choose your pathway (4 audience cards)
+ *   4. Featured programme + portfolio
+ *   5. The institutional offer
+ *   6. Research and faculty credibility
+ *   7. Events and insights
+ *   8. Final CTA split
+ */
+import ContemporaryBaseLayout from "../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import Hero from "../../contemporary/components/Hero.astro";
+import BridgeProof from "../../contemporary/components/BridgeProof.astro";
+import AudiencePathways from "../../contemporary/components/AudiencePathways.astro";
+import ProgrammeCard from "../../contemporary/components/ProgrammeCard.astro";
+import FacultyCard from "../../contemporary/components/FacultyCard.astro";
+import EventCard from "../../contemporary/components/EventCard.astro";
+import InsightCard from "../../contemporary/components/InsightCard.astro";
+import CtaSplit from "../../contemporary/components/CtaSplit.astro";
+import {
+  programmes,
+  faculty,
+  events,
+  insights,
+  institutionalSolutions,
+} from "../../contemporary/lib/content";
+import { SITE_URL } from "../../contemporary/lib/seo";
+
+const openOrFeatured = programmes.find((p) => p.status === "open") ?? programmes[0];
+const restProgrammes = programmes.filter((p) => p !== openOrFeatured).slice(0, 3);
+const featuredFaculty = faculty.slice(0, 2);
+const upcomingEvents = events.filter((e) => e.status !== "past" && e.status !== "archived").slice(0, 2);
+const recentInsights = insights.slice(0, 2);
+
+const seo = {
+  title:
+    "IIFR | Where academic rigour meets real-world practice",
+  description:
+    "IIFR helps educators, practitioners, researchers, and institutions build the capability to teach, research, and lead with relevance. Find your pathway into ECP, EFM, faculty development, or institutional partnerships.",
+  keywords:
+    "IIFR, faculty development India, applied research, academic leadership, ECP, EFM, Professors of Practice, pracademic education, India and Global South",
+  canonical: `${SITE_URL}/contemporary`,
+  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+---
+
+<ContemporaryBaseLayout
+  path="/contemporary"
+  seo={seo}
+  breadcrumbs={[{ label: "Home" }]}
+  bodyClass="cp-home"
+>
+  <Hero
+    eyebrow="International Institute for Faculty & Research"
+    title="Where academic rigour meets real-world practice."
+    lead="IIFR helps educators, practitioners, researchers, and institutions build the capability to teach, research, and lead with relevance."
+    primary={{ href: "/contemporary/find-your-pathway", label: "Find your pathway" }}
+    secondary={{ href: "/contemporary/programmes", label: "Explore programmes", variant: "outline" }}
+    showLiveCohort={true}
+  />
+
+  <BridgeProof />
+
+  <AudiencePathways />
+
+  <!-- ============ FEATURED PROGRAMME + PORTFOLIO ============ -->
+  <section class="cp-section" aria-labelledby="cp-featured-programme">
+    <div class="cp-container">
+      <header class="cp-programmes__head">
+        <span class="cp-eyebrow">What we offer</span>
+        <h2 id="cp-featured-programme">Programmes designed for decision and capability.</h2>
+        <p class="cp-lead">
+          Lead with the most commercially urgent, approved programme. Follow with the rest of the portfolio.
+        </p>
+      </header>
+      <div class="cp-programmes__grid">
+        <ProgrammeCard programme={openOrFeatured} featured={true} />
+        {restProgrammes.map((p) => <ProgrammeCard programme={p} />)}
+      </div>
+      <p class="cp-programmes__more">
+        <a class="cp-button cp-button--ghost" href="/contemporary/programmes">
+          See all programmes and compare
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ INSTITUTIONAL OFFER ============ -->
+  <section class="cp-section cp-section--ivory" aria-labelledby="cp-institutional-offer">
+    <div class="cp-container">
+      <div class="cp-institutional">
+        <div>
+          <span class="cp-eyebrow">For institutions</span>
+          <h2 id="cp-institutional-offer">Build capability across your faculty, leaders, and learning teams.</h2>
+          <p class="cp-lead">
+            We co-design with you: open enrolment, in-house delivery, or a hybrid cohort. Every engagement starts with the problem you are trying to solve.
+          </p>
+          <p class="cp-institutional__stages">
+            <strong>Three steps:</strong>
+            <span>Understand the challenge</span>
+            <span aria-hidden="true">→</span>
+            <span>Co-design the intervention</span>
+            <span aria-hidden="true">→</span>
+            <span>Measure adoption and impact</span>
+          </p>
+          <a class="cp-button cp-button--primary" href="/contemporary/for-institutions">
+            Discuss an institutional need
+          </a>
+        </div>
+        <ul class="cp-institutional__list">
+          {institutionalSolutions.map((s) => (
+            <li>
+              <a href={`/contemporary/for-institutions/${s.slug}`}>
+                <strong>{s.title}</strong>
+                <span>{s.problemArea}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESEARCH & FACULTY CREDIBILITY ============ -->
+  <section class="cp-section" aria-labelledby="cp-research-faculty">
+    <div class="cp-container">
+      <header class="cp-programmes__head">
+        <span class="cp-eyebrow">Research and faculty</span>
+        <h2 id="cp-research-faculty">People and applied work at the bridge.</h2>
+        <p class="cp-lead">
+          IIFR brings together globally connected academicians, senior industry professionals, Professors of Practice, and research leaders.
+        </p>
+      </header>
+      <div class="cp-grid cp-grid--2">
+        {featuredFaculty.map((f) => <FacultyCard faculty={f} />)}
+      </div>
+      <p class="cp-programmes__more">
+        <a class="cp-button cp-button--ghost" href="/contemporary/research-and-faculty">
+          See the full research and faculty hub
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ EVENTS + INSIGHTS ============ -->
+  <section class="cp-section cp-section--ivory" aria-labelledby="cp-events-insights">
+    <div class="cp-container">
+      <div class="cp-events-insights">
+        <div>
+          <header class="cp-programmes__head cp-programmes__head--left">
+            <span class="cp-eyebrow">Events</span>
+            <h2 id="cp-events-insights">Upcoming convenings.</h2>
+          </header>
+          <div class="cp-events-insights__list">
+            {upcomingEvents.map((e) => <EventCard event={e} />)}
+          </div>
+          <a class="cp-button cp-button--ghost" href="/contemporary/events-and-insights">
+            View all events and insights
+          </a>
+        </div>
+        <div>
+          <header class="cp-programmes__head cp-programmes__head--left">
+            <span class="cp-eyebrow">Insights</span>
+            <h2>Recent thinking.</h2>
+          </header>
+          <div class="cp-grid cp-grid--2">
+            {recentInsights.map((i) => <InsightCard insight={i} />)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaSplit
+    individual={{
+      title: "Find the programme that fits your next step.",
+      description: "Compare ECP, EFM, and faculty development workshops. Talk to admissions when you are ready.",
+      cta: { label: "Compare programmes", href: "/contemporary/programmes/compare" },
+    }}
+    institution={{
+      title: "Talk to IIFR about a capability challenge.",
+      description: "We co-design faculty capability, executive education, and academic–industry research partnerships.",
+      cta: { label: "Request a partnership conversation", href: "/contemporary/for-institutions" },
+    }}
+  />
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-programmes__head {
+    text-align: center;
+    margin: 0 auto 2.5rem;
+    max-width: 720px;
+  }
+
+  .cp-programmes__head--left {
+    text-align: left;
+    margin: 0 0 1.5rem;
+  }
+
+  .cp-programmes__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--cp-grid-gap);
+  }
+
+  @media (min-width: 768px) {
+    .cp-programmes__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 992px) {
+    .cp-programmes__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .cp-programmes__more {
+    text-align: center;
+    margin: 2rem 0 0;
+  }
+
+  .cp-institutional {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 992px) {
+    .cp-institutional {
+      grid-template-columns: 1.1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .cp-institutional__stages {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 1rem 0 1.5rem;
+    color: var(--cp-color-text-muted);
+    font-size: 0.95rem;
+  }
+
+  .cp-institutional__stages strong {
+    color: var(--cp-color-navy);
+    margin-right: 0.3rem;
+  }
+
+  .cp-institutional__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cp-institutional__list a {
+    display: block;
+    padding: 1.25rem 1.5rem;
+    background: var(--cp-color-white);
+    border: 1px solid var(--cp-color-divider);
+    border-radius: var(--cp-radius-card);
+    color: var(--cp-color-navy);
+    text-decoration: none;
+    transition: border-color var(--cp-transition),
+      box-shadow var(--cp-transition);
+  }
+
+  .cp-institutional__list a:hover,
+  .cp-institutional__list a:focus-visible {
+    border-color: var(--cp-color-maroon);
+    box-shadow: var(--cp-shadow-card);
+    text-decoration: none;
+  }
+
+  .cp-institutional__list strong {
+    display: block;
+    font-family: var(--cp-font-heading);
+    font-size: 1.05rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .cp-institutional__list span {
+    color: var(--cp-color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .cp-events-insights {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 992px) {
+    .cp-events-insights {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .cp-events-insights__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+</style>

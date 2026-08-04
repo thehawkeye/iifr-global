@@ -1,0 +1,122 @@
+---
+/**
+ * /contemporary/about — about IIFR.
+ *
+ * Sets the entity description clearly (GEO plan §11). Governance,
+ * partners, and quality sections follow the structure of the design
+ * plan §5 "About/governance" template.
+ */
+import ContemporaryBaseLayout from "../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { SITE_URL } from "../../contemporary/lib/seo";
+
+const seo = {
+  title: "About IIFR | An autonomous academic institute of Bharatiya Vidya Bhavan",
+  description:
+    "IIFR is an autonomous academic institute established by Bharatiya Vidya Bhavan, strengthening faculty capability, research excellence, and academic leadership across India and the Global South.",
+  keywords:
+    "about IIFR, Bharatiya Vidya Bhavan, autonomous academic institute, faculty research, academic leadership India",
+  canonical: `${SITE_URL}/contemporary/about`,
+  image: `${SITE_URL}/assets/images/about-hero.jpeg`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+---
+
+<ContemporaryBaseLayout
+  path="/contemporary/about"
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "About" },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container cp-container--narrow">
+      <span class="cp-eyebrow">About IIFR</span>
+      <h1>An autonomous academic institute of Bharatiya Vidya Bhavan.</h1>
+      <p class="cp-lead">
+        The International Institute for Faculty &amp; Research (IIFR) is an
+        autonomous academic institute established by Bharatiya Vidya Bhavan.
+        It strengthens faculty capability, research excellence, and academic
+        leadership across India and the Global South, with a focus on
+        practice-led scholarship and "pracademic" education.
+      </p>
+    </div>
+  </header>
+
+  <section class="cp-section" aria-labelledby="cp-about-mission">
+    <div class="cp-container cp-container--narrow">
+      <h2 id="cp-about-mission">What IIFR is for</h2>
+      <p>
+        IIFR exists to help educators, practitioners, researchers, and
+        institutions build the capability to teach, research, and lead with
+        relevance. The institute's work is organised around four pathways:
+        educator development, faculty development, institutional capability,
+        and applied research collaboration.
+      </p>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory" id="governance" aria-labelledby="cp-about-governance">
+    <div class="cp-container cp-container--narrow">
+      <h2 id="cp-about-governance">Governance</h2>
+      <p>
+        IIFR is governed by its Academic Council, with academic oversight of
+        programmes, faculty appointments, and the institute's research
+        direction. The institute is established by Bharatiya Vidya Bhavan and
+        operates from New Delhi.
+      </p>
+      <p>
+        Governance and quality-assurance details that affect public claims
+        (faculty titles, accreditation language, partner relationships,
+        fees, scholarships, and outcome statements) are subject to approval
+        by the Academic Council and the institute's director.
+      </p>
+    </div>
+  </section>
+
+  <section class="cp-section" id="partners" aria-labelledby="cp-about-partners">
+    <div class="cp-container cp-container--narrow">
+      <h2 id="cp-about-partners">Strategic partners</h2>
+      <p>
+        IIFR works with academic, institutional, and sector partners across
+        India and the Global South. A current, verified partner list is
+        maintained in the editorial system; public-facing references are
+        published only after partner approval.
+      </p>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory" id="quality" aria-labelledby="cp-about-quality">
+    <div class="cp-container cp-container--narrow">
+      <h2 id="cp-about-quality">Quality and certification</h2>
+      <p>
+        Quality and certification claims (including EFMD certification
+        language) are reviewed by the Academic Council and the institute's
+        director. Approved wording, scope, term, and evidence are kept in
+        the institute's claims register and republished on this page when
+        approved. The claims register is a documented, named-owner artefact;
+        this prototype does not assert a specific certification until the
+        approved wording is in place.
+      </p>
+    </div>
+  </section>
+
+  <section class="cp-section" aria-labelledby="cp-about-cta">
+    <div class="cp-container cp-container--narrow">
+      <h2 id="cp-about-cta">Talk to IIFR</h2>
+      <p>
+        For admissions, partnerships, research collaborations, or general
+        enquiries, see the <a href="/contemporary/contact">contact page</a>.
+      </p>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+</style>

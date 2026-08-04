@@ -14,8 +14,9 @@
  * `.map()` so the data is statically rendered; the same data-attribute
  * contract drives the existing iifrProfileModal IIFE.
  *
- * Asset references go through `assetUrl()` so the static assets stay on
- * Hostinger (per M5). Internal links use clean Astro paths (no `.php`).
+ * Legacy asset references go through `assetUrl()` so the existing asset tree
+ * stays read-only (per M5). The approved Phase 2 hero is the one local public
+ * asset exception. Internal links use clean Astro paths (no `.php`).
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { assetUrl } from "../lib/assetUrl";
@@ -165,8 +166,8 @@ const iifrCouncil: CouncilMember[] = [
   <!-- ============ HERO ============ -->
   <div class="iifr-page-hero">
     <div
-      class="iifr-page-hero__bg"
-      style={`background-image:url('${assetUrl("assets/images/about-hero.jpeg")}');`}
+      class="iifr-page-hero__bg iifr-page-hero__bg--about"
+      style="background-image:url('/assets/images/about/about-hero.jpeg');background-position:70% center !important;"
     ></div>
     <div class="iifr-page-hero__inner">
       <h1>About Us</h1>
@@ -332,16 +333,16 @@ const iifrCouncil: CouncilMember[] = [
       </div>
 
       <!-- RIGHT — Academic Council -->
-      <div class="iifr-govern__card">
+      <div class="iifr-govern__card iifr-govern__card--council">
         <h3 class="iifr-govern__heading">Academic Council</h3>
         <p class="iifr-govern__intro">The Academic Council is central to IIFR's vision, offering strategic guidance on academic excellence, research priorities, and long-term institutional development.</p>
         <span class="iifr-govern__label">Advisory Body</span>
-        <div class="iifr-gov-grid iifr-gov-grid--4">
+        <div class="iifr-gov-grid iifr-gov-grid--council iifr-gov-grid--4">
           {
             iifrCouncil.map((m) =>
               m.bio ? (
                 <article
-                  class="iifr-gov-person iifr-gov-person--clickable"
+                  class="iifr-gov-person iifr-gov-person--clickable iifr-gov-person--council"
                   data-profile
                   data-name={m.name}
                   data-role={m.role}
@@ -362,7 +363,7 @@ const iifrCouncil: CouncilMember[] = [
                   <span class="iifr-gov-person__role">{m.role}</span>
                 </article>
               ) : (
-                <article class="iifr-gov-person">
+                <article class="iifr-gov-person iifr-gov-person--council">
                   <div class="iifr-gov-person__photo">
                     {m.img ? (
                       <img src={assetUrl(m.img)} alt={m.name} />
@@ -493,14 +494,26 @@ const iifrCouncil: CouncilMember[] = [
         <div class="iifr-partner-card__logo">
           <img
             src={assetUrl("assets/images/logo/latticed.png")}
-            alt="LatticeEd"
-            onerror="this.style.display='none';this.parentNode.innerHTML='<div style=&quot;font-family:Playfair Display,Georgia,serif;font-size:28px;color:#0d1b3e;font-weight:700;&quot;>LatticeEd</div>';"
+            alt="LatticEd"
+            onerror="this.style.display='none';this.parentNode.innerHTML='<div style=&quot;font-family:Roboto Slab,Georgia,serif;font-size:28px;color:#242f4c;font-weight:700;&quot;>LatticEd</div>';"
           />
         </div>
-        <h3 class="iifr-partner-card__name">LatticeEd</h3>
-        <p class="iifr-partner-card__desc">LatticeEd empowers institutions with innovative solutions for learning, research, and academic transformation.</p>
+        <h3 class="iifr-partner-card__name">LatticEd</h3>
+        <p class="iifr-partner-card__desc">LatticEd empowers institutions with innovative solutions for learning, research, and academic transformation.</p>
         <a href="#" class="iifr-btn-dark" style="margin-top:12px;">Learn More</a>
       </article>
     </div>
   </section>
 </SiteLayout>
+
+<style>
+  .iifr-partner-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .iifr-partner-card__desc {
+    flex: 1;
+  }
+</style>

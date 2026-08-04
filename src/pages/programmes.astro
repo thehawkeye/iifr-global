@@ -7,8 +7,9 @@
  * Sections: Hero → Programme portfolio (4 cards) → Why Choose IIFR (4) →
  * Who These Programmes Are For (4 + CTA).
  *
- * Asset references go through `assetUrl()` so the static assets stay on
- * Hostinger (per M5). Internal links use clean Astro paths (no `.php`).
+ * Legacy asset references go through `assetUrl()` so the existing asset tree
+ * stays read-only (per M5). The approved Phase 2 hero is the one local public
+ * asset exception. Internal links use clean Astro paths (no `.php`).
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { assetUrl } from "../lib/assetUrl";
@@ -19,7 +20,7 @@ import { assetUrl } from "../lib/assetUrl";
   <div class="iifr-page-hero">
     <div
       class="iifr-page-hero__bg"
-      style={`background-image:url('${assetUrl("assets/images/academy/5.jpeg")}');`}
+      style="background-image:url('/assets/images/programmes/programmes-hero.jpeg');"
     ></div>
     <div class="iifr-page-hero__inner">
       <span class="iifr-page-hero__eyebrow">Programmes</span>

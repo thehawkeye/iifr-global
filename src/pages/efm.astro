@@ -1,0 +1,325 @@
+---
+/**
+ * efm.astro — the Executive Fellow in Management (EFM) page.
+ *
+ * Phase 2 T3 (t_eee95fbe): page port for `/efm` with the T3 fixes applied
+ * per the additional-changes register
+ * (docs/iifr-phase2-additional-changes-2026-08-03.md):
+ *
+ *   1. Hero text visibility — the dark overlay + white-copy + text-shadow
+ *      pattern that T4 wired into `src/styles/t4-hero-contrast.css`. The
+ *      EFM hero carries the `iifr-hero-contrast--efm` scope so the
+ *      legacy stylesheet keeps rendering the page chrome and only the
+ *      T4 contrast layer kicks in. Layout, alignment, mobile tightening
+ *      all sit inside the T4 bundle.
+ *
+ *   2. Start date = February 2027 (confirmed by Murali 2026-08-04).
+ *      Hero CTA → "Apply for February 2027 Cohort". No stale 2026
+ *      cohort copy anywhere on this page (the register's exact
+ *      forbidden phrases are spelled out in the T3 test suite).
+ *
+ *   3. Programme Overview image — DISTINCT_PAIR_REQUIRED per the
+ *      normalised image map (docs/iifr-page-image-map-normalized-review-
+ *      2026-08-04.md). The change register forbids reusing the hero.
+ *      Until `t_1af67bcf` delivers an approved distinct overview asset,
+ *      this page reuses the existing production asset reference
+ *      (`assets/images/efm/efm-hero.png`) for the hero and
+ *      (`assets/images/efm/efm-overview.png`) for the Programme
+ *      Overview slot. The Overview slot must be swapped to a distinct
+ *      approved asset as soon as `t_1af67bcf` clears it; this is
+ *      flagged in the handoff doc and tracked via kanban comment on
+ *      `t_1af67bcf`. We do NOT invent or substitute a Hostinger image.
+ *
+ * Sections: Hero → Quick Facts Bar → Programme Overview (asset blocker
+ * flagged) → Programme Journey → Who It's For → Outcomes → Faculty →
+ * Final CTA.
+ *
+ * Legacy asset references go through `assetUrl()` so the existing asset
+ * tree stays read-only (per M5). Internal links use clean Astro paths
+ * (no `.php`). The `/efm` SEO entry is defined in `src/lib/seo.ts`.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { assetUrl } from "../lib/assetUrl";
+
+interface JourneyStep {
+  icon: string;
+  num: string;
+  title: string;
+  desc: string;
+}
+
+const journey: JourneyStep[] = [
+  {
+    icon: "fa-light fa-graduation-cap",
+    num: "1",
+    title: "Foundation",
+    desc: "Modular doctoral-equivalent coursework with faculty mentorship and cohort peer learning.",
+  },
+  {
+    icon: "fa-light fa-flask",
+    num: "2",
+    title: "Applied Research",
+    desc: "Live cases, scholarly writing, and methodology built around each fellow's area of practice.",
+  },
+  {
+    icon: "fa-light fa-chalkboard-user",
+    num: "3",
+    title: "Teaching Practice",
+    desc: "Classroom and executive-education delivery, with feedback from senior IIFR faculty.",
+  },
+  {
+    icon: "fa-light fa-trophy",
+    num: "4",
+    title: "Scholarship &amp; Output",
+    desc: "Publishable research, policy briefs, and case studies that anchor academic credibility.",
+  },
+];
+
+interface AudienceCard {
+  icon: string;
+  title: string;
+  desc: string;
+}
+
+const audience: AudienceCard[] = [
+  {
+    icon: "fa-light fa-user-tie",
+    title: "Senior Industry Leaders",
+    desc: "CXOs, founders, and senior practitioners translating decades of practice into scholarly contribution.",
+  },
+  {
+    icon: "fa-light fa-building",
+    title: "Functional Leaders",
+    desc: "Senior leaders in strategy, marketing, finance, technology, HR, operations, and policy.",
+  },
+  {
+    icon: "fa-light fa-scale-balanced",
+    title: "Practice-Academic Bridge",
+    desc: "Senior professionals pursuing the pracademic path — combining practice with academic discipline.",
+  },
+  {
+    icon: "fa-light fa-earth-asia",
+    title: "Global South Voices",
+    desc: "Leaders from India, Asia, Africa, and other Global South contexts whose scholarship speaks to their regions.",
+  },
+];
+
+interface OutcomeCard {
+  icon: string;
+  title: string;
+  desc: string;
+}
+
+const outcomes: OutcomeCard[] = [
+  {
+    icon: "fa-light fa-scroll",
+    title: "Doctoral-Equivalent Credential",
+    desc: "A rigorous fellowship pathway comparable in depth to a doctorate, anchored in applied scholarly output.",
+  },
+  {
+    icon: "fa-light fa-book-open",
+    title: "Publishable Research",
+    desc: "Working papers, cases, and applied research suitable for academic publishing and policy forums.",
+  },
+  {
+    icon: "fa-light fa-users",
+    title: "Faculty Mentorship",
+    desc: "Long-term mentorship from senior IIFR faculty and global scholars across cohorts.",
+  },
+  {
+    icon: "fa-light fa-chalkboard",
+    title: "Teaching Capability",
+    desc: "Practical classroom and executive-education delivery capability — case-based and AI-aware.",
+  },
+  {
+    icon: "fa-light fa-handshake",
+    title: "Peer Network",
+    desc: "A multi-disciplinary cohort of senior practitioners and scholars — a network that outlives the fellowship.",
+  },
+  {
+    icon: "fa-light fa-lightbulb",
+    title: "Thought Leadership",
+    desc: "A public platform for ideas, frameworks, and applied scholarship that shapes your field.",
+  },
+];
+---
+
+<SiteLayout path="/efm" bodyClass="iifr-redesign-scope iifr-hero-contrast">
+  <!-- ============ HERO ============ -->
+  <div class="iifr-page-hero iifr-hero-contrast--efm">
+    <div
+      class="iifr-page-hero__bg"
+      style={`background-image:url('${assetUrl("assets/images/efm/efm-hero.png")}');background-position:center 35%;`}
+    ></div>
+    <div class="iifr-page-hero__inner">
+      <span class="iifr-page-hero__eyebrow">Executive Fellow in Management</span>
+      <h1>A doctoral-equivalent fellowship for senior practitioners.</h1>
+      <p>Rigorous applied research, faculty mentorship, and teaching practice — for CXOs and senior leaders building long-term academic and institutional impact.</p>
+      <div class="iifr-page-hero__cta">
+        <a
+          href="/apply"
+          class="iifr-btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#iifrApplyModal"
+          data-iifr-lead-intent="apply">Apply for February 2027 Cohort</a>
+        <a href="/contact" class="iifr-btn-outline">Speak with Faculty</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ QUICK FACTS BAR ============ -->
+  <div class="ecp-facts-wrap">
+    <div class="ecp-facts">
+      <div class="ecp-fact">
+        <span class="ecp-fact__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg>
+        </span>
+        <div class="ecp-fact__body">
+          <span class="ecp-fact__label">Pathway</span>
+          <span class="ecp-fact__value">Doctoral-Equivalent</span>
+          <span class="ecp-fact__sub">Applied research</span>
+        </div>
+      </div>
+      <div class="ecp-fact">
+        <span class="ecp-fact__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </span>
+        <div class="ecp-fact__body">
+          <span class="ecp-fact__label">Format</span>
+          <span class="ecp-fact__value">Modular + Residencies</span>
+          <span class="ecp-fact__sub">Hybrid</span>
+        </div>
+      </div>
+      <div class="ecp-fact">
+        <span class="ecp-fact__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="9" r="6"/><path d="M9 14.5L8 22l4-2 4 2-1-7.5"/></svg>
+        </span>
+        <div class="ecp-fact__body">
+          <span class="ecp-fact__label">Cohort Start</span>
+          <span class="ecp-fact__value">February 2027</span>
+          <span class="ecp-fact__sub">Confirmed 2026-08-04</span>
+        </div>
+      </div>
+      <div class="ecp-fact">
+        <span class="ecp-fact__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+        </span>
+        <div class="ecp-fact__body">
+          <span class="ecp-fact__label">Audience</span>
+          <span class="ecp-fact__value">CXOs &amp; Senior Leaders</span>
+          <span class="ecp-fact__sub">Practitioners</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PROGRAMME OVERVIEW ============ -->
+  <!--
+    ASSET-BLOCKER (DISTINCT_PAIR_REQUIRED): The change register forbids
+    reusing the hero for this section. The reference below points at
+    `assets/images/efm/efm-overview.png`, which is the existing
+    production reference. When t_1af67bcf delivers an approved distinct
+    overview asset, swap this path. See docs/t3-efm-handoff-2026-08-04.md.
+  -->
+  <section class="iifr-section">
+    <div class="ecp-overview">
+      <div class="ecp-overview__text">
+        <span class="iifr-eyebrow">Programme Overview</span>
+        <h2 class="ecp-overview__title">A rigorous fellowship for practitioners who want to teach, publish, and lead.</h2>
+        <hr class="iifr-gold-line">
+        <p>The Executive Fellow in Management (EFM) is IIFR's doctoral-equivalent fellowship for senior practitioners pursuing rigorous applied research, faculty mentorship, and teaching practice — without leaving their professional roles.</p>
+        <p>EFM fellows build a publishable body of scholarship, develop teaching capability through residencies and classroom practice, and join a multi-disciplinary cohort of senior practitioners contributing to IIFR's academic and policy dialogue.</p>
+        <div class="ecp-tags">
+          <span class="ecp-tag">Doctoral-equivalent</span>
+          <span class="ecp-tag">Applied research</span>
+          <span class="ecp-tag">Faculty mentorship</span>
+          <span class="ecp-tag">Teaching practice</span>
+        </div>
+      </div>
+      <div class="ecp-overview__media">
+        <img src={assetUrl("assets/images/efm/efm-overview.png")} alt="IIFR EFM fellowship cohort" loading="lazy" decoding="async" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROGRAMME JOURNEY ============ -->
+  <section class="iifr-section iifr-cream" id="programme-journey">
+    <div class="iifr-section__head iifr-section__head--center">
+      <span class="iifr-eyebrow">Programme Journey</span>
+      <h2>How the Fellowship Unfolds</h2>
+      <hr class="iifr-gold-line-center">
+      <p class="iifr-lead">A four-stage pathway from foundation to publishable scholarship.</p>
+    </div>
+    <ol class="ecp-journey ecp-journey--four">
+      {journey.map((step) => (
+        <li class="ecp-step">
+          <span class="ecp-step__node" aria-hidden="true">
+            <i class={step.icon}></i>
+            <span class="ecp-step__num">{step.num}</span>
+          </span>
+          <h3 class="ecp-step__title" set:html={step.title}></h3>
+          <p class="ecp-step__desc">{step.desc}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- ============ WHO IT'S FOR ============ -->
+  <section class="iifr-section iifr-paper">
+    <div class="iifr-section__head iifr-section__head--center">
+      <span class="iifr-eyebrow">Audience</span>
+      <h2>Who the Fellowship Is For</h2>
+      <hr class="iifr-gold-line-center">
+    </div>
+    <div class="ecp-audience">
+      {audience.map((c) => (
+        <article class="ecp-aud-card">
+          <span class="ecp-aud-card__icon" aria-hidden="true">
+            <i class={c.icon}></i>
+          </span>
+          <h3 class="ecp-aud-card__title" set:html={c.title}></h3>
+          <p class="ecp-aud-card__desc">{c.desc}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ OUTCOMES ============ -->
+  <section class="iifr-section ecp-learn-band">
+    <div class="iifr-section__head iifr-section__head--center">
+      <span class="iifr-eyebrow">Outcomes</span>
+      <h2>What Fellows Walk Away With</h2>
+      <hr class="iifr-gold-line-center">
+    </div>
+    <div class="ecp-learn">
+      {outcomes.map((c) => (
+        <article class="ecp-learn-card">
+          <span class="ecp-learn-card__icon" aria-hidden="true">
+            <i class={c.icon}></i>
+          </span>
+          <h3 class="ecp-learn-card__title" set:html={c.title}></h3>
+          <p class="ecp-learn-card__desc">{c.desc}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="iifr-section" id="apply-cta">
+    <div class="iifr-section__head iifr-section__head--center">
+      <span class="iifr-eyebrow">Apply</span>
+      <h2>Ready to embrace the pracademic journey?</h2>
+      <hr class="iifr-gold-line-center">
+      <p class="iifr-lead">Join the February 2027 EFM cohort — a rigorous doctoral-equivalent fellowship for senior practitioners ready to teach, publish, and lead.</p>
+      <div class="iifr-section__cta" style="margin-top:18px;">
+        <a
+          href="/apply"
+          class="iifr-btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#iifrApplyModal"
+          data-iifr-lead-intent="apply">Apply for February 2027 Cohort</a>
+        <a href="/contact" class="iifr-btn-ghost" style="margin-left:10px;">Speak with Faculty</a>
+      </div>
+    </div>
+  </section>
+</SiteLayout>

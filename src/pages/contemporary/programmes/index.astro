@@ -8,6 +8,8 @@
  * full filter UI is intentionally not built for the prototype.
  */
 import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import PageHero from "../../../contemporary/components/PageHero.astro";
+
 import ProgrammeCard from "../../../contemporary/components/ProgrammeCard.astro";
 import { programmes } from "../../../contemporary/lib/content";
 import { SITE_URL, programmesListSchema } from "../../../contemporary/lib/seo";
@@ -33,7 +35,7 @@ const seo = {
   keywords:
     "IIFR programmes, ECP, EFM, faculty development, executive education, custom programmes, compare programmes",
   canonical: `${SITE_URL}/contemporary/programmes`,
-  image: `${SITE_URL}/assets/images/academy/5.jpeg`,
+  image: `/assets/images/programmes/programmes-hero.jpeg`,
   type: "website" as const,
   schema: "ItemList" as const,
 };
@@ -50,18 +52,11 @@ const schema = programmesListSchema(programmes);
     { label: "Programmes" },
   ]}
 >
-  <header class="cp-page-header">
-    <div class="cp-container">
-      <span class="cp-eyebrow">Programmes</span>
-      <h1>Programmes designed for decision and capability.</h1>
-      <p class="cp-lead">
-        IIFR offers programmes for individuals moving into teaching and academic
-        influence, for faculty and academic leaders, and for institutions
-        building capability. Each programme page shows fit, outcomes, faculty,
-        cohorts, and a clear next step.
-      </p>
-    </div>
-  </header>
+  <PageHero eyebrow="Programmes" title="Programmes designed for decision and capability."
+    lead="IIFR offers programmes for individuals moving into teaching and academic influence, for faculty and academic leaders, and for institutions building capability."
+    image={{ src: "/assets/images/programmes/programmes-hero.jpeg", alt: "Faculty member teaching in a lecture hall" }}
+    primary={{ href: "/contemporary/find-your-pathway", label: "Find your pathway" }}
+    secondary={{ href: "/contemporary/programmes/compare", label: "Compare programmes", variant: "outline" }} />
 
   <section class="cp-section" id="open" aria-labelledby="cp-open-programmes">
     <div class="cp-container">

@@ -6,6 +6,8 @@
  * with delivery modes, process, and enquiry CTA.
  */
 import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import PageHero from "../../../contemporary/components/PageHero.astro";
+
 import { institutionalSolutions } from "../../../contemporary/lib/content";
 import { SITE_URL } from "../../../contemporary/lib/seo";
 
@@ -16,7 +18,7 @@ const seo = {
   keywords:
     "IIFR partnerships, faculty capability building, custom executive education, academic industry partnership, IIFR for institutions",
   canonical: `${SITE_URL}/contemporary/for-institutions`,
-  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  image: `/assets/images/about/about-hero.jpeg`,
   type: "website" as const,
   schema: "WebPage" as const,
 };
@@ -30,17 +32,11 @@ const seo = {
     { label: "For institutions" },
   ]}
 >
-  <header class="cp-page-header">
-    <div class="cp-container">
-      <span class="cp-eyebrow">For institutions</span>
-      <h1>Build capability across your faculty, leaders, and learning teams.</h1>
-      <p class="cp-lead">
-        We co-design with you. Open enrolment, in-house delivery, or hybrid
-        cohorts. Three named solution patterns, one shared process, and a
-        named conversation for every enquiry.
-      </p>
-    </div>
-  </header>
+  <PageHero eyebrow="For institutions" title="Build capability across your faculty, leaders, and learning teams."
+    lead="We co-design with you through open enrolment, in-house delivery, or hybrid cohorts — with a named conversation for every enquiry."
+    image={{ src: "/assets/images/about/about-hero.jpeg", alt: "Bharatiya Vidya Bhavan campus, where IIFR is established" }}
+    primary={{ href: "/contemporary/start?intent=partner", label: "Request a partnership conversation" }}
+    secondary={{ href: "/contemporary/programmes", label: "Explore programmes", variant: "outline" }} />
 
   <section class="cp-section" aria-labelledby="cp-solutions">
     <div class="cp-container">

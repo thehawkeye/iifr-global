@@ -1,0 +1,47 @@
+---
+interface Cta { href: string; label: string; variant?: "primary" | "outline"; }
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  image: { src: string; alt: string };
+  primary?: Cta;
+  secondary?: Cta;
+}
+const { eyebrow, title, lead, image, primary, secondary } = Astro.props as Props;
+---
+
+<section class="cp-page-hero" aria-labelledby="cp-page-hero-title">
+  <img class="cp-page-hero__image" src={image.src} alt={image.alt} width="1672" height="941" decoding="async" />
+  <div class="cp-page-hero__overlay" aria-hidden="true"></div>
+  <div class="cp-container cp-page-hero__content">
+    <span class="cp-page-hero__eyebrow cp-eyebrow">{eyebrow}</span>
+    <h1 id="cp-page-hero-title">{title}</h1>
+    <p class="cp-page-hero__lead">{lead}</p>
+    {(primary || secondary) && <div class="cp-page-hero__actions">
+      {primary && <a class={`cp-button cp-button--${primary.variant ?? "primary"}`} href={primary.href}>{primary.label}</a>}
+      {secondary && <a class={`cp-button cp-button--${secondary.variant ?? "outline"}`} href={secondary.href}>{secondary.label}</a>}
+    </div>}
+  </div>
+</section>
+
+<style>
+  .cp-page-hero { position: relative; isolation: isolate; min-height: clamp(21rem, 52vw, 34rem); display: grid; align-items: end; overflow: hidden; color: var(--cp-color-white); background: var(--cp-color-navy); }
+  .cp-page-hero__image, .cp-page-hero__overlay { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cp-page-hero__image { z-index: -2; object-fit: cover; object-position: center 48%; }
+  .cp-page-hero__overlay { z-index: -1; background: linear-gradient(90deg, rgba(18, 29, 56, .86) 0%, rgba(18, 29, 56, .6) 44%, rgba(18, 29, 56, .12) 100%); }
+  .cp-page-hero__content { width: 100%; padding-top: clamp(3.5rem, 8vw, 6.5rem); padding-bottom: clamp(3.5rem, 8vw, 6.5rem); }
+  .cp-page-hero__eyebrow { color: var(--cp-color-gold); }
+  .cp-page-hero h1 { max-width: 18ch; color: var(--cp-color-white); margin: 0 0 1rem; }
+  .cp-page-hero__lead { max-width: 62ch; color: rgba(255, 255, 255, .93); font-size: clamp(1rem, .9rem + .5vw, 1.2rem); margin: 0; }
+  .cp-page-hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+  .cp-page-hero .cp-button--outline { color: var(--cp-color-white); border-color: rgba(255, 255, 255, .85); }
+  .cp-page-hero .cp-button--outline:hover, .cp-page-hero .cp-button--outline:focus-visible { color: var(--cp-color-navy); background: var(--cp-color-white); border-color: var(--cp-color-white); }
+  @media (max-width: 700px) {
+    .cp-page-hero { min-height: 29rem; }
+    .cp-page-hero__image { object-position: 62% center; }
+    .cp-page-hero__overlay { background: linear-gradient(180deg, rgba(18, 29, 56, .16) 0%, rgba(18, 29, 56, .74) 55%, rgba(18, 29, 56, .92) 100%); }
+    .cp-page-hero__content { padding-top: 5rem; padding-bottom: 3rem; }
+    .cp-page-hero h1 { max-width: 14ch; }
+  }
+</style>

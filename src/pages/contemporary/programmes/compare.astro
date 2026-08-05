@@ -7,6 +7,8 @@
  * as "indicative" to avoid overclaiming, per design plan §5.
  */
 import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import PageHero from "../../../contemporary/components/PageHero.astro";
+
 import { programmes } from "../../../contemporary/lib/content";
 import { SITE_URL } from "../../../contemporary/lib/seo";
 
@@ -17,7 +19,7 @@ const seo = {
   keywords:
     "compare IIFR programmes, ECP vs EFM, faculty development vs executive fellowship, IIFR programme comparison",
   canonical: `${SITE_URL}/contemporary/programmes/compare`,
-  image: `${SITE_URL}/assets/images/academy/5.jpeg`,
+  image: `/assets/images/programmes/programmes-hero.jpeg`,
   type: "website" as const,
   schema: "WebPage" as const,
 };
@@ -41,17 +43,10 @@ const dimensions: { label: string; values: (p: typeof programmes[number]) => str
     { label: "Compare" },
   ]}
 >
-  <header class="cp-page-header">
-    <div class="cp-container">
-      <span class="cp-eyebrow">Compare programmes</span>
-      <h1>Which IIFR programme fits your next step?</h1>
-      <p class="cp-lead">
-        Indicative comparison. Each programme has its own page with the full
-        curriculum, faculty, and cohort facts. Use this view to narrow your
-        shortlist, then read the programme detail page for the decision.
-      </p>
-    </div>
-  </header>
+  <PageHero eyebrow="Compare programmes" title="Which IIFR programme fits your next step?"
+    lead="Use this indicative comparison to narrow your shortlist, then read the programme detail page for the decision."
+    image={{ src: "/assets/images/programmes/programmes-hero.jpeg", alt: "Faculty member teaching in a lecture hall" }}
+    primary={{ href: "/contemporary/programmes", label: "Browse programmes" }} />
 
   <section class="cp-section">
     <div class="cp-container cp-container--wide">

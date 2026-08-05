@@ -369,11 +369,10 @@ public/_qa-audit/
 ### Deliverable commit
 
 ```
-afdfda6  (HEAD^)   qa(desktop): desktop UI audit for t_d3ee0429 — 24 screenshots, 12 JSON reports, remediation order
-<NEW>    feat(t4): land hero-contrast system on ECP/EFM/AR (closes F-1/F-2/F-3)
+289a541  (HEAD)    chore: drop capture.mjs.bak (sed -i leftover)
+6579d71            feat(t4): land hero-contrast system on ECP/EFM/AR (closes F-1/F-2/F-3)
+afdfda6  (HEAD^^)  qa(desktop): desktop UI audit for t_d3ee0429 — 24 screenshots, 12 JSON reports, remediation order
 ```
-
-Commit SHA recorded after the final commit lands; the diff below is the candidate (will be the actual SHA).
 
 ### Files changed
 

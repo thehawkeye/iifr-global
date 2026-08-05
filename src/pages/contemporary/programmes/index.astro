@@ -12,8 +12,19 @@ import ProgrammeCard from "../../../contemporary/components/ProgrammeCard.astro"
 import { programmes } from "../../../contemporary/lib/content";
 import { SITE_URL, programmesListSchema } from "../../../contemporary/lib/seo";
 
-const open = programmes.filter((p) => p.status === "open" || p.status === "coming-soon");
-const byEnquiry = programmes.filter((p) => p.status === "by-enquiry");
+const url = new URL(Astro.request.url);
+const filterParam = (url.searchParams.get("status") ?? "all").toLowerCase();
+const validFilters = new Set(["all", "open", "by-enquiry", "coming-soon", "archived"]);
+const activeFilter = validFilters.has(filterParam) ? filterParam : "all";
+const baseAll = programmes;
+const baseFiltered = activeFilter === "all"
+  ? baseAll
+  : baseAll.filter((p) => {
+      if (activeFilter === "open") return p.status === "open" || p.status === "coming-soon";
+      return p.status === activeFilter;
+    });
+const open = baseAll.filter((p) => p.status === "open" || p.status === "coming-soon");
+const byEnquiry = baseAll.filter((p) => p.status === "by-enquiry");
 
 const seo = {
   title: "IIFR programmes | Compare ECP, EFM, and faculty development",

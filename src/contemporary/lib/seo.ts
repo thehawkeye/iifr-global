@@ -15,7 +15,7 @@
 
 import type { Programme, Cohort, Event, FacultyProfile } from "./content";
 
-export const SITE_URL = "https://iifr.global";
+export const SITE_URL = "https://iifr.global-contemporary-test-jt1c8rz0b-thehawkeyes-projects.vercel.app";
 export const SITE_NAME = "IIFR";
 export const INFO_EMAIL = "info@iifr.global";
 export const PHONE = "+91-79818-95005";

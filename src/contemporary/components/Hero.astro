@@ -24,6 +24,7 @@ interface Props {
   secondary?: Cta;
   /** Optional: show a live-cohort signal below the buttons. */
   showLiveCohort?: boolean;
+  image?: { src: string; alt: string };
 }
 
 const {
@@ -33,6 +34,7 @@ const {
   primary,
   secondary,
   showLiveCohort = false,
+  image,
 } = Astro.props as Props;
 
 const liveCohort = programmes
@@ -42,6 +44,7 @@ const liveCohort = programmes
 
 <section class="cp-hero" aria-labelledby="cp-hero-title">
   <div class="cp-container cp-container--wide cp-hero__inner">
+    <div class="cp-hero__copy">
     <span class="cp-hero__eyebrow cp-eyebrow">{eyebrow}</span>
     <h1 id="cp-hero-title" class="cp-hero__title">{title}</h1>
     <p class="cp-hero__lead">{lead}</p>
@@ -66,6 +69,8 @@ const liveCohort = programmes
         </span>
       </p>
     )}
+    </div>
+    {image && <figure class="cp-hero__media"><img src={image.src} alt={image.alt} width="960" height="640" decoding="async" /></figure>}
   </div>
 </section>
 
@@ -77,7 +82,26 @@ const liveCohort = programmes
   }
 
   .cp-hero__inner {
-    max-width: 920px;
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 860px) {
+    .cp-hero__inner { grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr); }
+  }
+
+  .cp-hero__media {
+    margin: 0;
+    border-left: 5px solid var(--cp-color-gold);
+    background: var(--cp-color-navy-dark);
+  }
+
+  .cp-hero__media img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    opacity: 0.92;
   }
 
   .cp-hero .cp-eyebrow {
@@ -138,6 +162,6 @@ const liveCohort = programmes
 
   .cp-hero__signal a {
     color: var(--cp-color-gold);
-    text-decoration: underline;
+    text-decoration: none;
   }
 </style>

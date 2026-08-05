@@ -167,6 +167,7 @@ const pathways: PathwayOption[] = [
 <script define:vars={{ pathways }}>
   const form = document.querySelector('[data-component="pathway"]');
   if (form) {
+    form.addEventListener("submit", (event) => event.preventDefault());
     const update = () => {
       const checked = form.querySelector('input[name="pathway"]:checked');
       const target = checked

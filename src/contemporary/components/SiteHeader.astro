@@ -20,7 +20,6 @@
  * The "Apply" label is contextual — it switches to "Enquire" when
  * no programme is in `registration-open` status.
  */
-import { programmes } from "../lib/content";
 
 interface Props {
   /** Current request path, e.g. "/contemporary/programmes". */
@@ -29,10 +28,7 @@ interface Props {
 
 const { path } = Astro.props as Props;
 
-const hasOpenCohort = programmes.some((p) =>
-  p.cohorts.some((c) => c.status === "registration-open"),
-);
-const applyLabel = hasOpenCohort ? "Apply" : "Enquire";
+const applyLabel = "APPLY NOW";
 
 const navItems: { href: string; label: string }[] = [
   { href: "/contemporary/programmes", label: "Programmes" },
@@ -200,7 +196,7 @@ function isActive(href: string): string {
 
   .cp-header__list {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -215,6 +211,7 @@ function isActive(href: string): string {
     padding: 0.5rem 0.25rem;
     border-bottom: 2px solid transparent;
     text-decoration: none;
+    white-space: nowrap;
   }
 
   .cp-header__link:hover,

@@ -1,6 +1,6 @@
 {
-  "url": "http://localhost:4321/applied-research",
-  "ms": 3407,
+  "url": "http://localhost:4323/applied-research",
+  "ms": 4200,
   "viewport": {
     "w": 1440,
     "h": 900,
@@ -8,25 +8,22 @@
   },
   "consoleErrors": [
     "pageerror: S.phpPrefilter is not a function",
-    "Access to font at 'https://iifr.global/assets/fonts/fa-regular-400.woff2' from origin 'http://localhost:4321' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+    "Access to font at 'https://iifr.global/assets/fonts/fa-brands-400.woff2' from origin 'http://localhost:4323' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
     "Failed to load resource: net::ERR_FAILED",
-    "Access to font at 'https://iifr.global/assets/fonts/fa-solid-900.woff2' from origin 'http://localhost:4321' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+    "Access to font at 'https://iifr.global/assets/fonts/fa-solid-900.woff2' from origin 'http://localhost:4323' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
     "Failed to load resource: net::ERR_FAILED",
-    "Access to font at 'https://iifr.global/assets/fonts/fa-regular-400.ttf' from origin 'http://localhost:4321' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+    "Access to font at 'https://iifr.global/assets/fonts/fa-brands-400.ttf' from origin 'http://localhost:4323' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
     "Failed to load resource: net::ERR_FAILED",
-    "Access to font at 'https://iifr.global/assets/fonts/fa-brands-400.woff2' from origin 'http://localhost:4321' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+    "Access to font at 'https://iifr.global/assets/fonts/fa-regular-400.woff2' from origin 'http://localhost:4323' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
     "Failed to load resource: net::ERR_FAILED",
-    "Access to font at 'https://iifr.global/assets/fonts/fa-solid-900.ttf' from origin 'http://localhost:4321' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+    "Access to font at 'https://iifr.global/assets/fonts/fa-solid-900.ttf' from origin 'http://localhost:4323' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
     "Failed to load resource: net::ERR_FAILED",
-    "Access to font at 'https://iifr.global/assets/fonts/fa-light-300.woff2' from origin 'http://localhost:4321' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+    "Access to font at 'https://iifr.global/assets/fonts/fa-light-300.woff2' from origin 'http://localhost:4323' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
     "Failed to load resource: net::ERR_FAILED",
-    "Access to font at 'https://iifr.global/assets/fonts/fa-brands-400.ttf' from origin 'http://localhost:4321' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+    "Access to font at 'https://iifr.global/assets/fonts/fa-regular-400.ttf' from origin 'http://localhost:4323' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
     "Failed to load resource: net::ERR_FAILED",
-    "Access to font at 'https://iifr.global/assets/fonts/fa-light-300.ttf' from origin 'http://localhost:4321' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
-    "Failed to load resource: net::ERR_FAILED",
-    "pageerror: S.phpPrefilter is not a function",
-    "pageerror: S.phpPrefilter is not a function",
-    "pageerror: S.phpPrefilter is not a function"
+    "Access to font at 'https://iifr.global/assets/fonts/fa-light-300.ttf' from origin 'http://localhost:4323' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+    "Failed to load resource: net::ERR_FAILED"
   ],
   "consoleWarnings": [],
   "failedRequests": [
@@ -35,7 +32,7 @@
       "failure": "net::ERR_BLOCKED_BY_ORB"
     },
     {
-      "url": "https://iifr.global/assets/fonts/fa-regular-400.woff2",
+      "url": "https://iifr.global/assets/fonts/fa-brands-400.woff2",
       "failure": "net::ERR_FAILED"
     },
     {
@@ -43,11 +40,11 @@
       "failure": "net::ERR_FAILED"
     },
     {
-      "url": "https://iifr.global/assets/fonts/fa-regular-400.ttf",
+      "url": "https://iifr.global/assets/fonts/fa-brands-400.ttf",
       "failure": "net::ERR_FAILED"
     },
     {
-      "url": "https://iifr.global/assets/fonts/fa-brands-400.woff2",
+      "url": "https://iifr.global/assets/fonts/fa-regular-400.woff2",
       "failure": "net::ERR_FAILED"
     },
     {
@@ -59,7 +56,7 @@
       "failure": "net::ERR_FAILED"
     },
     {
-      "url": "https://iifr.global/assets/fonts/fa-brands-400.ttf",
+      "url": "https://iifr.global/assets/fonts/fa-regular-400.ttf",
       "failure": "net::ERR_FAILED"
     },
     {
@@ -67,19 +64,19 @@
       "failure": "net::ERR_FAILED"
     },
     {
-      "url": "https://www.googletagmanager.com/gtag/js?id=G-M1CHRGKCM9&cx=c&gtm=4e6831h1",
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-M1CHRGKCM9&cx=c&gtm=4e6831",
       "failure": "net::ERR_BLOCKED_BY_ORB"
     },
     {
-      "url": "https://www.google.com/ccm/collect?rcb=13&frm=2&apvc=1&ae=g&dt=IIFR%20Educators%20Certificate%20Program&en=page_view&dl=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&dr=http%3A%2F%2Flocalhost%3A4321%2F&top=http%3A%2F%2Flocalhost%3A4321%2F&scrsrc=www.googletagmanager.com&rnd=1839053768.1785930862&navt=n&npa=0&ep.ads_data_redaction=0&gtm=45He6831h1v9253151044za200zd9253151044xea&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938468~118012008~118395334~118897920~118897930~119527019~119896803&tft=1785930861657&tfd=567&fmt=8",
+      "url": "https://www.google.com/ccm/collect?rcb=8&frm=2&apvc=1&ae=g&dt=IIFR%20Educators%20Certificate%20Program&en=page_view&dl=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&dr=http%3A%2F%2Flocalhost%3A4323%2F&top=http%3A%2F%2Flocalhost%3A4323%2F&scrsrc=www.googletagmanager.com&rnd=2049874922.1785936997&navt=n&npa=0&ep.ads_data_redaction=0&gtm=45He6831v9253151044za200zd9253151044xea&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938468~118897920~118897930~119896802&tft=1785936997485&tfd=735&fmt=8",
       "failure": "net::ERR_ABORTED"
     },
     {
-      "url": "https://www.google.com/rmkt/collect/18145652554/?random=1785930861840&cv=11&fst=1785930861840&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be6831h1v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938468~118395334~118897920~118897930~119896803&u_w=1440&u_h=900&url=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&ref=http%3A%2F%2Flocalhost%3A4321%2F&top=http%3A%2F%2Flocalhost%3A4321%2F&rcb=11&frm=2&tiba=IIFR%20Educators%20Certificate%20Program&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=arm&uab=64&uafvl=Not%253DA%253FBrand%3B99.0.0.0%7CHeadlessChrome%3B151.0.7922.34%7CChromium%3B151.0.7922.34&uamb=0&uam=&uap=macOS&uapv=26.2.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5",
+      "url": "https://www.google.com/rmkt/collect/18145652554/?random=1785936997802&cv=11&fst=1785936997802&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~118395334~118897920~118897930~119896802&u_w=1440&u_h=900&url=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&ref=http%3A%2F%2Flocalhost%3A4323%2F&top=http%3A%2F%2Flocalhost%3A4323%2F&rcb=13&frm=2&tiba=IIFR%20Educators%20Certificate%20Program&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=arm&uab=64&uafvl=Not%253DA%253FBrand%3B99.0.0.0%7CHeadlessChrome%3B151.0.7922.34%7CChromium%3B151.0.7922.34&uamb=0&uam=&uap=macOS&uapv=26.2.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5",
       "failure": "net::ERR_ABORTED"
     },
     {
-      "url": "https://www.google.com/ccm/collect?rcb=11&frm=2&apvc=0&dt=IIFR%20Educators%20Certificate%20Program&tid=AW-18145652554&en=page_view&dl=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&dr=http%3A%2F%2Flocalhost%3A4321%2F&top=http%3A%2F%2Flocalhost%3A4321%2F&scrsrc=www.googletagmanager.com&rnd=1839053768.1785930862&navt=n&npa=0&gtm=45be6831h1v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938466~115938468~118395334~118897920~118897930~119896803&tft=1785930861856&tfd=766&tids=AW-18145652554&fmt=8",
+      "url": "https://www.google.com/ccm/collect?rcb=13&frm=2&apvc=0&dt=IIFR%20Educators%20Certificate%20Program&tid=AW-18145652554&en=page_view&dl=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&dr=http%3A%2F%2Flocalhost%3A4323%2F&top=http%3A%2F%2Flocalhost%3A4323%2F&scrsrc=www.googletagmanager.com&rnd=2049874922.1785936997&navt=n&npa=0&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~118395334~118897920~118897930~119896802&tft=1785936997820&tfd=1070&tids=AW-18145652554&fmt=8",
       "failure": "net::ERR_ABORTED"
     }
   ],
@@ -92,7 +89,7 @@
   "heroHasBg": true,
   "heroBgInfo": {
     "backgroundImage": "url(\"https://iifr.global/assets/images/research/workshops-hero.jpg\")",
-    "backgroundPosition": "50% 100%",
+    "backgroundPosition": "50% 35%",
     "backgroundSize": "cover"
   },
   "heroEyebrow": {
@@ -103,10 +100,10 @@
       "width": 265.03125,
       "height": 23.40625
     },
-    "color": "rgb(200, 162, 83)",
+    "color": "rgb(255, 255, 255)",
     "fontSize": "17px",
     "fontWeight": "700",
-    "textShadow": "none",
+    "textShadow": "rgba(0, 0, 0, 0.55) 0px 2px 4px",
     "text": "SHORT-FORMAT PROGRAMMES"
   },
   "heroH1": {
@@ -117,10 +114,10 @@
       "width": 396,
       "height": 86.375
     },
-    "color": "rgb(63, 58, 54)",
+    "color": "rgb(255, 255, 255)",
     "fontSize": "40px",
     "fontWeight": "700",
-    "textShadow": "none",
+    "textShadow": "rgba(0, 0, 0, 0.55) 0px 2px 4px",
     "text": "Research & Faculty Workshops"
   },
   "heroP": {
@@ -131,10 +128,10 @@
       "width": 396,
       "height": 51.84375
     },
-    "color": "rgb(31, 31, 31)",
+    "color": "rgb(255, 255, 255)",
     "fontSize": "18px",
     "fontWeight": "400",
-    "textShadow": "none",
+    "textShadow": "rgba(0, 0, 0, 0.55) 0px 2px 4px",
     "text": "Short-format workshops for teaching, research, and leadership teams in higher education institutions."
   },
   "heroCtaCount": 4,
@@ -167,6 +164,6 @@
   "floatCtaPresent": true,
   "footerPresent": true,
   "bodyClass": "iifr-redesign-scope iifr-hero-contrast",
-  "screenshotBytes": 1466197,
-  "heroScreenshotBytes": 1002749
+  "screenshotBytes": 1256098,
+  "heroScreenshotBytes": 793358
 }

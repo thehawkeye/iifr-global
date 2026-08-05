@@ -1,0 +1,98 @@
+/*
+ * t4-hero-contrast.css — page-level hero contrast overlay (T3 fix #1).
+ *
+ * Opt-in: any page that sets `bodyClass="… iifr-hero-contrast"` on
+ * <SiteLayout> gets the contrast layer. The per-page `--{ecp,efm,applied-research}`
+ * scope class on the hero <div> lets each page tweak its overlay without
+ * affecting the others.
+ *
+ * Companion file: docs/qa/desktop-ui-audit-2026-08-05.md findings F-1/F-2.
+ *
+ * The hero <div class="iifr-page-hero"> is position:relative (set in
+ * iifr-redesign.css). The ::after sits inside it, the .iifr-page-hero__inner
+ * sits above the overlay so the copy reads white-on-darkened-image.
+ */
+
+body.iifr-hero-contrast .iifr-page-hero {
+  position: relative;
+  isolation: isolate;
+}
+
+body.iifr-hero-contrast .iifr-page-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.32) 0%,
+    rgba(0, 0, 0, 0.5) 60%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+body.iifr-hero-contrast .iifr-page-hero__inner {
+  position: relative;
+  z-index: 1;
+}
+
+body.iifr-hero-contrast .iifr-page-hero h1,
+body.iifr-hero-contrast .iifr-page-hero__inner p,
+body.iifr-hero-contrast .iifr-page-hero__eyebrow {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.55);
+}
+
+/* Per-page overlay tweaks — kept light; only what the page evidence required. */
+
+.iifr-hero-contrast--efm.iifr-page-hero::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.42) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+}
+
+/* F-3 close-out — class-driven background-position rules. Inline
+ * `background-position` was being overridden by the legacy iifr-redesign.css
+ * `background:` shorthand. Per-page scope pins the value via specificity. */
+
+.iifr-hero-contrast--efm .iifr-page-hero__bg {
+  background-position: center 35% !important;
+}
+
+.iifr-hero-contrast--applied-research.iifr-page-hero::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.38) 0%,
+    rgba(0, 0, 0, 0.58) 100%
+  );
+}
+
+.iifr-hero-contrast--applied-research .iifr-page-hero__bg {
+  background-position: center 35% !important;
+}
+
+.iifr-hero-contrast--ecp .iifr-page-hero__bg {
+  background-position: center 42% !important;
+}
+
+/* Mobile tightening — overlay deepens slightly on small viewports where
+ * the headline can sit closer to the photo's brightest region. */
+
+@media (max-width: 768px) {
+  body.iifr-hero-contrast .iifr-page-hero::after {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.42) 0%,
+      rgba(0, 0, 0, 0.62) 60%,
+      rgba(0, 0, 0, 0.78) 100%
+    );
+  }
+
+  body.iifr-hero-contrast .iifr-page-hero h1,
+  body.iifr-hero-contrast .iifr-page-hero__inner p {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  }
+}

@@ -45,7 +45,7 @@ const WIDTHS = [
   { w: 1440, h: 900, key: "1440" },
 ];
 
-const BASE = "http://localhost:4321";
+const BASE = "http://localhost:4323";
 
 async function probeRoute(browser, route, viewport, fileBase) {
   const ctx = await browser.newContext({ viewport: { width: viewport.w, height: viewport.h } });
@@ -70,8 +70,9 @@ async function probeRoute(browser, route, viewport, fileBase) {
 
   const url = `${BASE}${route.path}`;
   const start = Date.now();
-  await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
-  await page.waitForTimeout(1500);
+  await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60000 });
+  await page.waitForLoadState("networkidle", { timeout: 30000 }).catch(() => {});
+  await page.waitForTimeout(2000);
 
   const ms = Date.now() - start;
 

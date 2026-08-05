@@ -1,0 +1,92 @@
+{
+  "url": "https://iifr.global/ecp",
+  "ms": 4710,
+  "viewport": {
+    "w": 1280,
+    "h": 800,
+    "key": "1280"
+  },
+  "consoleErrors": [
+    "pageerror: S.phpPrefilter is not a function",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "pageerror: S.phpPrefilter is not a function",
+    "pageerror: S.phpPrefilter is not a function",
+    "pageerror: S.phpPrefilter is not a function",
+    "pageerror: S.phpPrefilter is not a function"
+  ],
+  "failedRequests": [
+    {
+      "url": "https://iifr.global/assets/images/banner/shape/close.png",
+      "status": 404
+    },
+    {
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-M1CHRGKCM9&cx=c&gtm=4e6831",
+      "failure": "net::ERR_BLOCKED_BY_ORB"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=6&frm=2&apvc=1&ae=g&dt=IIFR%20Educators%20Certificate%20Program&en=page_view&dl=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&dr=https%3A%2F%2Fiifr.global%2F&top=https%3A%2F%2Fiifr.global%2F&scrsrc=www.googletagmanager.com&rnd=1908653755.1785930509&navt=n&npa=0&ep.ads_data_redaction=0&gtm=45He6831v9253151044za200zd9253151044xea&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938465~115938469~118395333~118897920~118897930~119527020~119896803&tft=1785930509048&tfd=463&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=10&frm=0&apvc=1&ae=g&auid=1650795998.1785930509&dt=Educators%20Certificate%20Programme%20ECP%20%7C%20Professor%20of%20Practice%20Pathway%20%7C%20IIFR&en=page_view&dl=https%3A%2F%2Fiifr.global%2Fecp&scrsrc=www.googletagmanager.com&rnd=464384294.1785930509&navt=n&npa=0&ep.ads_data_redaction=0&gtm=45He6831v9253151044za200zd9253151044xea&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938468~118897920~118897930~119896803&tft=1785930509057&tfd=695&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-M1CHRGKCM9&cx=c&gtm=4e6831",
+      "failure": "net::ERR_BLOCKED_BY_ORB"
+    },
+    {
+      "url": "https://ad.doubleclick.net/ccm/s/collect?auid=1650795998.1785930509&gtm=45He6831v9253151044za200zd9253151044xea&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://px.ads.linkedin.com/wa/?medium=fetch&fmt=g",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/rmkt/collect/18145652554/?random=1785930509407&cv=11&fst=1785930509407&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938465~115938469~118395334~118897920~118897930~119367803~119367811~119896803&u_w=1280&u_h=800&url=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&ref=https%3A%2F%2Fiifr.global%2F&top=https%3A%2F%2Fiifr.global%2F&rcb=0&frm=2&tiba=IIFR%20Educators%20Certificate%20Program&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=arm&uab=64&uafvl=Not%253DA%253FBrand%3B99.0.0.0%7CHeadlessChrome%3B151.0.7922.34%7CChromium%3B151.0.7922.34&uamb=0&uam=&uap=macOS&uapv=26.2.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/rmkt/collect/18145652554/?random=1785930509433&cv=11&fst=1785930509433&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616985~115938466~115938468~118897920~118897930~119367803~119367811~119527020~119896802&u_w=1280&u_h=800&url=https%3A%2F%2Fiifr.global%2Fecp&rcb=4&frm=0&tiba=Educators%20Certificate%20Programme%20ECP%20%7C%20Professor%20of%20Practice%20Pathway%20%7C%20IIFR&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=1650795998.1785930509&uaa=arm&uab=64&uafvl=Not%253DA%253FBrand%3B99.0.0.0%7CHeadlessChrome%3B151.0.7922.34%7CChromium%3B151.0.7922.34&uamb=0&uam=&uap=macOS&uapv=26.2.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=0&frm=2&apvc=0&dt=IIFR%20Educators%20Certificate%20Program&tid=AW-18145652554&en=page_view&dl=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&dr=https%3A%2F%2Fiifr.global%2F&top=https%3A%2F%2Fiifr.global%2F&scrsrc=www.googletagmanager.com&rnd=1908653755.1785930509&navt=n&npa=0&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938465~115938469~118395334~118897920~118897930~119367803~119367811~119896803&tft=1785930509423&tfd=838&tids=AW-18145652554&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=4&frm=0&apvc=0&auid=1650795998.1785930509&dt=Educators%20Certificate%20Programme%20ECP%20%7C%20Professor%20of%20Practice%20Pathway%20%7C%20IIFR&tid=AW-18145652554&en=page_view&dl=https%3A%2F%2Fiifr.global%2Fecp&scrsrc=www.googletagmanager.com&rnd=464384294.1785930509&navt=n&npa=0&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616985~115938466~115938468~118897920~118897930~119367803~119367811~119527020~119896802&tft=1785930509441&tfd=1079&tids=AW-18145652554&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://analytics.google.com/g/collect?v=2&tid=G-M1CHRGKCM9&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044&_p=1785930508457&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&ecid=762164840&_eu=AAAAAGAC&are=1&cid=1751206723.1785930509&frm=0&pscdl=noapi&rcb=4&sr=1280x800&uaa=arm&uab=64&uafvl=Not%253DA%253FBrand%3B99.0.0.0%7CHeadlessChrome%3B151.0.7922.34%7CChromium%3B151.0.7922.34&uam=&uamb=0&uap=macOS&uapv=26.2.0&uaw=0&ul=en-us&gaf=2&_s=1&tag_exp=115616985~115938466~115938468~118897920~118897930~119367803~119367811~119527020~119896802&sid=1785930509&sct=1&seg=0&dl=https%3A%2F%2Fiifr.global%2Fecp&dt=Educators%20Certificate%20Programme%20ECP%20%7C%20Professor%20of%20Practice%20Pathway%20%7C%20IIFR&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1078",
+      "failure": "net::ERR_ABORTED"
+    }
+  ],
+  "docTitle": "Educators Certificate Programme ECP | Professor of Practice Pathway | IIFR",
+  "heroClassList": "iifr-page-hero ecp-landing-hero",
+  "heroHasBg": true,
+  "heroBgPos": "50% 100%",
+  "heroBgInline": "background-image:url('assets/images/ecp/landing/iifr_image_01.webp');",
+  "heroEyebrowStyles": {
+    "color": "rgb(199, 153, 6)",
+    "textShadow": "none",
+    "fontWeight": "700",
+    "fontSize": "17px"
+  },
+  "heroH1Styles": {
+    "color": "rgb(63, 58, 54)",
+    "textShadow": "none",
+    "fontWeight": "700",
+    "fontSize": "40px"
+  },
+  "heroPStyles": {
+    "color": "rgb(31, 31, 31)",
+    "textShadow": "none",
+    "fontWeight": "400",
+    "fontSize": "18px"
+  },
+  "heroScreenshotBytes": 608093,
+  "fullScreenshotBytes": 1496187
+}

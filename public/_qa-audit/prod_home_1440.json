@@ -1,0 +1,92 @@
+{
+  "url": "https://iifr.global/",
+  "ms": 4327,
+  "viewport": {
+    "w": 1440,
+    "h": 900,
+    "key": "1440"
+  },
+  "consoleErrors": [
+    "pageerror: S.phpPrefilter is not a function",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "pageerror: S.phpPrefilter is not a function",
+    "pageerror: S.phpPrefilter is not a function",
+    "pageerror: S.phpPrefilter is not a function",
+    "pageerror: S.phpPrefilter is not a function"
+  ],
+  "failedRequests": [
+    {
+      "url": "https://iifr.global/assets/images/banner/shape/close.png",
+      "status": 404
+    },
+    {
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-M1CHRGKCM9&cx=c&gtm=4e6840h2",
+      "failure": "net::ERR_BLOCKED_BY_ORB"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=5&frm=2&apvc=1&ae=g&dt=IIFR%20Educators%20Certificate%20Program&en=page_view&dl=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&dr=https%3A%2F%2Fiifr.global%2F&top=https%3A%2F%2Fiifr.global%2F&scrsrc=www.googletagmanager.com&rnd=1277980521.1785930485&navt=n&npa=0&ep.ads_data_redaction=0&gtm=45He6840h2v9253151044za200zd9253151044xea&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938465~115938469~118897920~118897930~119896803&tft=1785930484940&tfd=304&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=9&frm=0&apvc=1&ae=g&auid=1632898434.1785930485&dt=IIFR%20%7C%20Faculty%20Development%2C%20Applied%20Research%20%26%20Academic%20Leadership&en=page_view&dl=https%3A%2F%2Fiifr.global%2F&scrsrc=www.googletagmanager.com&rnd=1820185236.1785930485&navt=n&npa=0&ep.ads_data_redaction=0&gtm=45He6840h2v9253151044za200zd9253151044xea&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~118131809~118897920~118897930~119527019~119896803&tft=1785930484934&tfd=535&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://ad.doubleclick.net/ccm/s/collect?auid=1632898434.1785930485&gtm=45He6840h2v9253151044za200zd9253151044xea&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-M1CHRGKCM9&cx=c&gtm=4e6840h2",
+      "failure": "net::ERR_BLOCKED_BY_ORB"
+    },
+    {
+      "url": "https://www.google.com/rmkt/collect/18145652554/?random=1785930485296&cv=11&fst=1785930485296&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be6840h2v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938465~115938468~118012009~118897920~118897930~119527020~119896803&u_w=1440&u_h=900&url=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&ref=https%3A%2F%2Fiifr.global%2F&top=https%3A%2F%2Fiifr.global%2F&rcb=15&frm=2&tiba=IIFR%20Educators%20Certificate%20Program&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=arm&uab=64&uafvl=Not%253DA%253FBrand%3B99.0.0.0%7CHeadlessChrome%3B151.0.7922.34%7CChromium%3B151.0.7922.34&uamb=0&uam=&uap=macOS&uapv=26.2.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/rmkt/collect/18145652554/?random=1785930485325&cv=11&fst=1785930485325&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be6840h2v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~118131809~118897920~118897930~119527020~119896802&u_w=1440&u_h=900&url=https%3A%2F%2Fiifr.global%2F&rcb=15&frm=0&tiba=IIFR%20%7C%20Faculty%20Development%2C%20Applied%20Research%20%26%20Academic%20Leadership&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=1632898434.1785930485&uaa=arm&uab=64&uafvl=Not%253DA%253FBrand%3B99.0.0.0%7CHeadlessChrome%3B151.0.7922.34%7CChromium%3B151.0.7922.34&uamb=0&uam=&uap=macOS&uapv=26.2.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://px.ads.linkedin.com/wa/?medium=fetch&fmt=g",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=15&frm=2&apvc=0&dt=IIFR%20Educators%20Certificate%20Program&tid=AW-18145652554&en=page_view&dl=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&dr=https%3A%2F%2Fiifr.global%2F&top=https%3A%2F%2Fiifr.global%2F&scrsrc=www.googletagmanager.com&rnd=1277980521.1785930485&navt=n&npa=0&gtm=45be6840h2v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938465~115938468~118012009~118897920~118897930~119527020~119896803&tft=1785930485313&tfd=676&tids=AW-18145652554&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=15&frm=0&apvc=0&auid=1632898434.1785930485&dt=IIFR%20%7C%20Faculty%20Development%2C%20Applied%20Research%20%26%20Academic%20Leadership&tid=AW-18145652554&en=page_view&dl=https%3A%2F%2Fiifr.global%2F&scrsrc=www.googletagmanager.com&rnd=1820185236.1785930485&navt=n&npa=0&gtm=45be6840h2v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~118131809~118897920~118897930~119527020~119896802&tft=1785930485332&tfd=933&tids=AW-18145652554&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://analytics.google.com/g/collect?v=2&tid=G-M1CHRGKCM9&gtm=45be6840h2v9251699497z89253151044za20gzb9253151044zd9253151044&_p=1785930484488&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&ecid=497896095&_eu=AAAAAGAC&are=1&cid=731980768.1785930485&frm=0&pscdl=noapi&rcb=15&sr=1440x900&uaa=arm&uab=64&uafvl=Not%253DA%253FBrand%3B99.0.0.0%7CHeadlessChrome%3B151.0.7922.34%7CChromium%3B151.0.7922.34&uam=&uamb=0&uap=macOS&uapv=26.2.0&uaw=0&ul=en-us&gaf=2&_s=1&tag_exp=115938466~115938469~118131809~118897920~118897930~119527020~119896802&sid=1785930485&sct=1&seg=0&dl=https%3A%2F%2Fiifr.global%2F&dt=IIFR%20%7C%20Faculty%20Development%2C%20Applied%20Research%20%26%20Academic%20Leadership&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=932",
+      "failure": "net::ERR_ABORTED"
+    }
+  ],
+  "docTitle": "IIFR | Faculty Development, Applied Research & Academic Leadership",
+  "heroClassList": "iifr-page-hero iifr-home-hero",
+  "heroHasBg": true,
+  "heroBgPos": "50% 100%",
+  "heroBgInline": "background-image:url('assets/images/hero-home.webp');",
+  "heroEyebrowStyles": {
+    "color": "rgb(199, 153, 6)",
+    "textShadow": "none",
+    "fontWeight": "700",
+    "fontSize": "17px"
+  },
+  "heroH1Styles": {
+    "color": "rgb(63, 58, 54)",
+    "textShadow": "none",
+    "fontWeight": "700",
+    "fontSize": "40px"
+  },
+  "heroPStyles": {
+    "color": "rgb(31, 31, 31)",
+    "textShadow": "none",
+    "fontWeight": "400",
+    "fontSize": "18px"
+  },
+  "heroScreenshotBytes": 875589,
+  "fullScreenshotBytes": 1241453
+}

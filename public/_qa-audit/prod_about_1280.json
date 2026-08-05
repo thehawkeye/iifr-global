@@ -1,0 +1,87 @@
+{
+  "url": "https://iifr.global/about",
+  "ms": 4356,
+  "viewport": {
+    "w": 1280,
+    "h": 800,
+    "key": "1280"
+  },
+  "consoleErrors": [
+    "pageerror: S.phpPrefilter is not a function",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "pageerror: S.phpPrefilter is not a function",
+    "pageerror: S.phpPrefilter is not a function",
+    "pageerror: S.phpPrefilter is not a function",
+    "pageerror: S.phpPrefilter is not a function"
+  ],
+  "failedRequests": [
+    {
+      "url": "https://iifr.global/assets/images/banner/shape/close.png",
+      "status": 404
+    },
+    {
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-M1CHRGKCM9&cx=c&gtm=4e6831",
+      "failure": "net::ERR_BLOCKED_BY_ORB"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=8&frm=2&apvc=1&ae=g&dt=IIFR%20Educators%20Certificate%20Program&en=page_view&dl=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&dr=https%3A%2F%2Fiifr.global%2F&top=https%3A%2F%2Fiifr.global%2F&scrsrc=www.googletagmanager.com&rnd=958721726.1785930490&navt=n&npa=0&ep.ads_data_redaction=0&gtm=45He6831v9253151044za200zd9253151044xea&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938465~115938469~118897920~118897930~119527020~119896802&tft=1785930489638&tfd=315&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=16&frm=0&apvc=1&ae=g&auid=93653401.1785930490&dt=About%20IIFR%20%7C%20Faculty%20Research%20%26%20Academic%20Leadership%20Institute&en=page_view&dl=https%3A%2F%2Fiifr.global%2Fabout&scrsrc=www.googletagmanager.com&rnd=867224357.1785930490&navt=n&npa=0&ep.ads_data_redaction=0&gtm=45He6831v9253151044za200zd9253151044xea&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616985~115938466~115938469~118897920~118897930~119896802&tft=1785930489615&tfd=541&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://ad.doubleclick.net/ccm/s/collect?auid=93653401.1785930490&gtm=45He6831v9253151044za200zd9253151044xea&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-M1CHRGKCM9&cx=c&gtm=4e6831",
+      "failure": "net::ERR_BLOCKED_BY_ORB"
+    },
+    {
+      "url": "https://www.google.com/rmkt/collect/18145652554/?random=1785930489954&cv=11&fst=1785930489954&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~118395333~118897920~118897930~119527019~119896802&u_w=1280&u_h=800&url=https%3A%2F%2Fiifr.global%2Fabout&rcb=9&frm=0&tiba=About%20IIFR%20%7C%20Faculty%20Research%20%26%20Academic%20Leadership%20Institute&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=93653401.1785930490&uaa=arm&uab=64&uafvl=Not%253DA%253FBrand%3B99.0.0.0%7CHeadlessChrome%3B151.0.7922.34%7CChromium%3B151.0.7922.34&uamb=0&uam=&uap=macOS&uapv=26.2.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/rmkt/collect/18145652554/?random=1785930489976&cv=11&fst=1785930489976&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938465~115938469~118897920~118897930~119527019~119896803&u_w=1280&u_h=800&url=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&ref=https%3A%2F%2Fiifr.global%2F&top=https%3A%2F%2Fiifr.global%2F&rcb=10&frm=2&tiba=IIFR%20Educators%20Certificate%20Program&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=arm&uab=64&uafvl=Not%253DA%253FBrand%3B99.0.0.0%7CHeadlessChrome%3B151.0.7922.34%7CChromium%3B151.0.7922.34&uamb=0&uam=&uap=macOS&uapv=26.2.0&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=9&frm=0&apvc=0&auid=93653401.1785930490&dt=About%20IIFR%20%7C%20Faculty%20Research%20%26%20Academic%20Leadership%20Institute&tid=AW-18145652554&en=page_view&dl=https%3A%2F%2Fiifr.global%2Fabout&scrsrc=www.googletagmanager.com&rnd=867224357.1785930490&navt=n&npa=0&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~118395333~118897920~118897930~119527019~119896802&tft=1785930489970&tfd=896&tids=AW-18145652554&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://www.google.com/ccm/collect?rcb=10&frm=2&apvc=0&dt=IIFR%20Educators%20Certificate%20Program&tid=AW-18145652554&en=page_view&dl=https%3A%2F%2Fforms.zohopublic.in%2Finfoii1%2Fform%2FLandingPageLeadGen%2Fformperma%2FJIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs%3Fzf_rszfm%3D1&dr=https%3A%2F%2Fiifr.global%2F&top=https%3A%2F%2Fiifr.global%2F&scrsrc=www.googletagmanager.com&rnd=958721726.1785930490&navt=n&npa=0&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115616986~115938465~115938469~118897920~118897930~119527019~119896803&tft=1785930489985&tfd=661&tids=AW-18145652554&fmt=8",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://px.ads.linkedin.com/wa/?medium=fetch&fmt=g",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "https://analytics.google.com/g/collect?v=2&tid=G-M1CHRGKCM9&gtm=45be6831v9251699497z89253151044za20gzb9253151044zd9253151044&_p=1785930489169&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&ecid=1845980807&_eu=AAAAAGAC&are=1&cid=1526371580.1785930490&frm=0&pscdl=noapi&rcb=9&sr=1280x800&uaa=arm&uab=64&uafvl=Not%253DA%253FBrand%3B99.0.0.0%7CHeadlessChrome%3B151.0.7922.34%7CChromium%3B151.0.7922.34&uam=&uamb=0&uap=macOS&uapv=26.2.0&uaw=0&ul=en-us&gaf=2&_s=1&tag_exp=115938466~115938469~118395333~118897920~118897930~119527019~119896802&sid=1785930489&sct=1&seg=0&dl=https%3A%2F%2Fiifr.global%2Fabout&dt=About%20IIFR%20%7C%20Faculty%20Research%20%26%20Academic%20Leadership%20Institute&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=895",
+      "failure": "net::ERR_ABORTED"
+    }
+  ],
+  "docTitle": "About IIFR | Faculty Research & Academic Leadership Institute",
+  "heroClassList": "iifr-page-hero",
+  "heroHasBg": true,
+  "heroBgPos": "50% 100%",
+  "heroBgInline": "background-image:url('assets/images/about-hero.jpeg');",
+  "heroEyebrowStyles": null,
+  "heroH1Styles": {
+    "color": "rgb(63, 58, 54)",
+    "textShadow": "none",
+    "fontWeight": "700",
+    "fontSize": "40px"
+  },
+  "heroPStyles": {
+    "color": "rgb(31, 31, 31)",
+    "textShadow": "none",
+    "fontWeight": "400",
+    "fontSize": "18px"
+  },
+  "heroScreenshotBytes": 974064,
+  "fullScreenshotBytes": 2062555
+}

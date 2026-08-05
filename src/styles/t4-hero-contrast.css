@@ -78,6 +78,49 @@ body.iifr-hero-contrast .iifr-page-hero__eyebrow {
   background-position: center 42% !important;
 }
 
+/* P1-3: wide-viewport head-clip fix. The hero is a fixed 429 px box with
+   background-size: cover, so as the viewport widens the crop window walks
+   down the source frame and starts clipping the subject's hairline at
+   ~1680 px. Source image is 1920x1080; subject occupies the top ~22-27%. */
+
+@media (min-width: 1367px) and (max-width: 1679px) {
+  .iifr-hero-contrast--ecp .iifr-page-hero__bg {
+    background-position: center 38% !important;
+  }
+}
+
+@media (min-width: 1680px) {
+  .iifr-hero-contrast--ecp .iifr-page-hero__bg {
+    background-position: center 32% !important;
+  }
+}
+
+/* P2-5: extend T4 to /programmes and /about. Per-page overlay and crop. */
+
+.iifr-hero-contrast--programmes .iifr-page-hero__bg {
+  background-position: center 50% !important;
+}
+
+.iifr-hero-contrast--about .iifr-page-hero__bg {
+  background-position: center 50% !important;
+}
+
+.iifr-hero-contrast--programmes.iifr-page-hero::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.42) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+}
+
+.iifr-hero-contrast--about.iifr-page-hero::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
 /* Mobile tightening — overlay deepens slightly on small viewports where
  * the headline can sit closer to the photo's brightest region. */
 

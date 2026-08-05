@@ -36,11 +36,11 @@ const modules = [
 
   <div class="ecp-facts-wrap ecp-facts-wrap--aligned">
     <div class="ecp-facts ecp-facts--wide">
-      <div class="ecp-fact"><span class="ecp-fact__label">Duration</span><span class="ecp-fact__value">4 months</span><span class="ecp-fact__sub">8 classroom days across 3 residencies</span></div>
-      <div class="ecp-fact"><span class="ecp-fact__label">Format</span><span class="ecp-fact__value">On Campus</span><span class="ecp-fact__sub">New Delhi</span></div>
-      <div class="ecp-fact"><span class="ecp-fact__label">Start Date</span><span class="ecp-fact__value">21 Aug 2026</span><span class="ecp-fact__sub">August cohort</span></div>
-      <div class="ecp-fact"><span class="ecp-fact__label">Certification</span><span class="ecp-fact__value">IIFR + EFMD</span><span class="ecp-fact__sub">EFMD Certification</span></div>
-      <div class="ecp-fact ecp-fact--fee"><span class="ecp-fact__label">Fee</span><span class="ecp-fact__value">Rs. 5,00,000 + GST</span><span class="ecp-fact__sub">Full programme fee</span></div>
+      <div class="ecp-fact"><div class="ecp-fact__body"><span class="ecp-fact__label">Duration</span><span class="ecp-fact__value">4 months</span><span class="ecp-fact__sub">8 classroom days across 3 residencies</span></div></div>
+      <div class="ecp-fact"><div class="ecp-fact__body"><span class="ecp-fact__label">Format</span><span class="ecp-fact__value">On Campus</span><span class="ecp-fact__sub">New Delhi</span></div></div>
+      <div class="ecp-fact"><div class="ecp-fact__body"><span class="ecp-fact__label">Start Date</span><span class="ecp-fact__value">21 Aug 2026</span><span class="ecp-fact__sub">August cohort</span></div></div>
+      <div class="ecp-fact"><div class="ecp-fact__body"><span class="ecp-fact__label">Certification</span><span class="ecp-fact__value">IIFR + EFMD</span><span class="ecp-fact__sub">EFMD Certification</span></div></div>
+      <div class="ecp-fact ecp-fact--fee"><div class="ecp-fact__body"><span class="ecp-fact__label">Fee</span><span class="ecp-fact__value">Rs. 5,00,000 + GST</span><span class="ecp-fact__sub">Full programme fee</span></div></div>
     </div>
     <div class="ecp-facts ecp-facts--scholarship"><div class="ecp-fact ecp-fact--scholarship"><span class="ecp-fact__label">Scholarship</span><span class="ecp-fact__value">50% Scholarship</span><span class="ecp-fact__sub">For applications from NGOs, academic institutions and the government sector.</span></div></div>
   </div>
@@ -85,4 +85,12 @@ const modules = [
   .ecp-final-cta { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
   .ecp-final-cta p { margin: 0; }
   @media (max-width: 767px) { .ecp-facts-wrap--aligned { margin-top: 0; } .ecp-capstones__grid { grid-template-columns: 1fr; } .ecp-final-cta { align-items: flex-start; flex-direction: column; gap: .75rem; } .ecp-legacy__efmd { width: 7rem; } }
+
+  /* P2-4: scholarship strip inherits a 4-column grid from .ecp-facts but only
+     carries one card. Override locally — the governing CSS lives in the
+     legacy iifr-redesign.css which is out of this repo. */
+  .ecp-facts--scholarship {
+    grid-template-columns: 1fr !important;
+    max-width: 420px;
+  }
 </style>

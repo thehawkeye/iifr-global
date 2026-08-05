@@ -6,6 +6,7 @@
  * journeys (design plan §6.7). Past events are clearly labelled.
  */
 import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import PageHero from "../../../contemporary/components/PageHero.astro";
 import EventCard from "../../../contemporary/components/EventCard.astro";
 import InsightCard from "../../../contemporary/components/InsightCard.astro";
 import { events, insights } from "../../../contemporary/lib/content";
@@ -21,7 +22,7 @@ const seo = {
   keywords:
     "IIFR events, IIFR insights, applied research events, faculty development events, pracademic events",
   canonical: `${SITE_URL}/contemporary/events-and-insights`,
-  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  image: `${SITE_URL}/assets/images/contemporary/events-and-insights-hero.png`,
   type: "website" as const,
   schema: "WebPage" as const,
 };
@@ -35,17 +36,12 @@ const seo = {
     { label: "Events and insights" },
   ]}
 >
-  <header class="cp-page-header">
-    <div class="cp-container">
-      <span class="cp-eyebrow">Events and insights</span>
-      <h1>Convenings and writing from IIFR.</h1>
-      <p class="cp-lead">
-        Workshops, briefings, symposia, and short writing on faculty
-        development, applied research, academic leadership, and the
-        academia–industry bridge.
-      </p>
-    </div>
-  </header>
+  <PageHero
+    eyebrow="Events and insights"
+    title="Convenings and writing from IIFR."
+    lead="Workshops, briefings, symposia, and short writing on faculty development, applied research, academic leadership, and the academia–industry bridge."
+    image={{ src: "/assets/images/contemporary/events-and-insights-hero.png", alt: "A candid academic salon conversation with an engaged audience" }}
+  />
 
   <section class="cp-section" aria-labelledby="cp-upcoming-events">
     <div class="cp-container">

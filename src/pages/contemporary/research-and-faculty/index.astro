@@ -7,6 +7,7 @@
  * this person is relevant to my decision".
  */
 import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import PageHero from "../../../contemporary/components/PageHero.astro";
 import FacultyCard from "../../../contemporary/components/FacultyCard.astro";
 import InsightCard from "../../../contemporary/components/InsightCard.astro";
 import { faculty, insights } from "../../../contemporary/lib/content";
@@ -19,7 +20,7 @@ const seo = {
   keywords:
     "IIFR research and faculty, applied research India, Professors of Practice, pracademic faculty, IIFR Academic Council",
   canonical: `${SITE_URL}/contemporary/research-and-faculty`,
-  image: `${SITE_URL}/assets/images/research/research-banner.jpg`,
+  image: `${SITE_URL}/assets/images/contemporary/research-and-faculty-hero.png`,
   type: "website" as const,
   schema: "WebPage" as const,
 };
@@ -35,18 +36,12 @@ const insightsToShow = insights.slice(0, 2);
     { label: "Research and faculty" },
   ]}
 >
-  <header class="cp-page-header">
-    <div class="cp-container">
-      <span class="cp-eyebrow">Research and faculty</span>
-      <h1>People and applied work at the bridge.</h1>
-      <p class="cp-lead">
-        IIFR brings together globally connected academicians, senior industry
-        professionals, Professors of Practice, and research leaders. The
-        people below shape programmes, supervise applied research, and write
-        the institute's insights.
-      </p>
-    </div>
-  </header>
+  <PageHero
+    eyebrow="Research and faculty"
+    title="People and applied work at the bridge."
+    lead="IIFR brings together globally connected academicians, senior industry professionals, Professors of Practice, and research leaders. The people below shape programmes, supervise applied research, and write the institute's insights."
+    image={{ src: "/assets/images/contemporary/research-and-faculty-hero.png", alt: "Academics and practitioners in conversation around a research table" }}
+  />
 
   <section class="cp-section" id="agenda" aria-labelledby="cp-research-agenda">
     <div class="cp-container">

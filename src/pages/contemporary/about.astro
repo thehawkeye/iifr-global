@@ -7,6 +7,7 @@
  * plan §5 "About/governance" template.
  */
 import ContemporaryBaseLayout from "../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import PageHero from "../../contemporary/components/PageHero.astro";
 import { SITE_URL } from "../../contemporary/lib/seo";
 
 const seo = {
@@ -16,7 +17,7 @@ const seo = {
   keywords:
     "about IIFR, Bharatiya Vidya Bhavan, autonomous academic institute, faculty research, academic leadership India",
   canonical: `${SITE_URL}/contemporary/about`,
-  image: `${SITE_URL}/assets/images/about-hero.jpeg`,
+  image: `${SITE_URL}/assets/images/contemporary/about-hero.png`,
   type: "website" as const,
   schema: "WebPage" as const,
 };
@@ -30,19 +31,12 @@ const seo = {
     { label: "About" },
   ]}
 >
-  <header class="cp-page-header">
-    <div class="cp-container cp-container--narrow">
-      <span class="cp-eyebrow">About IIFR</span>
-      <h1>An autonomous academic institute of Bharatiya Vidya Bhavan.</h1>
-      <p class="cp-lead">
-        The International Institute for Faculty &amp; Research (IIFR) is an
-        autonomous academic institute established by Bharatiya Vidya Bhavan.
-        It strengthens faculty capability, research excellence, and academic
-        leadership across India and the Global South, with a focus on
-        practice-led scholarship and "pracademic" education.
-      </p>
-    </div>
-  </header>
+  <PageHero
+    eyebrow="About IIFR"
+    title="An autonomous academic institute of Bharatiya Vidya Bhavan."
+    lead="The International Institute for Faculty & Research (IIFR) is an autonomous academic institute established by Bharatiya Vidya Bhavan. It strengthens faculty capability, research excellence, and academic leadership across India and the Global South, with a focus on practice-led scholarship and &quot;pracademic&quot; education."
+    image={{ src: "/assets/images/contemporary/about-hero.png", alt: "Educators and practitioners walking through a contemporary academic campus" }}
+  />
 
   <section class="cp-section" aria-labelledby="cp-about-mission">
     <div class="cp-container cp-container--narrow">

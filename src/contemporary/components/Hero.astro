@@ -2,14 +2,15 @@
 /**
  * Hero — homepage and top-of-page hero.
  *
- * Murali spec (L1, t_dadf4467, 2026-08-06, refined 22:48 IST):
- *   - Watercolor hero — artistic, NOT the building photograph.
- *     Real raster watercolour asset (home-watercolor-hero.webp) sits
- *     behind the copy with object-fit:cover so it scales without
- *     distortion across viewports. A restrained solid/linear overlay
- *     above the art keeps text readable without hiding the painting.
- *     Clear fade to ivory at the bottom so the hero lands visually
- *     into the rest of the page.
+ * Murali spec (L1, t_dadf4467, 2026-08-06, refined 22:48 IST) +
+ * R2 staging-asset swap (t_654cef90, 2026-08-07):
+ *   - Real raster hero asset (hero-home-sketch.webp, 1694x929, 185352 bytes)
+ *     sits behind the copy with object-fit:cover so it scales without
+ *     distortion across viewports. A restrained solid/linear overlay above
+ *     the art keeps text readable without hiding the painting. Clear fade
+ *     to ivory at the bottom so the hero lands visually into the rest of
+ *     the page. The asset is committed under public/assets/images/
+ *     contemporary/; the raster is NOT hotlinked from staging.
  *   - IIFR emblem + full institute name as a quiet crest above the title.
  *   - TrustStrip moved to a separate <TrustStrip /> component below
  *     (matches iifr.global's navy band with label/value pairs).
@@ -19,6 +20,8 @@
  *     The term lives in the ECP detail body as plain prose.
  *   - NO "Pracademic" highlight in the hero (Murali 22:48 — the term
  *     belongs in body copy, not in styled callouts).
+ *   - NO artwork-producing CSS gradients/blooms. The overlay is a single
+ *     navy→transparent→ivory linear gradient.
  */
 import { programmes } from "../lib/content";
 
@@ -43,22 +46,23 @@ const { title, lead, primary, secondary } = Astro.props as Props;
 // hero does not render it.
 void programmes;
 
-// Real raster watercolour hero. Focal point sits slightly right-of-centre
-// (60% / 40%) so the navy text-safe field of the painting stays behind the
-// copy while the maroon bloom on the right remains visible at wide widths.
-const WATERCOLOR_SRC = "/assets/images/contemporary/home-watercolor-hero.webp";
-const WATERCOLOR_WIDTH = 2400;
-const WATERCOLOR_HEIGHT = 1125;
+// Staging-derived hero raster (t_654cef90). Committed locally; the staging
+// URL is recorded in hero-home-sketch.webp.meta.json. Focal point sits
+// slightly right-of-centre so the navy text-safe field of the sketch
+// stays behind the copy on desktop.
+const HERO_SRC = "/assets/images/contemporary/hero-home-sketch.webp";
+const HERO_WIDTH = 1694;
+const HERO_HEIGHT = 929;
 ---
 
 <section class="cp-hero" aria-labelledby="cp-hero-title">
   <picture class="cp-hero__art" aria-hidden="true">
     <img
       class="cp-hero__art-img"
-      src={WATERCOLOR_SRC}
+      src={HERO_SRC}
       alt=""
-      width={WATERCOLOR_WIDTH}
-      height={WATERCOLOR_HEIGHT}
+      width={HERO_WIDTH}
+      height={HERO_HEIGHT}
       decoding="async"
       loading="eager"
       fetchpriority="high"
@@ -101,19 +105,20 @@ const WATERCOLOR_HEIGHT = 1125;
 
 <style>
   /*
-   * Watercolor hero: real raster watercolour (home-watercolor-hero.webp)
-   * sits behind a restrained navy→ivory overlay. The overlay is mostly
-   * transparent so the painting is fully visible — it only darkens the
+   * Hero raster: real raster (hero-home-sketch.webp, 1694x929) sits
+   * behind a restrained navy→ivory overlay. The overlay is mostly
+   * transparent so the sketch is fully visible — it only darkens the
    * top half enough for white copy to read and then fades to ivory at
    * the bottom so the hero lands visually into the rest of the page.
    *
-   * R1 (t_eb103610, 2026-08-07): the previous overlay ran to 0.45 navy
-   * at the top, which compounded with the painting's own navy text-safe
-   * field and erased paper tooth / pigment edges in the upper third. The
-   * overlay is now a much lighter wash (0.20 → 0.10 → 0 over the top
-   * 60%) so the cold-press grain and bloom edges stay visible. White
-   * copy readability is preserved by the title's text-shadow (see
-   * `.cp-hero__title`), not by the overlay.
+   * R2 (t_654cef90, 2026-08-07): the raster was swapped from the
+   * locally-generated watercolor (2400x1125, home-watercolor-hero.webp)
+   * to the staging-derived sketch (1694x929, hero-home-sketch.webp).
+   * The overlay math (top navy → transparent → ivory at 100%) is
+   * preserved unchanged — it stays a single linear gradient so the
+   * raster stays the artwork source. White copy readability is
+   * preserved by the title's text-shadow (see `.cp-hero__title`),
+   * not by the overlay.
    */
   /*
    * Z-index scheme (FIX 2026-08-07, Murali: "no watercolor hero on home"):
@@ -250,9 +255,9 @@ const WATERCOLOR_HEIGHT = 1125;
 
   /*
    * Mobile gets a slightly heavier top darkening because small viewports
-   * crop the painting tighter and the navy text-safe centre may not be
-   * fully behind the copy at narrow widths. Even so the wash is
-   * restrained (0.30 → 0.18 → 0.05) so paper grain is not crushed.
+   * crop the sketch tighter and the navy text-safe centre may not be
+   * fully behind the copy at narrow widths. The wash is restrained
+   * (0.30 → 0.18 → 0.05) so paper grain is not crushed.
    */
   @media (max-width: 767.98px) {
     .cp-hero__art-img {

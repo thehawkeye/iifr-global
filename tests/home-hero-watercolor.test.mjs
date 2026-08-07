@@ -6,15 +6,22 @@ const read = (path) => readFile(new URL(`../${path}`, import.meta.url));
 const text = async (path) => (await read(path)).toString("utf8");
 
 const HERO_PATH = "src/contemporary/components/Hero.astro";
-const ASSET_PATH = "public/assets/images/contemporary/home-watercolor-hero.webp";
+const ASSET_PATH = "public/assets/images/contemporary/hero-home-sketch.webp";
+const META_PATH = "public/assets/images/contemporary/hero-home-sketch.webp.meta.json";
 
-test("Hero references the real watercolor raster asset", async () => {
+test("Hero references the staging-derived hero raster asset", async () => {
   const hero = await text(HERO_PATH);
   // Real network request — must reference the asset path, not just any webp.
   assert.match(
     hero,
+    /\/assets\/images\/contemporary\/hero-home-sketch\.webp/,
+    "Hero.astro must reference /assets/images/contemporary/hero-home-sketch.webp",
+  );
+  // And it must not still point at the prior R1 watercolor filename.
+  assert.doesNotMatch(
+    hero,
     /\/assets\/images\/contemporary\/home-watercolor-hero\.webp/,
-    "Hero.astro must reference /assets/images/contemporary/home-watercolor-hero.webp",
+    "Hero.astro must not still reference /assets/images/contemporary/home-watercolor-hero.webp (R1 swap complete)",
   );
 
   // The raster asset must exist and be a real WebP (RIFF container).
@@ -29,6 +36,45 @@ test("Hero references the real watercolor raster asset", async () => {
     [...asset.subarray(8, 12)],
     [0x57, 0x45, 0x42, 0x50],
     `${ASSET_PATH} must have WEBP fourcc at offset 8`,
+  );
+});
+
+test("Hero meta file records source URL, sha256, dimensions, and bytes", async () => {
+  const meta = JSON.parse(await text(META_PATH));
+  assert.equal(
+    meta.source_url,
+    "https://staging-dev.iifr.global/assets/images/hero-home.webp",
+    "meta.source_url must record the staging URL we mirrored",
+  );
+  assert.ok(
+    typeof meta.sha256 === "string" && /^[0-9a-f]{64}$/.test(meta.sha256),
+    "meta.sha256 must be a 64-char hex digest",
+  );
+  assert.ok(
+    Number.isInteger(meta.width) && meta.width > 0,
+    "meta.width must be a positive integer",
+  );
+  assert.ok(
+    Number.isInteger(meta.height) && meta.height > 0,
+    "meta.height must be a positive integer",
+  );
+  assert.ok(
+    Number.isInteger(meta.byte_size) && meta.byte_size > 0,
+    "meta.byte_size must be a positive integer",
+  );
+  // The asset on disk must agree with the recorded fingerprint.
+  const asset = await read(ASSET_PATH);
+  const { createHash } = await import("node:crypto");
+  const digest = createHash("sha256").update(asset).digest("hex");
+  assert.equal(
+    digest,
+    meta.sha256,
+    `on-disk SHA-256 (${digest}) must match meta.sha256`,
+  );
+  assert.equal(
+    asset.byteLength,
+    meta.byte_size,
+    `on-disk byte_size (${asset.byteLength}) must match meta.byte_size`,
   );
 });
 
@@ -49,9 +95,6 @@ test("Hero has no .cp-hero__bloom artwork", async () => {
   );
 
   // The smooth radial-gradient wash that obscured the art is also gone.
-  // The new overlay is a single restrained linear gradient (top navy
-  // → transparent → ivory at the bottom), not the old multi-radial
-  // composition with `radial-gradient(...rgba(36, 47, 76, 0.85)...)`.
   assert.doesNotMatch(
     hero,
     /radial-gradient\(\s*ellipse/,
@@ -61,20 +104,13 @@ test("Hero has no .cp-hero__bloom artwork", async () => {
 
 test("Hero uses the raster via a real <img> tag", async () => {
   const hero = await text(HERO_PATH);
-  // An <img> with src pointing at the watercolor asset must exist. The
-  // asset path may appear either as a literal attribute (`src="…webp"`)
-  // or as an Astro JSX expression that ultimately resolves to the same
-  // string (e.g. `src={WATERCOLOR_SRC}` where WATERCOLOR_SRC is the
-  // asset path declared elsewhere in the file). The first test already
-  // proves the literal asset path is referenced; here we prove the path
-  // is wired to a real <img> element in the markup.
   const heroNoComments = hero.replace(/\/\*[\s\S]*?\*\//g, "");
   assert.match(
     heroNoComments,
     /<img\b[^>]*>/,
     "Hero.astro markup must contain an <img> tag for the art layer",
   );
-  // object-fit:cover keeps the painting responsive without distortion.
+  // object-fit:cover keeps the sketch responsive without distortion.
   assert.match(
     hero,
     /object-fit\s*:\s*cover/,
@@ -104,16 +140,17 @@ test("Hero <img> is eager and high-priority for above-the-fold paint", async () 
   );
 });
 
-test("Watercolor hero asset is the real 2400×1125 WebP above 200 KB", async () => {
-  const stat = await import("node:fs/promises").then((m) => m.stat);
+test("Hero raster asset stays a real WebP above the 36 KB regression threshold", async () => {
+  const { stat } = await import("node:fs/promises");
   const info = await stat(new URL(`../${ASSET_PATH}`, import.meta.url));
-  // Anything below 200 KB has historically been the blurred 36 KB wash;
-  // gate on the production-quality asset so a reversion to a small
-  // placeholder fails CI.
+  // The staging-derived sketch is ~185 KB; the prior failure mode was a
+  // 36 KB blurred wash. Gate well above that regression floor while still
+  // allowing the legitimate sketch (and any future higher-quality raster
+  // the staging pipeline emits) to pass.
   assert.ok(
-    info.size > 200 * 1024,
-    `${ASSET_PATH} must be larger than 200 KB to keep high-texture ` +
-      `paint; got ${info.size} bytes`,
+    info.size > 100 * 1024,
+    `${ASSET_PATH} must be larger than 100 KB to keep real raster; ` +
+      `got ${info.size} bytes`,
   );
 });
 

@@ -21,7 +21,17 @@
  *   - NO "Pracademic" highlight in the hero (Murali 22:48 — the term
  *     belongs in body copy, not in styled callouts).
  *   - NO artwork-producing CSS gradients/blooms. The overlay is a single
- *     navy→transparent→ivory linear gradient.
+ *     ivory→transparent→ivory linear gradient.
+ * R3 (t_1e66bbdc, 2026-08-07): hero copy flipped from white to the
+ *   canonical navy (`--cp-color-navy`, #242f4c) so the institute name,
+ *   title, and lead read as proper editorial navy on the watercolor /
+ *   sketch artwork instead of washed-out white. The overlay now uses
+ *   a restrained ivory wash at the text region so navy text remains
+ *   legible without crushing the paper grain of the raster. The navy
+ *   text-shadow (which was added for white-on-watercolor contrast) is
+ *   removed — with the ivory wash underneath, a navy shadow on navy
+ *   text becomes muddy. Both CTAs stay usable; the outline button
+ *   switches from white-bordered to navy-bordered to match.
  */
 import { programmes } from "../lib/content";
 
@@ -106,19 +116,23 @@ const HERO_HEIGHT = 929;
 <style>
   /*
    * Hero raster: real raster (hero-home-sketch.webp, 1694x929) sits
-   * behind a restrained navy→ivory overlay. The overlay is mostly
-   * transparent so the sketch is fully visible — it only darkens the
-   * top half enough for white copy to read and then fades to ivory at
-   * the bottom so the hero lands visually into the rest of the page.
+   * behind a restrained ivory wash. The wash is light enough to keep
+   * the paper grain visible while giving navy copy a clean field to
+   * read against. The wash fades to transparent in the middle so the
+   * sketch still breathes, then to ivory at the bottom so the hero
+   * lands visually into the rest of the page.
    *
    * R2 (t_654cef90, 2026-08-07): the raster was swapped from the
    * locally-generated watercolor (2400x1125, home-watercolor-hero.webp)
    * to the staging-derived sketch (1694x929, hero-home-sketch.webp).
-   * The overlay math (top navy → transparent → ivory at 100%) is
-   * preserved unchanged — it stays a single linear gradient so the
-   * raster stays the artwork source. White copy readability is
-   * preserved by the title's text-shadow (see `.cp-hero__title`),
-   * not by the overlay.
+   * The overlay is still a single linear gradient so the raster stays
+   * the artwork source.
+   *
+   * R3 (t_1e66bbdc, 2026-08-07): copy flipped from white to navy
+   * (`--cp-color-navy`, #242f4c). The overlay was rebalanced to a
+   * translucent ivory wash at the top so navy text reads cleanly
+   * without the muddy navy text-shadow that was used for white-on-
+   * watercolor contrast. The shadow block is now removed.
    */
   /*
    * Z-index scheme (FIX 2026-08-07, Murali: "no watercolor hero on home"):
@@ -134,7 +148,11 @@ const HERO_HEIGHT = 929;
     min-height: clamp(440px, 62vh, 660px);
     display: flex;
     align-items: center;
-    color: #ffffff;
+    /*
+     * R3 (t_1e66bbdc): copy is now navy on a translucent ivory wash,
+     * not white. The base color follows the copy.
+     */
+    color: var(--cp-color-navy);
     padding: clamp(3rem, 2rem + 4vw, 5rem) 0;
     background: var(--cp-color-ivory);
   }
@@ -159,12 +177,20 @@ const HERO_HEIGHT = 929;
     position: absolute;
     inset: 0;
     z-index: 1;
+    /*
+     * R3 (t_1e66bbdc): ivory wash replaces the navy darkening. The
+     * wash is mostly opaque at the top so navy copy reads cleanly
+     * against the watercolor / sketch, then fades to transparent in
+     * the middle so the raster stays visible, then lands on full
+     * ivory at the bottom so the hero blends into the page. One
+     * single linear gradient — no stacked artwork layers.
+     */
     background:
       linear-gradient(
         180deg,
-        rgba(36, 47, 76, 0.20) 0%,
-        rgba(36, 47, 76, 0.10) 35%,
-        rgba(36, 47, 76, 0) 60%,
+        rgba(239, 235, 229, 0.78) 0%,
+        rgba(239, 235, 229, 0.55) 35%,
+        rgba(239, 235, 229, 0) 65%,
         var(--cp-color-ivory) 100%
       );
     pointer-events: none;
@@ -206,34 +232,41 @@ const HERO_HEIGHT = 929;
     font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.04em;
-    color: #ffffff;
+    /*
+     * R3 (t_1e66bbdc): institute name is editorial navy, not white.
+     */
+    color: var(--cp-color-navy);
     line-height: 1.25;
     max-width: 26ch;
   }
 
   .cp-hero__title {
-    color: #ffffff;
+    /*
+     * R3 (t_1e66bbdc): title is editorial navy on an ivory wash. The
+     * R1 navy text-shadow that gave white copy contrast against the
+     * watercolor is removed — a navy shadow on navy text becomes
+     * muddy against the ivory wash. The ivory wash itself now
+     * provides legibility.
+     */
+    color: var(--cp-color-navy);
     font-size: var(--cp-font-size-title);
     margin: 0 0 1rem;
     letter-spacing: -0.01em;
     text-wrap: balance;
-    /*
-     * R1 (t_eb103610): with the overlay lightened to 0.20 navy, the
-     * title relies on a stronger text-shadow for legibility against
-     * the textured painting underneath. The shadow stays local (no
-     * blurred bloom) and uses the same navy as the painting.
-     */
-    text-shadow: 0 1px 2px rgba(36, 47, 76, 0.65),
-      0 2px 18px rgba(36, 47, 76, 0.45);
   }
 
   .cp-hero__lead {
+    /*
+     * R3 (t_1e66bbdc): lead is editorial navy. The R1 navy text-shadow
+     * that gave white copy contrast is removed — navy shadow on navy
+     * text against an ivory wash becomes muddy. The wash handles it.
+     */
     font-size: 1.0625rem;
     line-height: 1.65;
-    color: rgba(255, 255, 255, 0.96);
+    color: var(--cp-color-navy);
     max-width: 58ch;
     margin: 0 0 1.75rem;
-    text-shadow: 0 1px 12px rgba(36, 47, 76, 0.35);
+    opacity: 0.92;
   }
 
   .cp-hero__actions {
@@ -242,22 +275,28 @@ const HERO_HEIGHT = 929;
     gap: 0.75rem;
   }
 
+  /*
+   * R3 (t_1e66bbdc): the outline button switches from white-bordered
+   * (for white copy on the navy overlay) to navy-bordered to match the
+   * navy copy on the ivory wash. Hover keeps the inverted treatment.
+   */
   .cp-hero__actions .cp-button--outline {
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.7);
+    color: var(--cp-color-navy);
+    border-color: var(--cp-color-navy);
   }
 
   .cp-hero__actions .cp-button--outline:hover,
   .cp-hero__actions .cp-button--outline:focus-visible {
-    background: #ffffff;
-    color: var(--cp-color-navy);
+    background: var(--cp-color-navy);
+    color: var(--cp-color-ivory);
   }
 
   /*
-   * Mobile gets a slightly heavier top darkening because small viewports
+   * Mobile gets a slightly heavier top wash because small viewports
    * crop the sketch tighter and the navy text-safe centre may not be
    * fully behind the copy at narrow widths. The wash is restrained
-   * (0.30 → 0.18 → 0.05) so paper grain is not crushed.
+   * (0.86 → 0.62 → 0.05) so paper grain is not crushed and the raster
+   * still breathes through.
    */
   @media (max-width: 767.98px) {
     .cp-hero__art-img {
@@ -268,9 +307,9 @@ const HERO_HEIGHT = 929;
       background:
         linear-gradient(
           180deg,
-          rgba(36, 47, 76, 0.30) 0%,
-          rgba(36, 47, 76, 0.18) 30%,
-          rgba(36, 47, 76, 0.05) 55%,
+          rgba(239, 235, 229, 0.86) 0%,
+          rgba(239, 235, 229, 0.62) 30%,
+          rgba(239, 235, 229, 0.05) 60%,
           var(--cp-color-ivory) 100%
         );
     }

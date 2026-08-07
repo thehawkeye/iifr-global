@@ -4,9 +4,12 @@
  *
  * Murali spec (L1, t_dadf4467, 2026-08-06, refined 22:48 IST):
  *   - Watercolor hero — artistic, NOT the building photograph.
- *     Layered radial gradients in the navy / maroon / gold palette +
- *     three blurred "bloom" discs that suggest wet pigment bleeding
- *     into paper. Clear gradient fade to ivory at the bottom.
+ *     Real raster watercolour asset (home-watercolor-hero.webp) sits
+ *     behind the copy with object-fit:cover so it scales without
+ *     distortion across viewports. A restrained solid/linear overlay
+ *     above the art keeps text readable without hiding the painting.
+ *     Clear fade to ivory at the bottom so the hero lands visually
+ *     into the rest of the page.
  *   - IIFR emblem + full institute name as a quiet crest above the title.
  *   - TrustStrip moved to a separate <TrustStrip /> component below
  *     (matches iifr.global's navy band with label/value pairs).
@@ -39,13 +42,29 @@ const { title, lead, primary, secondary } = Astro.props as Props;
 // for callers that opt in later (e.g. the ECP detail page), but the home
 // hero does not render it.
 void programmes;
+
+// Real raster watercolour hero. Focal point sits slightly right-of-centre
+// (60% / 40%) so the navy text-safe field of the painting stays behind the
+// copy while the maroon bloom on the right remains visible at wide widths.
+const WATERCOLOR_SRC = "/assets/images/contemporary/home-watercolor-hero.webp";
+const WATERCOLOR_WIDTH = 2400;
+const WATERCOLOR_HEIGHT = 1125;
 ---
 
 <section class="cp-hero" aria-labelledby="cp-hero-title">
-  <div class="cp-hero__wash" aria-hidden="true"></div>
-  <div class="cp-hero__bloom cp-hero__bloom--gold" aria-hidden="true"></div>
-  <div class="cp-hero__bloom cp-hero__bloom--maroon" aria-hidden="true"></div>
-  <div class="cp-hero__bloom cp-hero__bloom--ink" aria-hidden="true"></div>
+  <picture class="cp-hero__art" aria-hidden="true">
+    <img
+      class="cp-hero__art-img"
+      src={WATERCOLOR_SRC}
+      alt=""
+      width={WATERCOLOR_WIDTH}
+      height={WATERCOLOR_HEIGHT}
+      decoding="async"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </picture>
+  <div class="cp-hero__overlay" aria-hidden="true"></div>
 
   <div class="cp-container cp-container--wide cp-hero__inner">
     <div class="cp-hero__copy">
@@ -82,20 +101,18 @@ void programmes;
 
 <style>
   /*
-   * Watercolor hero: layered radial gradients in the brand palette +
-   * three blurred "bloom" discs (gold, maroon, ink) suggesting wet
-   * pigment bleeding into paper. The bottom fades to ivory so the
-   * hero lands visually into the rest of the page.
+   * Watercolor hero: real raster watercolour (home-watercolor-hero.webp)
+   * sits behind a restrained navy→ivory overlay. The overlay is mostly
+   * transparent so the painting is fully visible — it only darkens the
+   * top half enough for white copy to read and then fades to ivory at
+   * the bottom so the hero lands visually into the rest of the page.
    */
   /*
    * Z-index scheme (FIX 2026-08-07, Murali: "no watercolor hero on home"):
-   *   .cp-hero         — no opaque background (was `var(--cp-color-ivory)`,
-   *                      which was painting OVER the art layer and hiding
-   *                      the watercolor). The wash supplies the bottom
-   *                      fade to ivory instead.
-   *   .cp-hero__wash   — z-index 0; art layer
-   *   .cp-hero__bloom* — z-index 1; on top of wash, but below copy
-   *   .cp-hero__inner  — z-index 2; copy + CTAs read on top of art
+   *   .cp-hero         — no opaque background; art supplies the colour.
+   *   .cp-hero__art    — z-index 0; the raster watercolour layer.
+   *   .cp-hero__overlay— z-index 1; readable-text overlay, fades to ivory.
+   *   .cp-hero__inner  — z-index 2; copy + CTAs read on top of art.
    * No `isolation: isolate` — we want everything in normal flow.
    */
   .cp-hero {
@@ -106,75 +123,38 @@ void programmes;
     align-items: center;
     color: #ffffff;
     padding: clamp(3rem, 2rem + 4vw, 5rem) 0;
+    background: var(--cp-color-ivory);
   }
 
-  .cp-hero__wash {
+  .cp-hero__art {
     position: absolute;
     inset: 0;
     z-index: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .cp-hero__art-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: 60% 40%;
+  }
+
+  .cp-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
     background:
-      radial-gradient(
-        ellipse 55% 65% at 8% 12%,
-        rgba(199, 153, 6, 0.55) 0%,
-        rgba(199, 153, 6, 0) 60%
-      ),
-      radial-gradient(
-        ellipse 50% 60% at 92% 8%,
-        rgba(108, 19, 27, 0.60) 0%,
-        rgba(108, 19, 27, 0) 65%
-      ),
-      radial-gradient(
-        ellipse 65% 70% at 50% 50%,
-        rgba(36, 47, 76, 0.85) 0%,
-        rgba(36, 47, 76, 0.65) 45%,
-        rgba(36, 47, 76, 0) 80%
-      ),
       linear-gradient(
         180deg,
-        rgba(36, 47, 76, 0.95) 0%,
-        rgba(36, 47, 76, 0.90) 40%,
-        rgba(239, 235, 229, 0) 78%,
+        rgba(36, 47, 76, 0.45) 0%,
+        rgba(36, 47, 76, 0.30) 35%,
+        rgba(36, 47, 76, 0) 60%,
         var(--cp-color-ivory) 100%
       );
-  }
-
-  .cp-hero__bloom {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(56px);
-    opacity: 0.75;
     pointer-events: none;
-    z-index: 1;
-  }
-
-  .cp-hero__bloom--gold {
-    width: 42%;
-    aspect-ratio: 1;
-    left: 2%;
-    top: 4%;
-    background: radial-gradient(circle at 30% 30%,
-      rgba(199, 153, 6, 0.85) 0%,
-      rgba(199, 153, 6, 0) 70%);
-  }
-
-  .cp-hero__bloom--maroon {
-    width: 38%;
-    aspect-ratio: 1;
-    right: 4%;
-    bottom: 8%;
-    background: radial-gradient(circle at 60% 60%,
-      rgba(108, 19, 27, 0.80) 0%,
-      rgba(108, 19, 27, 0) 70%);
-  }
-
-  .cp-hero__bloom--ink {
-    width: 32%;
-    aspect-ratio: 1;
-    left: 36%;
-    top: 40%;
-    background: radial-gradient(circle at 50% 50%,
-      rgba(36, 47, 76, 0.70) 0%,
-      rgba(36, 47, 76, 0) 70%);
   }
 
   .cp-hero__inner {
@@ -230,7 +210,7 @@ void programmes;
   .cp-hero__lead {
     font-size: 1.0625rem;
     line-height: 1.65;
-    color: rgba(255, 255, 255, 0.92);
+    color: rgba(255, 255, 255, 0.96);
     max-width: 58ch;
     margin: 0 0 1.75rem;
     text-shadow: 0 1px 12px rgba(36, 47, 76, 0.35);
@@ -253,9 +233,39 @@ void programmes;
     color: var(--cp-color-navy);
   }
 
+  /*
+   * Mobile gets a slightly heavier top darkening because small viewports
+   * crop the painting tighter and the navy text-safe centre may not be
+   * fully behind the copy at narrow widths.
+   */
+  @media (max-width: 767.98px) {
+    .cp-hero__art-img {
+      object-position: 50% 35%;
+    }
+
+    .cp-hero__overlay {
+      background:
+        linear-gradient(
+          180deg,
+          rgba(36, 47, 76, 0.58) 0%,
+          rgba(36, 47, 76, 0.40) 30%,
+          rgba(36, 47, 76, 0.05) 55%,
+          var(--cp-color-ivory) 100%
+        );
+    }
+  }
+
+  /*
+   * Reduced motion: keep the art and overlay static — the original
+   * animated bloom discs are gone, so this block is here to document
+   * intent and to guard against any future motion creep on the hero.
+   */
   @media (prefers-reduced-motion: reduce) {
-    .cp-hero__bloom {
-      filter: blur(32px);
+    .cp-hero__art,
+    .cp-hero__art-img,
+    .cp-hero__overlay {
+      animation: none;
+      transition: none;
     }
   }
 </style>

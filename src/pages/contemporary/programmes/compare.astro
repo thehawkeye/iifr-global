@@ -32,6 +32,12 @@ const dimensions: { label: string; values: (p: typeof programmes[number]) => str
   { label: "Certification", values: (p) => p.certification.split(".")[0] + "." },
   { label: "Current status", values: (p) => p.status },
 ];
+
+const nextStep = (status: typeof programmes[number]["status"]) => {
+  if (status === "by-enquiry") return { intent: "enquire", label: "Enquire" };
+  if (status === "coming-soon") return { intent: "enquire", label: "Register interest" };
+  return { intent: "apply", label: "Apply" };
+};
 ---
 
 <ContemporaryBaseLayout
@@ -74,13 +80,16 @@ const dimensions: { label: string; values: (p: typeof programmes[number]) => str
             ))}
             <tr>
               <th scope="row">Next step</th>
-              {programmes.map((p) => (
-                <td>
-                  <a class="cp-button cp-button--primary" href={`/contemporary/start?intent=${p.status === "by-enquiry" ? "enquire" : "apply"}&programme=${p.slug}`}>
-                    {p.status === "by-enquiry" ? "Enquire" : "Apply"}
-                  </a>
-                </td>
-              ))}
+              {programmes.map((p) => {
+                const step = nextStep(p.status);
+                return (
+                  <td>
+                    <a class="cp-button cp-button--primary" href={`/contemporary/start?intent=${step.intent}&programme=${p.slug}`}>
+                      {step.label}
+                    </a>
+                  </td>
+                );
+              })}
             </tr>
           </tbody>
         </table>

@@ -1,0 +1,193 @@
+---
+/**
+ * ECP-only decision content sourced from staging-dev.iifr.global/ecp.php
+ * on 06-Aug-2026. Per Murali 2026-08-06 22:50 IST, the contemporary
+ * ECP pages must reflect this source.
+ *
+ * Shared programme data remains in lib/content.ts; this component
+ * carries the extended content that does not apply to other programme
+ * templates.
+ */
+
+const capstones = [
+  {
+    title: "Course design",
+    description:
+      "Create a course outline, learning objectives, and a session plan that align your expertise with specific learning outcomes.",
+  },
+  {
+    title: "Case writing",
+    description:
+      "Develop live cases that connect real-world dynamics with academic frameworks, using public data and, where relevant, access to exemplar firms.",
+  },
+];
+
+const faqs = [
+  {
+    question: "What is the programme fee?",
+    answer: [
+      "The ECP programme fee is ₹5,00,000 plus applicable GST.",
+      "Founding Batch Scholarship support is available for eligible applicants. Speak with the admissions team for the applicable offer and payment details.",
+    ],
+  },
+  {
+    question: "Are the eight learning days continuous?",
+    answer: [
+      "No. The eight learning days are spread across three alternate weekends during August and September 2026, followed by four months of online faculty mentorship.",
+      "Participants do not need to travel to Delhi every week.",
+    ],
+  },
+  {
+    question: "What will be covered in the programme?",
+    answer: [
+      "The programme covers course and curriculum design, session planning and classroom delivery, case writing and teaching-material development, assessment and learner feedback, AI-enabled teaching workflows, research and thought leadership, academic and executive-education engagement, and mentored capstone projects.",
+    ],
+  },
+  {
+    question: "Who is eligible to apply for the ECP?",
+    answer: [
+      "The programme is intended for experienced professionals, educators, and academic leaders who want to contribute more effectively to teaching, executive education, and institutional learning.",
+      "Admission is based on the applicant's professional experience, profile, motivation, and overall fit with the programme.",
+    ],
+  },
+  {
+    question: "I cannot join the current cohort. When will the next cohort begin?",
+    answer: [
+      "The next cohort schedule will be announced separately. Candidates interested in a future cohort can share their details with the admissions team to receive updates when registrations open.",
+    ],
+  },
+  {
+    question: "Is there a placement facility after completing the ECP?",
+    answer: [
+      "The ECP is not a placement programme and does not guarantee employment or faculty appointments. It is designed to strengthen readiness for teaching, executive education, curriculum development, and other academic opportunities.",
+    ],
+  },
+  {
+    question: "Can I apply to global universities using the ECP and EFMD certification?",
+    answer: [
+      "The programme's EFMD certification strengthens its academic credibility, but it does not automatically qualify or guarantee a faculty position at any university. Each institution assesses candidates according to its own eligibility criteria, experience requirements, and selection process.",
+    ],
+  },
+  {
+    question: "Is an interest-free loan available?",
+    answer: [
+      "Any financing or interest-free payment facility is subject to the applicant's eligibility and approval criteria. The admissions team can share the latest available options and required documentation.",
+    ],
+  },
+  {
+    question: "What are the assessment requirements?",
+    answer: [
+      "Participants are evaluated through programme activities such as assignments, classroom participation, applied work, and the mentored capstone projects. Successful completion requires participation in the scheduled learning days and completion of the required academic work.",
+    ],
+  },
+  {
+    question: "How should candidates evaluate the ROI beyond classroom learning?",
+    answer: [
+      "The ECP is designed to build independent Professor of Practice professionals with the industry expertise and educator skills to command hourly teaching rates at leading business schools.",
+      "ECP cohorts are eligible to participate in IIFR learning tables, discussions, and networking opportunities, including Pracademic Circle roundtables with faculty cohorts, deans and administrators, research scholars, and corporate L&D teams.",
+    ],
+  },
+];
+---
+
+<section class="cp-section" aria-labelledby="cp-ecp-capstones">
+  <div class="cp-container cp-container--narrow">
+    <h2 id="cp-ecp-capstones">Capstone projects</h2>
+    <div class="cp-ecp-detail-grid">
+      {capstones.map((capstone) => (
+        <article class="cp-ecp-detail-card">
+          <h3>{capstone.title}</h3>
+          <p>{capstone.description}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="cp-section cp-section--ivory" aria-labelledby="cp-ecp-scholarship">
+  <div class="cp-container cp-container--narrow">
+    <h2 id="cp-ecp-scholarship">Founding Batch Scholarship</h2>
+    <p>Scholarship support is available for eligible applicants. Speak with admissions about the applicable offer, payment details, and eligibility.</p>
+    <ul class="cp-ecp-detail-list">
+      <li>Academic Excellence</li>
+      <li>Public Service</li>
+      <li>Social Impact</li>
+    </ul>
+  </div>
+</section>
+
+<section class="cp-section" aria-labelledby="cp-ecp-faqs">
+  <div class="cp-container cp-container--narrow">
+    <h2 id="cp-ecp-faqs">Frequently asked questions</h2>
+    <div class="cp-ecp-faqs">
+      {faqs.map((faq) => (
+        <details>
+          <summary>{faq.question}</summary>
+          {faq.answer.map((paragraph) => <p>{paragraph}</p>)}
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cp-ecp-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .cp-ecp-detail-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .cp-ecp-detail-card {
+    border-top: 2px solid var(--cp-color-maroon);
+    padding: 1rem 0;
+  }
+
+  .cp-ecp-detail-card h3,
+  .cp-ecp-detail-card p {
+    margin: 0;
+  }
+
+  .cp-ecp-detail-card p,
+  .cp-ecp-faqs p {
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-ecp-detail-card p {
+    margin-top: 0.5rem;
+  }
+
+  .cp-ecp-detail-list {
+    margin: 1rem 0 0;
+    padding-left: 1.2em;
+  }
+
+  .cp-ecp-detail-list li {
+    margin-bottom: 0.4rem;
+  }
+
+  .cp-ecp-faqs {
+    border-top: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-ecp-faqs details {
+    border-bottom: 1px solid var(--cp-color-divider);
+    padding: 1rem 0;
+  }
+
+  .cp-ecp-faqs summary {
+    color: var(--cp-color-navy);
+    cursor: pointer;
+    font-family: var(--cp-font-heading);
+    font-weight: 700;
+  }
+
+  .cp-ecp-faqs p {
+    margin: 0.75rem 0 0;
+  }
+</style>

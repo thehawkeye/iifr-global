@@ -5,6 +5,7 @@
  * format, and an explicit next action.
  */
 import type { Programme } from "../lib/content";
+import { formatDDMMMYYYY } from "../lib/content";
 
 interface Props {
   programme: Programme;
@@ -48,7 +49,7 @@ const statusClass: Record<Programme["status"], string> = {
     {cohort && cohort.startDate && (
       <div>
         <dt>Next start</dt>
-        <dd>{cohort.startDate}</dd>
+        <dd>{formatDDMMMYYYY(cohort.startDate)}</dd>
       </div>
     )}
     {cohort && (

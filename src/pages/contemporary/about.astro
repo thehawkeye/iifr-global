@@ -10,6 +10,39 @@ import ContemporaryBaseLayout from "../../contemporary/layouts/ContemporaryBaseL
 import PageHero from "../../contemporary/components/PageHero.astro";
 import { SITE_URL } from "../../contemporary/lib/seo";
 
+const executiveBoard = [
+  { name: "Banwarilal Purohit", role: "Chairman, IIFR" },
+  { name: "Rajendra Srivastava", role: "Vice Chairman, IIFR" },
+  { name: "Rohit Bansal", role: "Member" },
+  { name: "Siva Prasad", role: "Member" },
+  { name: "Aruna Reddy", role: "Member" },
+  { name: "P. R. Kaushik", role: "Member" },
+];
+
+const strategicPartners = [
+  {
+    name: "Bharatiya Vidya Bhavan",
+    shortName: "BVB",
+    description:
+      "IIFR is an autonomous academic institute established by Bharatiya Vidya Bhavan.",
+    href: "https://www.bhavans.info/",
+  },
+  {
+    name: "LatticEd Advisors",
+    shortName: "LatticEd",
+    description:
+      "LatticEd Advisors brings practice-led capability building across education, learning, and institutional development.",
+    href: "https://www.latticedadvisors.com/about",
+  },
+  {
+    name: "EFMD Global",
+    shortName: "EFMD",
+    description:
+      "EFMD is a global, non-profit membership organisation for management development and recognised accreditation services.",
+    href: "https://www.efmdglobal.org/about-efmd-global/",
+  },
+];
+
 const seo = {
   title: "About IIFR | An autonomous academic institute of Bharatiya Vidya Bhavan",
   description:
@@ -34,9 +67,13 @@ const seo = {
   <PageHero
     eyebrow="About IIFR"
     title="An autonomous academic institute of Bharatiya Vidya Bhavan."
-    lead="The International Institute for Faculty & Research (IIFR) is an autonomous academic institute established by Bharatiya Vidya Bhavan. It strengthens faculty capability, research excellence, and academic leadership across India and the Global South, with a focus on practice-led scholarship and &quot;pracademic&quot; education."
+    lead="The International Institute for Faculty & Research (IIFR) is an autonomous academic institute established by Bharatiya Vidya Bhavan. It strengthens faculty capability, research excellence, and academic leadership across India and the Global South, with a focus on practice-led scholarship and Pracademic education."
     image={{ src: "/assets/images/contemporary/about-hero.png", alt: "Educators and practitioners walking through a contemporary academic campus" }}
-  />
+  >
+    <Fragment slot="lead">
+      The International Institute for Faculty & Research (IIFR) is an autonomous academic institute established by Bharatiya Vidya Bhavan. It strengthens faculty capability, research excellence, and academic leadership across India and the Global South, with a focus on practice-led scholarship and pracademic education.
+    </Fragment>
+  </PageHero>
 
   <section class="cp-section" aria-labelledby="cp-about-mission">
     <div class="cp-container cp-container--narrow">
@@ -52,32 +89,53 @@ const seo = {
   </section>
 
   <section class="cp-section cp-section--ivory" id="governance" aria-labelledby="cp-about-governance">
-    <div class="cp-container cp-container--narrow">
-      <h2 id="cp-about-governance">Governance</h2>
-      <p>
-        IIFR is governed by its Academic Council, with academic oversight of
-        programmes, faculty appointments, and the institute's research
-        direction. The institute is established by Bharatiya Vidya Bhavan and
-        operates from New Delhi.
+    <div class="cp-container">
+      <span class="cp-eyebrow">Governance</span>
+      <h2 id="cp-about-governance">Executive Board</h2>
+      <p class="cp-lead">
+        The Executive Board provides strategic oversight, institutional
+        stewardship, and long-term leadership for IIFR's growth and priorities.
       </p>
-      <p>
-        Governance and quality-assurance details that affect public claims
-        (faculty titles, accreditation language, partner relationships,
-        fees, scholarships, and outcome statements) are subject to approval
-        by the Academic Council and the institute's director.
-      </p>
+      <div class="cp-board" aria-label="IIFR Executive Board">
+        {executiveBoard.map((member) => (
+          <article class="cp-board__member">
+            <h3>{member.name}</h3>
+            <p>{member.role}</p>
+          </article>
+        ))}
+      </div>
+      <div class="cp-governance-note">
+        <h3>Academic Council</h3>
+        <p>
+          The Academic Council provides academic oversight of programmes,
+          faculty appointments, and IIFR's research direction.
+        </p>
+      </div>
     </div>
   </section>
 
   <section class="cp-section" id="partners" aria-labelledby="cp-about-partners">
-    <div class="cp-container cp-container--narrow">
+    <div class="cp-container">
+      <span class="cp-eyebrow">Collaborations</span>
       <h2 id="cp-about-partners">Strategic partners</h2>
-      <p>
-        IIFR works with academic, institutional, and sector partners across
-        India and the Global South. A current, verified partner list is
-        maintained in the editorial system; public-facing references are
-        published only after partner approval.
+      <p class="cp-lead">
+        IIFR works with academic and institutional partners that strengthen
+        faculty capability, research, and academic leadership.
       </p>
+      <div class="cp-grid cp-grid--3 cp-partners">
+        {strategicPartners.map((partner) => (
+          <article class="cp-card cp-card--ivory">
+            <p class="cp-partner__mark" aria-hidden="true">{partner.shortName}</p>
+            <h3>{partner.name}</h3>
+            <p>{partner.description}</p>
+            <p class="cp-card__cta">
+              <a href={partner.href} target="_blank" rel="noopener noreferrer">
+                Visit partner site <span aria-hidden="true">↗</span>
+              </a>
+            </p>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -112,5 +170,63 @@ const seo = {
     padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
     background: var(--cp-color-ivory);
     border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-board {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 2rem;
+    background: var(--cp-color-ivory-deep);
+    border: 1px solid var(--cp-color-ivory-deep);
+  }
+
+  .cp-board__member {
+    padding: 1.4rem;
+    background: var(--cp-color-white);
+  }
+
+  .cp-board__member h3,
+  .cp-governance-note h3 {
+    margin: 0;
+    font-size: 1.125rem;
+  }
+
+  .cp-board__member p {
+    margin: 0.4rem 0 0;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-governance-note {
+    max-width: 62ch;
+    margin-top: 2rem;
+  }
+
+  .cp-governance-note p {
+    margin-bottom: 0;
+  }
+
+  .cp-partners {
+    margin-top: 2rem;
+  }
+
+  .cp-partner__mark {
+    margin: 0 0 1.5rem;
+    color: var(--cp-color-maroon);
+    font-family: var(--cp-font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  @media (min-width: 768px) {
+    .cp-board {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 992px) {
+    .cp-board {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 </style>

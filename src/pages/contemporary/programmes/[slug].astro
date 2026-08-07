@@ -13,8 +13,9 @@
  *   8. Related content (other programmes, related insights)
  */
 import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
-import { programmes, getProgramme } from "../../../contemporary/lib/content";
+import { programmes, getProgramme, formatDDMMMYYYY } from "../../../contemporary/lib/content";
 import { SITE_URL, programmeCourseSchema } from "../../../contemporary/lib/seo";
+import EcpDetailSections from "../../../contemporary/components/EcpDetailSections.astro";
 
 export async function getStaticPaths() {
   return programmes.map((p) => ({
@@ -68,7 +69,7 @@ const statusLabel: Record<typeof programme.status, string> = {
         <div><dt>Duration</dt><dd>{programme.duration}</dd></div>
         <div><dt>Format</dt><dd>{programme.format}</dd></div>
         <div><dt>Type</dt><dd>{programme.programmeType}</dd></div>
-        {cohort?.startDate && <div><dt>Next start</dt><dd>{cohort.startDate}</dd></div>}
+        {cohort?.startDate && <div><dt>Next start</dt><dd>{formatDDMMMYYYY(cohort.startDate)}</dd></div>}
         {cohort && <div><dt>Fee</dt><dd>{cohort.fee}</dd></div>}
       </dl>
       <div class="cp-row">
@@ -138,9 +139,9 @@ const statusLabel: Record<typeof programme.status, string> = {
         <dl class="cp-facts cp-facts--dense">
           <div><dt>Cohort</dt><dd>{cohort.name}</dd></div>
           <div><dt>Status</dt><dd>{cohort.status}</dd></div>
-          {cohort.startDate && <div><dt>Start</dt><dd>{cohort.startDate}</dd></div>}
-          {cohort.endDate && <div><dt>End</dt><dd>{cohort.endDate}</dd></div>}
-          {cohort.applicationDeadline && <div><dt>Application deadline</dt><dd>{cohort.applicationDeadline}</dd></div>}
+          {cohort.startDate && <div><dt>Start</dt><dd>{formatDDMMMYYYY(cohort.startDate)}</dd></div>}
+          {cohort.endDate && <div><dt>End</dt><dd>{formatDDMMMYYYY(cohort.endDate)}</dd></div>}
+          {cohort.applicationDeadline && <div><dt>Application deadline</dt><dd>{formatDDMMMYYYY(cohort.applicationDeadline)}</dd></div>}
           <div><dt>Format</dt><dd>{cohort.format}</dd></div>
           <div><dt>Location</dt><dd>{cohort.location}</dd></div>
           <div><dt>Capacity</dt><dd>{cohort.capacity}</dd></div>
@@ -157,8 +158,23 @@ const statusLabel: Record<typeof programme.status, string> = {
     <div class="cp-container cp-container--narrow">
       <h2 id="cp-programme-cert">Certification</h2>
       <p>{programme.certification}</p>
+      {programme.slug === "ecp" && (
+        <p class="cp-lead" style="margin-top: 1rem;">
+          The August 2026 cohort is IIFR's first ECP cohort. Limited
+          Founding Batch Scholarships are available for senior practitioners
+          with strong applied-teaching portfolios — covering part of the
+          programme fee for eligible participants. Application deadline
+          10-Aug-2026.
+        </p>
+      )}
     </div>
   </section>
+
+  {programme.slug === "ecp" && (
+    <>
+      <EcpDetailSections />
+    </>
+  )}
 
   <section class="cp-section cp-section--navy" aria-labelledby="cp-programme-next">
     <div class="cp-container">

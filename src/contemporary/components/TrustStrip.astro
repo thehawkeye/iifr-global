@@ -1,0 +1,97 @@
+---
+/**
+ * TrustStrip — institutional credibility band beneath the hero.
+ *
+ * Murali spec (L1, t_dadf4467, 2026-08-06): match the iifr.global
+ * home-page trust strip — a navy band with four label/value pairs
+ * separated by thin dividers. No boxes, no SVG marks, no borders
+ * around individual items.
+ *
+ * Data source: iifr.global home (Established by Bharatiya Vidya
+ * Bhavan, EFMD Certification, Academics and Professors of Practice,
+ * India and the Global South). All four claims are present on the
+ * live iifr.global site.
+ */
+interface TrustItem {
+  label: string;
+  value: string;
+}
+
+const items: TrustItem[] = [
+  { label: "Established by", value: "Bharatiya Vidya Bhavan" },
+  { label: "Certification", value: "EFMD Certification" },
+  { label: "Faculty model", value: "Academics and Professors of Practice" },
+  { label: "Focus", value: "India and the Global South" },
+];
+---
+
+<section class="cp-trust" aria-label="Institutional credibility">
+  <div class="cp-container cp-container--wide cp-trust__inner">
+    {items.map((item) => (
+      <div class="cp-trust__item">
+        <span class="cp-trust__label">{item.label}</span>
+        <strong class="cp-trust__value">{item.value}</strong>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .cp-trust {
+    background: var(--cp-color-navy);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--cp-color-white);
+  }
+
+  .cp-trust__inner {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .cp-trust__item {
+    border-left: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 1.1rem 1.5rem;
+  }
+
+  .cp-trust__item:last-child {
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .cp-trust__label {
+    display: block;
+    font-family: var(--cp-font-body);
+    color: var(--cp-color-gold);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .cp-trust__value {
+    display: block;
+    font-family: var(--cp-font-heading);
+    color: var(--cp-color-white);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  @media (max-width: 767.98px) {
+    .cp-trust__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .cp-trust__item,
+    .cp-trust__item:last-child {
+      border-left: 0;
+      border-right: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .cp-trust__item:first-child {
+      border-top: 0;
+    }
+  }
+</style>

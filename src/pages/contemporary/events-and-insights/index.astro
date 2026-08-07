@@ -14,6 +14,29 @@ import { SITE_URL } from "../../../contemporary/lib/seo";
 
 const upcoming = events.filter((e) => e.status !== "past" && e.status !== "archived");
 const past = events.filter((e) => e.status === "past" || e.status === "archived");
+const webinarRecordings = [
+  {
+    id: "NX90Hf8u1GY",
+    title: "The Rise of the Professor of Practice | IIFR Webinar",
+    description:
+      "A discussion of the pathways, expectations, and realities of moving from senior industry leadership into a Professor of Practice role in higher education.",
+    sourceUrl: "https://www.youtube.com/watch?v=NX90Hf8u1GY",
+  },
+  {
+    id: "rDgqBGB8wf4",
+    title: "AI in Education - Masterclass by International Institute for Faculty and Research",
+    description:
+      "Prof. Muralikrishnan B and Prof. Shankar Prakash examine how educators can use AI across course design, teaching practice, assessment, and quality assurance.",
+    sourceUrl: "https://www.youtube.com/watch?v=rDgqBGB8wf4",
+  },
+  {
+    id: "S1RCyVIayfA",
+    title: "Business Innovation in the Age of Disruption | Prof. Rajendra Srivastava | IIFR Masterclass",
+    description:
+      "Prof. Rajendra Srivastava considers how leaders can reassess management frameworks as intangible assets, technology, and ecosystems reshape enterprise value.",
+    sourceUrl: "https://www.youtube.com/watch?v=S1RCyVIayfA",
+  },
+];
 
 const seo = {
   title: "Events and insights | IIFR",
@@ -69,6 +92,37 @@ const seo = {
     </section>
   )}
 
+  <section class="cp-section cp-section--ivory" aria-labelledby="cp-webinar-recordings">
+    <div class="cp-container">
+      <header class="cp-programmes__head">
+        <span class="cp-eyebrow">Past events</span>
+        <h2 id="cp-webinar-recordings">Webinar recordings</h2>
+        <p>Watch recent IIFR conversations on practice-led education, AI in teaching, and business innovation.</p>
+      </header>
+      <div class="cp-webinar-grid">
+        {webinarRecordings.map((webinar) => (
+          <article class="cp-webinar-card">
+            <div class="cp-webinar-frame">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${webinar.id}`}
+                title={webinar.title}
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="cp-webinar-card__body">
+              <h3>{webinar.title}</h3>
+              <p>{webinar.description}</p>
+              <a href={webinar.sourceUrl} target="_blank" rel="noopener noreferrer">Watch on YouTube<span class="cp-sr-only">: {webinar.title}</span></a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="cp-section" aria-labelledby="cp-insights-grid">
     <div class="cp-container">
       <header class="cp-programmes__head">
@@ -101,5 +155,71 @@ const seo = {
     gap: 1rem;
     max-width: 800px;
     margin: 0 auto;
+  }
+
+  .cp-webinar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .cp-webinar-card {
+    overflow: hidden;
+    background: var(--cp-color-white);
+    border: 1px solid var(--cp-color-divider);
+    border-radius: var(--cp-radius-card);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+  }
+
+  .cp-webinar-frame {
+    aspect-ratio: 16 / 9;
+    background: var(--cp-color-navy);
+  }
+
+  .cp-webinar-frame iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .cp-webinar-card__body {
+    padding: 1.25rem;
+  }
+
+  .cp-webinar-card__body h3 {
+    margin: 0;
+    color: var(--cp-color-navy);
+    font-size: 1.1rem;
+  }
+
+  .cp-webinar-card__body p {
+    margin: 0.75rem 0 1rem;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-webinar-card__body a {
+    color: var(--cp-color-maroon);
+    font-weight: 700;
+  }
+
+  .cp-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 900px) {
+    .cp-webinar-grid {
+      grid-template-columns: 1fr;
+      max-width: 720px;
+      margin: 0 auto;
+    }
   }
 </style>

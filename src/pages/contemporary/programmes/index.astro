@@ -53,7 +53,7 @@ const schema = programmesListSchema(programmes);
   ]}
 >
   <PageHero eyebrow="Programmes" title="Programmes designed for decision and capability."
-    lead="IIFR offers programmes for individuals moving into teaching and academic influence, for faculty and academic leaders, and for institutions building capability."
+    lead="Built around the pracademic — the practitioner who teaches and the academic who practices. IIFR offers programmes for individuals, faculty, and institutions."
     image={{ src: "/assets/images/programmes/programmes-hero.jpeg", alt: "Faculty member teaching in a lecture hall" }}
     primary={{ href: "/contemporary/find-your-pathway", label: "Find your pathway" }}
     secondary={{ href: "/contemporary/programmes/compare", label: "Compare programmes", variant: "outline" }} />
@@ -62,7 +62,7 @@ const schema = programmesListSchema(programmes);
     <div class="cp-container">
       <h2 id="cp-open-programmes">Open and coming soon</h2>
       <p class="cp-section__intro">
-        Programmes with a live or upcoming cohort you can apply to.
+        Apply to ECP's August cohort, or register your interest for the next EFM cohort.
       </p>
       <div class="cp-grid cp-grid--2">
         {open.map((p) => <ProgrammeCard programme={p} />)}
@@ -74,7 +74,7 @@ const schema = programmesListSchema(programmes);
     <div class="cp-container">
       <h2 id="cp-by-enquiry-programmes">By enquiry</h2>
       <p class="cp-section__intro">
-        Programmes designed per engagement. Talk to IIFR to scope what you need.
+        Research and faculty development workshops, and custom executive and institutional programmes, are scoped with IIFR by enquiry.
       </p>
       <div class="cp-grid cp-grid--2">
         {byEnquiry.map((p) => <ProgrammeCard programme={p} />)}

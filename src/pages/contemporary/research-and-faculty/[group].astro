@@ -1,0 +1,111 @@
+---
+/**
+ * Group routes for /contemporary/research-and-faculty.
+ * Each group is sourced independently and links to individual profile pages.
+ */
+import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { peopleGroupMeta, getPeopleInGroup, type PeopleGroup } from "../../../contemporary/lib/people";
+import { SITE_URL } from "../../../contemporary/lib/seo";
+
+export function getStaticPaths() {
+  return (Object.keys(peopleGroupMeta) as PeopleGroup[]).map((group) => ({
+    params: { group },
+    props: { group },
+  }));
+}
+
+const { group } = Astro.props as { group: PeopleGroup };
+const meta = peopleGroupMeta[group];
+const groupPeople = getPeopleInGroup(group);
+
+const seo = {
+  title: `${meta.title} | IIFR research and faculty`,
+  description: meta.lead,
+  keywords: `IIFR ${meta.title}, IIFR research and faculty`,
+  canonical: `${SITE_URL}/contemporary/research-and-faculty/${group}`,
+  image: `${SITE_URL}/assets/images/contemporary/research-and-faculty-hero.png`,
+  type: "website" as const,
+  schema: "ItemList" as const,
+};
+---
+
+<ContemporaryBaseLayout
+  path={`/contemporary/research-and-faculty/${group}`}
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Research and faculty", href: "/contemporary/research-and-faculty" },
+    { label: meta.label },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container cp-container--narrow">
+      <span class="cp-eyebrow">Research and faculty</span>
+      <h1>{meta.title}</h1>
+      <p class="cp-lead">{meta.lead}</p>
+    </div>
+  </header>
+
+  <section class="cp-section" aria-labelledby="people-list">
+    <div class="cp-container">
+      <header class="cp-group-head">
+        <p id="people-list">Select a profile to read the IIFR-published role and background.</p>
+        <a href={meta.sourceUrl} rel="noreferrer" target="_blank">View the IIFR source</a>
+      </header>
+      <div class="cp-grid cp-grid--3">
+        {groupPeople.map((person) => (
+          <a class="cp-card cp-card--link cp-person-card" href={`/contemporary/research-and-faculty/profiles/${person.slug}`}>
+            <h2>{person.name}</h2>
+            <p class="cp-person-card__role">{person.role}</p>
+            <p>{person.summary}</p>
+            <span class="cp-card__cta">View profile <span aria-hidden="true">→</span></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-group-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .cp-group-head p {
+    margin: 0;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-person-card h2 {
+    margin: 0 0 0.35rem;
+    font-size: 1.2rem;
+  }
+
+  .cp-person-card__role {
+    color: var(--cp-color-maroon);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 0 0 1rem;
+  }
+
+  .cp-person-card > p:not(.cp-person-card__role) {
+    color: var(--cp-color-text-muted);
+  }
+
+  @media (max-width: 640px) {
+    .cp-group-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

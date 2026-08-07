@@ -17,7 +17,7 @@ const { eyebrow, title, lead, image, primary, secondary } = Astro.props as Props
   <div class="cp-container cp-page-hero__content">
     <span class="cp-page-hero__eyebrow cp-eyebrow">{eyebrow}</span>
     <h1 id="cp-page-hero-title">{title}</h1>
-    <p class="cp-page-hero__lead">{lead}</p>
+    <p class="cp-page-hero__lead"><slot name="lead">{lead}</slot></p>
     {(primary || secondary) && <div class="cp-page-hero__actions">
       {primary && <a class={`cp-button cp-button--${primary.variant ?? "primary"}`} href={primary.href}>{primary.label}</a>}
       {secondary && <a class={`cp-button cp-button--${secondary.variant ?? "outline"}`} href={secondary.href}>{secondary.label}</a>}

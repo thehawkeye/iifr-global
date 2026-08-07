@@ -128,6 +128,21 @@ const seo = {
     }
   }
 
+  @media (min-width: 768px) and (max-width: 991px) {
+    .cp-solutions {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .cp-solutions > li {
+    display: flex;
+    min-width: 0;
+  }
+
+  .cp-solution {
+    flex: 1;
+  }
+
   .cp-solution h3 {
     margin: 0 0 0.5rem;
   }
@@ -173,6 +188,10 @@ const seo = {
     padding-left: 1.2em;
     color: var(--cp-color-text-muted);
     font-size: 0.95rem;
+  }
+
+  .cp-solution > .cp-button {
+    margin-top: auto;
   }
 
   .cp-programmes__head {

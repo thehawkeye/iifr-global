@@ -8,9 +8,9 @@
  */
 import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
 import PageHero from "../../../contemporary/components/PageHero.astro";
-import FacultyCard from "../../../contemporary/components/FacultyCard.astro";
 import InsightCard from "../../../contemporary/components/InsightCard.astro";
-import { faculty, insights } from "../../../contemporary/lib/content";
+import { insights } from "../../../contemporary/lib/content";
+import { getPeopleInGroup, peopleGroupMeta } from "../../../contemporary/lib/people";
 import { SITE_URL } from "../../../contemporary/lib/seo";
 
 const seo = {
@@ -26,6 +26,7 @@ const seo = {
 };
 
 const insightsToShow = insights.slice(0, 2);
+const peopleGroups = ["academic-council", "faculty"] as const;
 ---
 
 <ContemporaryBaseLayout
@@ -67,14 +68,29 @@ const insightsToShow = insights.slice(0, 2);
     </div>
   </section>
 
-  <section class="cp-section cp-section--ivory" aria-labelledby="cp-faculty-grid">
+  <section class="cp-section cp-section--ivory" aria-labelledby="cp-people-groups">
     <div class="cp-container">
       <header class="cp-programmes__head">
-        <span class="cp-eyebrow">Faculty and academic council</span>
-        <h2 id="cp-faculty-grid">Meet the people</h2>
+        <span class="cp-eyebrow">People at IIFR</span>
+        <h2 id="cp-people-groups">Academic Council and Faculty</h2>
+        <p class="cp-lead">
+          Explore the two groups separately. Each route lists the people in
+          that group and links to the IIFR-published profile details.
+        </p>
       </header>
       <div class="cp-grid cp-grid--2">
-        {faculty.map((f) => <FacultyCard faculty={f} />)}
+        {peopleGroups.map((group) => {
+          const meta = peopleGroupMeta[group];
+          const count = getPeopleInGroup(group).length;
+          return (
+            <a class="cp-card cp-card--link cp-group-card" href={`/contemporary/research-and-faculty/${group}`}>
+              <span class="cp-tag cp-tag--navy">{count} profiles</span>
+              <h3>{meta.title}</h3>
+              <p>{meta.lead}</p>
+              <span class="cp-card__cta">Explore {meta.label} <span aria-hidden="true">→</span></span>
+            </a>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -153,5 +169,14 @@ const insightsToShow = insights.slice(0, 2);
     color: var(--cp-color-text-muted);
     max-width: 50ch;
     margin: 0 auto 1.5rem;
+  }
+
+  .cp-group-card h3 {
+    margin: 0.75rem 0;
+    font-size: 1.35rem;
+  }
+
+  .cp-group-card p {
+    color: var(--cp-color-text-muted);
   }
 </style>

@@ -3,17 +3,14 @@
  * InsightCard — used in insights list and home preview.
  */
 import type { Insight } from "../lib/content";
+import { formatDDMMMYYYY } from "../lib/content";
 
 interface Props {
   insight: Insight;
 }
 
 const { insight } = Astro.props as Props;
-const date = new Date(insight.publishDate).toLocaleDateString("en-IN", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
+const date = formatDDMMMYYYY(insight.publishDate);
 ---
 
 <a class="cp-card cp-card--link cp-insight-card" href={`/contemporary/events-and-insights/insights/${insight.slug}`}>

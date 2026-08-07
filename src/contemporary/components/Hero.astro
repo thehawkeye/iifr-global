@@ -2,10 +2,20 @@
 /**
  * Hero — homepage and top-of-page hero.
  *
- * Solid navy panel (no gradient). Documentary feel via copy and
- * clear hierarchy, not via CSS. One primary CTA + one secondary
- * CTA. Optional live-cohort signal — only shown when at least one
- * programme cohort is `registration-open`.
+ * Murali spec (L1, t_dadf4467, 2026-08-06, refined 22:48 IST):
+ *   - Watercolor hero — artistic, NOT the building photograph.
+ *     Layered radial gradients in the navy / maroon / gold palette +
+ *     three blurred "bloom" discs that suggest wet pigment bleeding
+ *     into paper. Clear gradient fade to ivory at the bottom.
+ *   - IIFR emblem + full institute name as a quiet crest above the title.
+ *   - TrustStrip moved to a separate <TrustStrip /> component below
+ *     (matches iifr.global's navy band with label/value pairs).
+ *   - NO live-cohort signal pill in the hero (Murali 22:48 — classy,
+ *     not crass; the pill decoration was the wrong call).
+ *   - NO Founding Batch Scholarship callout in the hero (same).
+ *     The term lives in the ECP detail body as plain prose.
+ *   - NO "Pracademic" highlight in the hero (Murali 22:48 — the term
+ *     belongs in body copy, not in styled callouts).
  */
 import { programmes } from "../lib/content";
 
@@ -16,110 +26,201 @@ interface Cta {
 }
 
 interface Props {
-  eyebrow: string;
   title: string;
   /** A one- or two-sentence value proposition. */
   lead: string;
   primary: Cta;
   secondary?: Cta;
-  /** Optional: show a live-cohort signal below the buttons. */
-  showLiveCohort?: boolean;
-  image?: { src: string; alt: string };
 }
 
-const {
-  eyebrow,
-  title,
-  lead,
-  primary,
-  secondary,
-  showLiveCohort = false,
-  image,
-} = Astro.props as Props;
+const { title, lead, primary, secondary } = Astro.props as Props;
 
-const liveCohort = programmes
-  .flatMap((p) => p.cohorts.map((c) => ({ programme: p, cohort: c })))
-  .find((pc) => pc.cohort.status === "registration-open" && pc.cohort.startDate);
+// `programmes` is imported to keep the live-cohort signal logic available
+// for callers that opt in later (e.g. the ECP detail page), but the home
+// hero does not render it.
+void programmes;
 ---
 
 <section class="cp-hero" aria-labelledby="cp-hero-title">
+  <div class="cp-hero__wash" aria-hidden="true"></div>
+  <div class="cp-hero__bloom cp-hero__bloom--gold" aria-hidden="true"></div>
+  <div class="cp-hero__bloom cp-hero__bloom--maroon" aria-hidden="true"></div>
+  <div class="cp-hero__bloom cp-hero__bloom--ink" aria-hidden="true"></div>
+
   <div class="cp-container cp-container--wide cp-hero__inner">
     <div class="cp-hero__copy">
-    <span class="cp-hero__eyebrow cp-eyebrow">{eyebrow}</span>
-    <h1 id="cp-hero-title" class="cp-hero__title">{title}</h1>
-    <p class="cp-hero__lead">{lead}</p>
-    <div class="cp-hero__actions">
-      <a class={`cp-button cp-button--${primary.variant ?? "primary"}`} href={primary.href}>
-        {primary.label}
-      </a>
-      {secondary && (
-        <a class={`cp-button cp-button--${secondary.variant ?? "outline"}`} href={secondary.href}>
-          {secondary.label}
-        </a>
-      )}
-    </div>
-    {showLiveCohort && liveCohort && (
-      <p class="cp-hero__signal">
-        <span class="cp-hero__signal-dot" aria-hidden="true"></span>
-        <span>
-          {liveCohort.programme.shortName} cohort begins {liveCohort.cohort.startDate} —
-          <a href={`/contemporary/programmes/${liveCohort.programme.slug}`}>
-            view programme details
-          </a>
+      <a class="cp-hero__brand" href="/contemporary" aria-label="IIFR — home">
+        <img
+          class="cp-hero__emblem"
+          src="/assets/logo.webp"
+          alt="IIFR emblem"
+          width="56"
+          height="56"
+          decoding="async"
+        />
+        <span class="cp-hero__brand-name">
+          International Institute for Faculty &amp; Research
         </span>
-      </p>
-    )}
+      </a>
+
+      <h1 id="cp-hero-title" class="cp-hero__title">{title}</h1>
+      <p class="cp-hero__lead">{lead}</p>
+
+      <div class="cp-hero__actions">
+        <a class={`cp-button cp-button--${primary.variant ?? "primary"}`} href={primary.href}>
+          {primary.label}
+        </a>
+        {secondary && (
+          <a class={`cp-button cp-button--${secondary.variant ?? "outline"}`} href={secondary.href}>
+            {secondary.label}
+          </a>
+        )}
+      </div>
     </div>
-    {image && <figure class="cp-hero__media"><img src={image.src} alt={image.alt} width="960" height="640" decoding="async" /></figure>}
   </div>
 </section>
 
 <style>
+  /*
+   * Watercolor hero: layered radial gradients in the brand palette +
+   * three blurred "bloom" discs (gold, maroon, ink) suggesting wet
+   * pigment bleeding into paper. The bottom fades to ivory so the
+   * hero lands visually into the rest of the page.
+   */
   .cp-hero {
-    background: var(--cp-color-navy);
-    color: var(--cp-color-white);
-    padding: clamp(3rem, 1.5rem + 6vw, 6rem) 0;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: clamp(440px, 62vh, 660px);
+    display: flex;
+    align-items: center;
+    background: var(--cp-color-ivory);
+    color: var(--cp-color-text);
+    padding: clamp(3rem, 2rem + 4vw, 5rem) 0;
+  }
+
+  .cp-hero__wash {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(
+        ellipse 55% 65% at 8% 12%,
+        rgba(199, 153, 6, 0.28) 0%,
+        rgba(199, 153, 6, 0) 60%
+      ),
+      radial-gradient(
+        ellipse 50% 60% at 92% 8%,
+        rgba(108, 19, 27, 0.30) 0%,
+        rgba(108, 19, 27, 0) 65%
+      ),
+      radial-gradient(
+        ellipse 65% 70% at 50% 50%,
+        rgba(36, 47, 76, 0.78) 0%,
+        rgba(36, 47, 76, 0.55) 45%,
+        rgba(36, 47, 76, 0) 80%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(36, 47, 76, 0.92) 0%,
+        rgba(36, 47, 76, 0.86) 40%,
+        rgba(239, 235, 229, 0) 78%,
+        var(--cp-color-ivory) 100%
+      );
+  }
+
+  .cp-hero__bloom {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(48px);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .cp-hero__bloom--gold {
+    width: 38%;
+    aspect-ratio: 1;
+    left: 4%;
+    top: 6%;
+    background: radial-gradient(circle at 30% 30%,
+      rgba(199, 153, 6, 0.55) 0%,
+      rgba(199, 153, 6, 0) 70%);
+  }
+
+  .cp-hero__bloom--maroon {
+    width: 34%;
+    aspect-ratio: 1;
+    right: 6%;
+    bottom: 12%;
+    background: radial-gradient(circle at 60% 60%,
+      rgba(108, 19, 27, 0.50) 0%,
+      rgba(108, 19, 27, 0) 70%);
+  }
+
+  .cp-hero__bloom--ink {
+    width: 28%;
+    aspect-ratio: 1;
+    left: 38%;
+    top: 42%;
+    background: radial-gradient(circle at 50% 50%,
+      rgba(36, 47, 76, 0.45) 0%,
+      rgba(36, 47, 76, 0) 70%);
   }
 
   .cp-hero__inner {
-    display: grid;
-    gap: 2rem;
-    align-items: center;
-  }
-
-  @media (min-width: 860px) {
-    .cp-hero__inner { grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr); }
-  }
-
-  .cp-hero__media {
-    margin: 0;
-    border-left: 5px solid var(--cp-color-gold);
-    background: var(--cp-color-navy-dark);
-  }
-
-  .cp-hero__media img {
+    position: relative;
     width: 100%;
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
-    opacity: 0.92;
   }
 
-  .cp-hero .cp-eyebrow {
-    color: var(--cp-color-gold);
+  .cp-hero__copy {
+    max-width: 60ch;
+  }
+
+  .cp-hero__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .cp-hero__brand:hover,
+  .cp-hero__brand:focus-visible {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .cp-hero__emblem {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+  }
+
+  .cp-hero__brand-name {
+    font-family: var(--cp-font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--cp-color-navy);
+    line-height: 1.25;
+    max-width: 26ch;
   }
 
   .cp-hero__title {
-    color: var(--cp-color-white);
+    color: var(--cp-color-navy);
     font-size: var(--cp-font-size-title);
     margin: 0 0 1rem;
     letter-spacing: -0.01em;
+    text-wrap: balance;
   }
 
   .cp-hero__lead {
-    font-size: 1.125rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
-    max-width: 60ch;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--cp-color-text);
+    max-width: 58ch;
     margin: 0 0 1.75rem;
   }
 
@@ -130,38 +231,19 @@ const liveCohort = programmes
   }
 
   .cp-hero__actions .cp-button--outline {
-    color: var(--cp-color-white);
-    border-color: var(--cp-color-white);
+    color: var(--cp-color-navy);
+    border-color: var(--cp-color-navy);
   }
 
   .cp-hero__actions .cp-button--outline:hover,
   .cp-hero__actions .cp-button--outline:focus-visible {
-    background: var(--cp-color-white);
-    color: var(--cp-color-navy);
+    background: var(--cp-color-navy);
+    color: var(--cp-color-white);
   }
 
-  .cp-hero__signal {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin: 1.5rem 0 0;
-    padding: 0.5rem 0.9rem;
-    background: rgba(199, 153, 6, 0.12);
-    border: 1px solid rgba(199, 153, 6, 0.4);
-    color: rgba(255, 255, 255, 0.95);
-    border-radius: var(--cp-radius-pill);
-    font-size: 0.875rem;
-  }
-
-  .cp-hero__signal-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--cp-color-gold);
-  }
-
-  .cp-hero__signal a {
-    color: var(--cp-color-gold);
-    text-decoration: none;
+  @media (prefers-reduced-motion: reduce) {
+    .cp-hero__bloom {
+      filter: blur(32px);
+    }
   }
 </style>

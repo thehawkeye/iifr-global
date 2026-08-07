@@ -1,93 +1,32 @@
 ---
 /**
- * /contemporary/start — lead-capture PLACEHOLDER.
+ * /contemporary/start — canonical admissions route.
  *
- * Per the design plan §6.9 and the hard redlines on this card, the
- * prototype intentionally does NOT wire a live form, CRM, or Zoho.
- * This page:
- *   1. Echoes the visitor's intent (`apply`, `enquire`, `partner`,
- *      `brochure`) and selected programme.
- *   2. Tells them clearly that the form is not yet wired.
- *   3. Routes them to the right next step (programme page, contact,
- *      partnership page).
- *   4. Preserves the URL contract so a future form can be wired
- *      without changing the call-to-action sites.
- *
- * The "Apply" CTA on programme pages, the "Find your pathway"
- * selector, and the contact page all link here. The links remain
- * functional and reviewable; what is missing is a real submission.
+ * This page intentionally renders the live ECP Zoho form rather than a
+ * local proxy. The formperma and iframe origin are the live values from
+ * https://admissions.iifr.global/ecp/ (verified 2026-08-06).
  */
 import ContemporaryBaseLayout from "../../contemporary/layouts/ContemporaryBaseLayout.astro";
-import { programmes, institutionalSolutions } from "../../contemporary/lib/content";
-import { SITE_URL, INFO_EMAIL } from "../../contemporary/lib/seo";
+import { SITE_URL } from "../../contemporary/lib/seo";
 
 const url = new URL(Astro.request.url);
+const programme = url.searchParams.get("programme");
 const intent = url.searchParams.get("intent") ?? "apply";
-const programmeSlug = url.searchParams.get("programme");
-const topic = url.searchParams.get("topic");
-
-const programme = programmeSlug
-  ? programmes.find((p) => p.slug === programmeSlug)
-  : null;
-const solution = topic
-  ? institutionalSolutions.find((s) => s.slug === topic)
-  : null;
-
-interface IntentCopy {
-  title: string;
-  lead: string;
-  ctaLabel: string;
-  ctaHref: string;
-}
-
-const copyByIntent: Record<string, IntentCopy> = {
-  apply: {
-    title: programme ? `Apply for ${programme.title}` : "Apply to IIFR",
-    lead: programme
-      ? `This prototype does not yet wire a live application form for ${programme.shortName}. Your request will be queued for the admissions team once the form goes live.`
-      : "This prototype does not yet wire a live application form. Your request will be queued for the admissions team once the form goes live.",
-    ctaLabel: "Read the programme page",
-    ctaHref: programme ? `/contemporary/programmes/${programme.slug}` : "/contemporary/programmes",
-  },
-  enquire: {
-    title: programme ? `Enquire about ${programme.title}` : "Enquire to IIFR",
-    lead: programme
-      ? `This prototype does not yet wire a live enquiry form for ${programme.shortName}. In the meantime, the admissions team can be reached by email.`
-      : "This prototype does not yet wire a live enquiry form. In the meantime, IIFR can be reached by email.",
-    ctaLabel: "Read the programme page",
-    ctaHref: programme ? `/contemporary/programmes/${programme.slug}` : "/contemporary/programmes",
-  },
-  brochure: {
-    title: programme ? `Request a brochure for ${programme.title}` : "Request a brochure",
-    lead: programme
-      ? `This prototype does not yet wire a live brochure request form for ${programme.shortName}.`
-      : "This prototype does not yet wire a live brochure request form.",
-    ctaLabel: "Read the programme page",
-    ctaHref: programme ? `/contemporary/programmes/${programme.slug}` : "/contemporary/programmes",
-  },
-  partner: {
-    title: solution ? solution.title : "Talk to IIFR about a partnership",
-    lead: solution
-      ? `This prototype does not yet wire a live partnership enquiry form for ${solution.title}.`
-      : "This prototype does not yet wire a live partnership enquiry form.",
-    ctaLabel: solution ? "Read the solution page" : "Read the for-institutions page",
-    ctaHref: solution
-      ? `/contemporary/for-institutions/${solution.slug}`
-      : "/contemporary/for-institutions",
-  },
-};
-
-const copy = copyByIntent[intent] ?? copyByIntent.apply;
+const formPerma = "JIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs";
+const formOrigin = "https://forms.zohopublic.in/infoii1/form/LandingPageLeadGen/formperma";
 
 const seo = {
-  title: `${copy.title} | IIFR`,
-  description: copy.lead,
-  keywords: `${copy.title}, IIFR, ${intent}`,
-  canonical: `${SITE_URL}/contemporary/start?intent=${intent}${programme ? `&programme=${programme.slug}` : ""}${topic ? `&topic=${topic}` : ""}`,
+  title: "Apply to the Educators' Certificate Programme | IIFR",
+  description: "Submit an application for IIFR's Educators' Certificate Programme.",
+  keywords: "IIFR admissions, Educators' Certificate Programme application, ECP application",
+  canonical: `${SITE_URL}/contemporary/start`,
   image: `${SITE_URL}/assets/images/hero-home.webp`,
   type: "website" as const,
   schema: "WebPage" as const,
 };
+
+const requestedProgramme = programme === "ecp" ? "the Educators' Certificate Programme" : "IIFR";
+const pageLabel = intent === "brochure" ? "Request the ECP brochure" : `Apply to ${requestedProgramme}`;
 ---
 
 <ContemporaryBaseLayout
@@ -95,42 +34,150 @@ const seo = {
   seo={seo}
   breadcrumbs={[
     { label: "Home", href: "/contemporary" },
-    { label: "Start" },
+    { label: "Admissions" },
   ]}
 >
-  <header class="cp-page-header">
-    <div class="cp-container cp-container--narrow">
-      <span class="cp-eyebrow">Start</span>
-      <h1>{copy.title}</h1>
-      <p class="cp-lead">{copy.lead}</p>
+  <header class="admissions-hero">
+    <div class="cp-container admissions-hero__grid">
+      <div>
+        <span class="cp-eyebrow">Admissions</span>
+        <h1>{pageLabel}</h1>
+        <p class="cp-lead">
+          The Educators' Certificate Programme is designed for experienced professionals moving into teaching, executive education, and academic leadership.
+        </p>
+      </div>
+      <dl class="admissions-facts" aria-label="ECP at a glance">
+        <div><dt>Start date</dt><dd>21 August 2026</dd></div>
+        <div><dt>Format</dt><dd>4 months, 3 weekend residencies</dd></div>
+        <div><dt>Campus</dt><dd>IIFR, New Delhi</dd></div>
+        <div><dt>Certification</dt><dd>IIFR + EFMD Global</dd></div>
+      </dl>
     </div>
   </header>
 
-  <section class="cp-section">
-    <div class="cp-container cp-container--narrow">
-      <h2>What is intentional about this page</h2>
-      <ul>
-        <li>The CTA URL is preserved (the form will wire in a later phase).</li>
-        <li>Your intent and the selected programme or solution are echoed so a future wire-up can pre-fill them.</li>
-        <li>No personal data is collected in this prototype.</li>
-        <li>No CRM, Zoho, Formspree, or analytics event is fired in this prototype.</li>
-      </ul>
-      <p>
-        <a class="cp-button cp-button--primary" href={copy.ctaHref}>
-          {copy.ctaLabel}
-        </a>
-        <a class="cp-button cp-button--ghost" href={`mailto:${INFO_EMAIL}?subject=${encodeURIComponent(copy.title)}`}>
-          Email IIFR instead
-        </a>
-      </p>
+  <section class="cp-section cp-section--ivory" id="apply_now" aria-labelledby="application-form-title">
+    <div class="cp-container admissions-form-layout">
+      <aside class="admissions-form-intro">
+        <span class="cp-eyebrow">Application form</span>
+        <h2 id="application-form-title">Tell us about yourself</h2>
+        <p>
+          Complete the form to begin an admissions conversation with IIFR. Fields and submission handling are provided directly by Zoho.
+        </p>
+        <p class="admissions-form-intro__note">
+          Please do not share information that is not requested in the form.
+        </p>
+      </aside>
+
+      <div class="admissions-form-card">
+        <div id={`zf_div_${formPerma}`} data-zoho-form aria-live="polite"></div>
+      </div>
     </div>
   </section>
 </ContemporaryBaseLayout>
 
+<script is:inline define:vars={{ formPerma, formOrigin }}>
+  (function () {
+    var container = document.getElementById("zf_div_" + formPerma);
+    if (!container || container.querySelector("iframe")) return;
+
+    var params = new URLSearchParams(window.location.search);
+    var iframeSource = formOrigin + "/" + formPerma + "?zf_rszfm=1";
+    var trackingParams = [
+      "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+      "gclid", "gbraid", "wbraid", "fbclid", "li_fat_id", "msclkid",
+    ];
+
+    trackingParams.forEach(function (name) {
+      var value = params.get(name);
+      if (value) {
+        iframeSource += "&" + (name.indexOf("utm_") === 0 ? "zf_" + name : name) + "=" + encodeURIComponent(value);
+      }
+    });
+
+    if (document.referrer) iframeSource += "&referrername=" + encodeURIComponent(document.referrer);
+
+    var iframe = document.createElement("iframe");
+    iframe.src = iframeSource;
+    iframe.style.border = "none";
+    iframe.style.height = "756px";
+    iframe.style.width = "100%";
+    iframe.style.transition = "all 0.5s ease";
+    iframe.setAttribute("title", "IIFR Educators' Certificate Programme application form");
+    iframe.setAttribute("allow", "geolocation");
+    container.appendChild(iframe);
+
+    window.addEventListener("message", function (event) {
+      if (event.origin !== "https://forms.zohopublic.in" || typeof event.data !== "string") return;
+      var fields = event.data.split("|");
+      if (fields[0] !== "formperma" || fields[1] !== formPerma) return;
+
+      var newHeight = parseInt(fields[fields.length - 1], 10);
+      if (!Number.isNaN(newHeight)) iframe.style.height = newHeight + "px";
+      if (fields.length === 3) iframe.scrollIntoView({ block: "start", behavior: "smooth" });
+    });
+  })();
+</script>
+
 <style>
-  .cp-page-header {
-    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
-    background: var(--cp-color-ivory);
+  .admissions-hero {
+    background: var(--cp-color-white);
     border-bottom: 1px solid var(--cp-color-divider);
+    padding: clamp(3rem, 1.5rem + 5vw, 5.5rem) 0;
+  }
+
+  .admissions-hero__grid,
+  .admissions-form-layout {
+    display: grid;
+    gap: clamp(2rem, 1rem + 4vw, 5rem);
+  }
+
+  .admissions-hero h1 { margin-bottom: 1rem; }
+
+  .admissions-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .admissions-facts div {
+    border-top: 2px solid var(--cp-color-gold);
+    padding-top: 0.65rem;
+  }
+
+  .admissions-facts dt {
+    color: var(--cp-color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .admissions-facts dd {
+    color: var(--cp-color-navy);
+    font-family: var(--cp-font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0.25rem 0 0;
+  }
+
+  .admissions-form-intro__note {
+    border-left: 3px solid var(--cp-color-gold);
+    color: var(--cp-color-text-muted);
+    font-size: var(--cp-font-size-small);
+    padding-left: 1rem;
+  }
+
+  .admissions-form-card {
+    background: var(--cp-color-white);
+    border: 1px solid var(--cp-color-border);
+    box-shadow: var(--cp-shadow-card);
+    min-width: 0;
+    padding: clamp(1rem, 0.5rem + 2vw, 2rem);
+  }
+
+  @media (min-width: 900px) {
+    .admissions-hero__grid { grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr); align-items: end; }
+    .admissions-form-layout { grid-template-columns: minmax(220px, 0.35fr) minmax(0, 0.65fr); align-items: start; }
   }
 </style>

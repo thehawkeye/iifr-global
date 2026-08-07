@@ -14,6 +14,13 @@
  *   + Find your pathway
  *   + Apply / enquire (contextual)
  *
+ * Murali spec (L1, t_dadf4467, 2026-08-06):
+ *   - Add inline IIFR icon mark next to the wordmark.
+ *   - Show the full institute name once (already present).
+ *   - Remove the "An autonomous academic institute of Bharatiya Vidya
+ *     Bhavan" tagline (replaced by the new IIFR + BVB institutional
+ *     badges rendered inside the hero, not the header).
+ *
  * No gradients, no emoji, no rounded corners on the header bar.
  * Sticky on scroll, collapses to a mobile menu under 992px.
  *
@@ -47,12 +54,16 @@ function isActive(href: string): string {
 
 <header class="cp-header" data-component="site-header">
   <div class="cp-container cp-container--wide cp-header__inner">
-    <a class="cp-header__brand" href="/contemporary" aria-label="IIFR — home">
-      <span class="cp-header__wordmark" aria-hidden="true">IIFR.</span>
-      <span class="cp-header__brand-text">
-        <strong>International Institute for Faculty &amp; Research</strong>
-        <span>An autonomous academic institute of Bharatiya Vidya Bhavan</span>
-      </span>
+    <a class="cp-header__brand" href="/contemporary" aria-label="IIFR — International Institute for Faculty & Research — home">
+      <img
+        class="cp-header__mark"
+        src="/assets/logo.webp"
+        alt="IIFR emblem"
+        width="40"
+        height="40"
+        decoding="async"
+      />
+      <span class="cp-header__brand-mark" aria-hidden="true">IIFR<span class="cp-header__brand-dot">.</span></span>
     </a>
 
     <button
@@ -111,7 +122,7 @@ function isActive(href: string): string {
   .cp-header__brand {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.6rem;
     text-decoration: none;
     color: var(--cp-color-navy);
   }
@@ -122,38 +133,30 @@ function isActive(href: string): string {
     text-decoration: none;
   }
 
-  .cp-header__wordmark {
+  .cp-header__mark {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  /*
+   * Murali spec (L1, t_dadf4467, 2026-08-06):
+   * - Header shows just the emblem + short "IIFR." wordmark — the
+   *   full institute name belongs to the hero crest only. Showing it
+   *   in both creates a redundant top fold.
+   * - The wordmark + dot treatment matches iifr.global exactly.
+   */
+  .cp-header__brand-mark {
     font-family: var(--cp-font-heading);
     font-weight: 700;
-    font-size: 1.75rem;
+    font-size: 1.4rem;
     color: var(--cp-color-maroon);
     letter-spacing: -0.02em;
+    line-height: 1;
   }
 
-  .cp-header__brand-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-    font-size: 0.875rem;
-  }
-
-  .cp-header__brand-text strong {
-    font-family: var(--cp-font-heading);
-    color: var(--cp-color-navy);
-    font-weight: 600;
-    font-size: 0.95rem;
-  }
-
-  .cp-header__brand-text span {
-    color: var(--cp-color-text-muted);
-    font-size: 0.75rem;
-    display: none;
-  }
-
-  @media (min-width: 992px) {
-    .cp-header__brand-text span {
-      display: inline;
-    }
+  .cp-header__brand-dot {
+    color: var(--cp-color-gold);
   }
 
   .cp-header__toggle {

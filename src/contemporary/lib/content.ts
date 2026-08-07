@@ -309,7 +309,7 @@ export const programmes: Programme[] = [
         owner: standardOwner,
       },
     ],
-    status: "by-enquiry",
+    status: "coming-soon",
     source: "iifr.global/efm — verified 2026-08-04 (credential language under review)",
     owner: standardOwner,
   },
@@ -378,7 +378,7 @@ export const programmes: Programme[] = [
         owner: standardOwner,
       },
     ],
-    status: "open",
+    status: "by-enquiry",
     source: "iifr.global/applied-research — verified 2026-08-04",
     owner: standardOwner,
   },
@@ -538,6 +538,29 @@ export const events: Event[] = [
     status: "upcoming",
     relatedProgramme: "ecp",
     source: "IIFR events calendar — verified 2026-08-04",
+    owner: standardOwner,
+  },
+  {
+    slug: "ecp-cohort-1-participant-briefing",
+    title: "ECP Cohort 1 — Participant Briefing",
+    eventType: "workshop",
+    summary:
+      "An orientation and briefing session for confirmed Cohort 1 participants of the Educators' Certificate Programme: cohort cadence, applied project expectations, faculty mentorship, and the participant handbook walkthrough.",
+    audience: "Confirmed ECP Cohort 1 participants",
+    topic: "Educator development",
+    speakers: [
+      { name: "IIFR Programme Office", affiliation: "IIFR" },
+      { name: "ECP Cohort 1 faculty mentors", affiliation: "IIFR Academic Council" },
+    ],
+    dateTime: "2026-08-14T16:00",
+    timeZone: "Asia/Kolkata",
+    duration: "90 minutes",
+    format: "Online (registration required)",
+    registrationUrl:
+      "/contemporary/start?intent=enquire&programme=ecp-cohort-1-briefing",
+    status: "upcoming",
+    relatedProgramme: "ecp",
+    source: "IIFR events calendar — added 2026-08-06 per Murali spec",
     owner: standardOwner,
   },
   {
@@ -797,4 +820,42 @@ export function getInsight(slug: string): Insight | undefined {
 
 export function getSolution(slug: string): InstitutionalSolution | undefined {
   return institutionalSolutions.find((s) => s.slug === slug);
+}
+
+/* ==============================================================
+ * Display helpers
+ *
+ * Murali instruction 2026-08-06 (broadened from the morning's
+ * ECP-only correction): every user-facing date on the contemporary
+ * site must render as dd-mmm-yyyy. ISO values stay internal so:
+ *   - JSON-LD structured data keeps schema.org-valid ISO-8601
+ *     startDate/endDate (do NOT pipe user-facing fields into the
+ *     seo.ts graph).
+ *   - Source-of-truth strings (lastReviewedAt, source citations,
+ *     updateDate) remain greppable as ISO.
+ *
+ * Apply formatDDMMMYYYY at every render site that displays a date.
+ * Do NOT apply it on JSON-LD outputs (seo.ts).
+ * ============================================================== */
+
+const MONTH_SHORT = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+] as const;
+
+/**
+ * Format an ISO-8601 date (YYYY-MM-DD, optional time suffix) as
+ * dd-mmm-yyyy for user-facing surfaces. Returns the input unchanged
+ * if it is null, empty, or unparseable — never throw on display.
+ */
+export function formatDDMMMYYYY(iso: string | null | undefined): string {
+  if (!iso) return "";
+  // Match the leading YYYY-MM-DD so we ignore any time component.
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
+  if (!m) return iso;
+  const year = m[1];
+  const monthIndex = Number.parseInt(m[2], 10) - 1;
+  const day = Number.parseInt(m[3], 10).toString().padStart(2, "0");
+  if (monthIndex < 0 || monthIndex > 11) return iso;
+  return `${day}-${MONTH_SHORT[monthIndex]}-${year}`;
 }

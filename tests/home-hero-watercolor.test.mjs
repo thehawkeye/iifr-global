@@ -81,3 +81,60 @@ test("Hero uses the raster via a real <img> tag", async () => {
     "Hero.astro must use object-fit:cover on the art layer",
   );
 });
+
+test("Hero <img> is eager and high-priority for above-the-fold paint", async () => {
+  const hero = await text(HERO_PATH);
+  // Strip CSS comments before matching so the explanatory block in
+  // Hero.astro does not satisfy the markup-only assertions below.
+  const heroNoComments = hero.replace(/\/\*[\s\S]*?\*\//g, "");
+  assert.match(
+    heroNoComments,
+    /<img\b[^>]*\bloading\s*=\s*"eager"/,
+    "Hero.astro <img> must be loading=\"eager\" (hero is above the fold)",
+  );
+  assert.match(
+    heroNoComments,
+    /<img\b[^>]*\bfetchpriority\s*=\s*"high"/,
+    "Hero.astro <img> must be fetchpriority=\"high\" (hero is above the fold)",
+  );
+  assert.match(
+    heroNoComments,
+    /<img\b[^>]*\bdecoding\s*=\s*"async"/,
+    "Hero.astro <img> must be decoding=\"async\" to keep paint non-blocking",
+  );
+});
+
+test("Watercolor hero asset is the real 2400×1125 WebP above 200 KB", async () => {
+  const stat = await import("node:fs/promises").then((m) => m.stat);
+  const info = await stat(new URL(`../${ASSET_PATH}`, import.meta.url));
+  // Anything below 200 KB has historically been the blurred 36 KB wash;
+  // gate on the production-quality asset so a reversion to a small
+  // placeholder fails CI.
+  assert.ok(
+    info.size > 200 * 1024,
+    `${ASSET_PATH} must be larger than 200 KB to keep high-texture ` +
+      `paint; got ${info.size} bytes`,
+  );
+});
+
+test("Hero overlay does not reintroduce radial-gradient artwork", async () => {
+  const hero = await text(HERO_PATH);
+  // Strip CSS comments first so we only match real declarations, not
+  // the historical "no radial-gradient" explanatory block.
+  const heroNoComments = hero.replace(/\/\*[\s\S]*?\*\//g, "");
+  // The single overlay is a linear gradient with rgba(36,47,76,…) that
+  // fades to ivory. Reject any radial gradient (ellipse/circle) anywhere
+  // in real CSS — that was the artwork-masking wash the R1 task banned.
+  assert.doesNotMatch(
+    heroNoComments,
+    /radial-gradient\s*\(/,
+    "Hero.astro must not define any radial-gradient (artwork mask banned)",
+  );
+  // And confirm the only overlay declared is a single linear-gradient
+  // (no stacked gradients, no second overlay div with its own artwork).
+  const overlayUses = heroNoComments.match(/cp-hero__overlay[\s\S]*?linear-gradient/g) ?? [];
+  assert.ok(
+    overlayUses.length >= 1,
+    "Hero.astro must keep a .cp-hero__overlay linear gradient",
+  );
+});

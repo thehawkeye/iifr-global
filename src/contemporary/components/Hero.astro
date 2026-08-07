@@ -106,6 +106,14 @@ const WATERCOLOR_HEIGHT = 1125;
    * transparent so the painting is fully visible — it only darkens the
    * top half enough for white copy to read and then fades to ivory at
    * the bottom so the hero lands visually into the rest of the page.
+   *
+   * R1 (t_eb103610, 2026-08-07): the previous overlay ran to 0.45 navy
+   * at the top, which compounded with the painting's own navy text-safe
+   * field and erased paper tooth / pigment edges in the upper third. The
+   * overlay is now a much lighter wash (0.20 → 0.10 → 0 over the top
+   * 60%) so the cold-press grain and bloom edges stay visible. White
+   * copy readability is preserved by the title's text-shadow (see
+   * `.cp-hero__title`), not by the overlay.
    */
   /*
    * Z-index scheme (FIX 2026-08-07, Murali: "no watercolor hero on home"):
@@ -149,8 +157,8 @@ const WATERCOLOR_HEIGHT = 1125;
     background:
       linear-gradient(
         180deg,
-        rgba(36, 47, 76, 0.45) 0%,
-        rgba(36, 47, 76, 0.30) 35%,
+        rgba(36, 47, 76, 0.20) 0%,
+        rgba(36, 47, 76, 0.10) 35%,
         rgba(36, 47, 76, 0) 60%,
         var(--cp-color-ivory) 100%
       );
@@ -204,7 +212,14 @@ const WATERCOLOR_HEIGHT = 1125;
     margin: 0 0 1rem;
     letter-spacing: -0.01em;
     text-wrap: balance;
-    text-shadow: 0 2px 24px rgba(36, 47, 76, 0.35);
+    /*
+     * R1 (t_eb103610): with the overlay lightened to 0.20 navy, the
+     * title relies on a stronger text-shadow for legibility against
+     * the textured painting underneath. The shadow stays local (no
+     * blurred bloom) and uses the same navy as the painting.
+     */
+    text-shadow: 0 1px 2px rgba(36, 47, 76, 0.65),
+      0 2px 18px rgba(36, 47, 76, 0.45);
   }
 
   .cp-hero__lead {
@@ -236,7 +251,8 @@ const WATERCOLOR_HEIGHT = 1125;
   /*
    * Mobile gets a slightly heavier top darkening because small viewports
    * crop the painting tighter and the navy text-safe centre may not be
-   * fully behind the copy at narrow widths.
+   * fully behind the copy at narrow widths. Even so the wash is
+   * restrained (0.30 → 0.18 → 0.05) so paper grain is not crushed.
    */
   @media (max-width: 767.98px) {
     .cp-hero__art-img {
@@ -247,8 +263,8 @@ const WATERCOLOR_HEIGHT = 1125;
       background:
         linear-gradient(
           180deg,
-          rgba(36, 47, 76, 0.58) 0%,
-          rgba(36, 47, 76, 0.40) 30%,
+          rgba(36, 47, 76, 0.30) 0%,
+          rgba(36, 47, 76, 0.18) 30%,
           rgba(36, 47, 76, 0.05) 55%,
           var(--cp-color-ivory) 100%
         );

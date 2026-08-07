@@ -87,43 +87,52 @@ void programmes;
    * pigment bleeding into paper. The bottom fades to ivory so the
    * hero lands visually into the rest of the page.
    */
+  /*
+   * Z-index scheme (FIX 2026-08-07, Murali: "no watercolor hero on home"):
+   *   .cp-hero         — no opaque background (was `var(--cp-color-ivory)`,
+   *                      which was painting OVER the art layer and hiding
+   *                      the watercolor). The wash supplies the bottom
+   *                      fade to ivory instead.
+   *   .cp-hero__wash   — z-index 0; art layer
+   *   .cp-hero__bloom* — z-index 1; on top of wash, but below copy
+   *   .cp-hero__inner  — z-index 2; copy + CTAs read on top of art
+   * No `isolation: isolate` — we want everything in normal flow.
+   */
   .cp-hero {
     position: relative;
-    isolation: isolate;
     overflow: hidden;
     min-height: clamp(440px, 62vh, 660px);
     display: flex;
     align-items: center;
-    background: var(--cp-color-ivory);
-    color: var(--cp-color-text);
+    color: #ffffff;
     padding: clamp(3rem, 2rem + 4vw, 5rem) 0;
   }
 
   .cp-hero__wash {
     position: absolute;
     inset: 0;
-    z-index: -2;
+    z-index: 0;
     background:
       radial-gradient(
         ellipse 55% 65% at 8% 12%,
-        rgba(199, 153, 6, 0.28) 0%,
+        rgba(199, 153, 6, 0.55) 0%,
         rgba(199, 153, 6, 0) 60%
       ),
       radial-gradient(
         ellipse 50% 60% at 92% 8%,
-        rgba(108, 19, 27, 0.30) 0%,
+        rgba(108, 19, 27, 0.60) 0%,
         rgba(108, 19, 27, 0) 65%
       ),
       radial-gradient(
         ellipse 65% 70% at 50% 50%,
-        rgba(36, 47, 76, 0.78) 0%,
-        rgba(36, 47, 76, 0.55) 45%,
+        rgba(36, 47, 76, 0.85) 0%,
+        rgba(36, 47, 76, 0.65) 45%,
         rgba(36, 47, 76, 0) 80%
       ),
       linear-gradient(
         180deg,
-        rgba(36, 47, 76, 0.92) 0%,
-        rgba(36, 47, 76, 0.86) 40%,
+        rgba(36, 47, 76, 0.95) 0%,
+        rgba(36, 47, 76, 0.90) 40%,
         rgba(239, 235, 229, 0) 78%,
         var(--cp-color-ivory) 100%
       );
@@ -132,44 +141,45 @@ void programmes;
   .cp-hero__bloom {
     position: absolute;
     border-radius: 50%;
-    filter: blur(48px);
-    opacity: 0.55;
+    filter: blur(56px);
+    opacity: 0.75;
     pointer-events: none;
-    z-index: -1;
+    z-index: 1;
   }
 
   .cp-hero__bloom--gold {
-    width: 38%;
+    width: 42%;
     aspect-ratio: 1;
-    left: 4%;
-    top: 6%;
+    left: 2%;
+    top: 4%;
     background: radial-gradient(circle at 30% 30%,
-      rgba(199, 153, 6, 0.55) 0%,
+      rgba(199, 153, 6, 0.85) 0%,
       rgba(199, 153, 6, 0) 70%);
   }
 
   .cp-hero__bloom--maroon {
-    width: 34%;
+    width: 38%;
     aspect-ratio: 1;
-    right: 6%;
-    bottom: 12%;
+    right: 4%;
+    bottom: 8%;
     background: radial-gradient(circle at 60% 60%,
-      rgba(108, 19, 27, 0.50) 0%,
+      rgba(108, 19, 27, 0.80) 0%,
       rgba(108, 19, 27, 0) 70%);
   }
 
   .cp-hero__bloom--ink {
-    width: 28%;
+    width: 32%;
     aspect-ratio: 1;
-    left: 38%;
-    top: 42%;
+    left: 36%;
+    top: 40%;
     background: radial-gradient(circle at 50% 50%,
-      rgba(36, 47, 76, 0.45) 0%,
+      rgba(36, 47, 76, 0.70) 0%,
       rgba(36, 47, 76, 0) 70%);
   }
 
   .cp-hero__inner {
     position: relative;
+    z-index: 2;
     width: 100%;
   }
 
@@ -203,25 +213,27 @@ void programmes;
     font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.04em;
-    color: var(--cp-color-navy);
+    color: #ffffff;
     line-height: 1.25;
     max-width: 26ch;
   }
 
   .cp-hero__title {
-    color: var(--cp-color-navy);
+    color: #ffffff;
     font-size: var(--cp-font-size-title);
     margin: 0 0 1rem;
     letter-spacing: -0.01em;
     text-wrap: balance;
+    text-shadow: 0 2px 24px rgba(36, 47, 76, 0.35);
   }
 
   .cp-hero__lead {
     font-size: 1.0625rem;
     line-height: 1.65;
-    color: var(--cp-color-text);
+    color: rgba(255, 255, 255, 0.92);
     max-width: 58ch;
     margin: 0 0 1.75rem;
+    text-shadow: 0 1px 12px rgba(36, 47, 76, 0.35);
   }
 
   .cp-hero__actions {
@@ -231,14 +243,14 @@ void programmes;
   }
 
   .cp-hero__actions .cp-button--outline {
-    color: var(--cp-color-navy);
-    border-color: var(--cp-color-navy);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.7);
   }
 
   .cp-hero__actions .cp-button--outline:hover,
   .cp-hero__actions .cp-button--outline:focus-visible {
-    background: var(--cp-color-navy);
-    color: var(--cp-color-white);
+    background: #ffffff;
+    color: var(--cp-color-navy);
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -3,9 +3,11 @@
  *
  * Slice A — Variant A smallest E2E slice.
  *
- * The single insight migrated in this slice (academia-industry-bridge) is
- * loaded from `src/content/posts/${slug}/index.md`. Everything else falls
- * back to `content.ts`. The slug allow-list is explicit and hard-coded to
+ * The three insights migrated in this slice
+ * (`academia-industry-bridge`, `faculty-development-rethink`,
+ * `applied-research-future`) are loaded from
+ * `src/content/posts/${slug}/index.md`. Everything else falls back to
+ * `content.ts`. The slug allow-list is explicit and hard-coded to
  * prevent accidental migration of unrelated records.
  *
  * Parse strategy: a ~30-line YAML frontmatter parser scoped to the 12
@@ -29,7 +31,11 @@ import { insights as contentInsights, type Insight, type Owner } from "./content
  * Hard-coded allow-list — adding a slug here is the explicit migration
  * step for Slice B onward.
  */
-const CONTENT_SLUGS: ReadonlySet<string> = new Set(["academia-industry-bridge"]);
+const CONTENT_SLUGS: ReadonlySet<string> = new Set([
+  "academia-industry-bridge",
+  "faculty-development-rethink",
+  "applied-research-future",
+]);
 
 /**
  * Resolve content root from process.cwd().

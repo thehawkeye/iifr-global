@@ -20,8 +20,7 @@
  */
 
 import { readFileSync, existsSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 
 import { insights as contentInsights, type Insight, type Owner } from "./content";
 
@@ -32,10 +31,20 @@ import { insights as contentInsights, type Insight, type Owner } from "./content
  */
 const CONTENT_SLUGS: ReadonlySet<string> = new Set(["academia-industry-bridge"]);
 
-const CONTENT_ROOT = resolve(
-  dirname(fileURLToPath(import.meta.url)),
-  "../../../content/posts",
-);
+/**
+ * Resolve content root from process.cwd().
+ *
+ * Astro runs `astro build` / `astro dev` from the project root, so
+ * process.cwd() is the canonical source of truth for project-relative
+ * paths. The previous implementation resolved relative to this module's
+ * file URL, which broke at build time: the compiled module URL no longer
+ * matches the source layout, and the resolved path silently pointed at
+ * a non-existent directory. Result: every content-backed slug silently
+ * fell through to the content.ts fallback, and the MD branch never
+ * executed at build time. Switching to cwd()-relative makes the path
+ * independent of the module's compiled location.
+ */
+const CONTENT_ROOT = join(process.cwd(), "src/content/posts");
 
 /**
  * Default owner attached to insights loaded from Markdown when the YAML

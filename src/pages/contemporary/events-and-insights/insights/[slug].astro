@@ -7,17 +7,18 @@
  * update dates, source, and a related programme CTA are visible.
  */
 import ContemporaryBaseLayout from "../../../../contemporary/layouts/ContemporaryBaseLayout.astro";
-import { insights, getInsight, getProgramme, formatDDMMMYYYY } from "../../../../contemporary/lib/content";
+import { getProgramme, formatDDMMMYYYY } from "../../../../contemporary/lib/content";
+import { readInsight, readAllInsights } from "../../../../contemporary/lib/read-insights";
 import { SITE_URL } from "../../../../contemporary/lib/seo";
 
 export async function getStaticPaths() {
-  return insights.map((i) => ({
+  return readAllInsights().map((i) => ({
     params: { slug: i.slug },
-    props: { insight: i },
+    props: { insight: readInsight(i.slug) },
   }));
 }
 
-const { insight } = Astro.props as { insight: ReturnType<typeof getInsight> & object };
+const { insight } = Astro.props as { insight: ReturnType<typeof readInsight> };
 if (!insight) throw new Error("insight is required");
 
 const related = insight.relatedProgramme ? getProgramme(insight.relatedProgramme) : null;

@@ -1,0 +1,180 @@
+---
+/**
+ * 404.astro — custom not-found page.
+ *
+ * Phase 2 / T7b: served by Astro for any unmatched route AND by Hostinger
+ * `.htaccess` `ErrorDocument 404 /404.html` for production.
+ *
+ * Vercel fallback: when no `vercel.json` redirect or Astro route matches,
+ * Vercel returns the static `dist/404.html` (built from this file).
+ *
+ * Design system: matches the iifr-redesign-scope design tokens and the
+ * `iifr-page-hero` block used on every Tier-1/Tier-2 page so the chrome
+ * (nav, footer, footer-CTA) is identical and the 404 doesn't feel broken.
+ */
+
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { assetUrl } from "../lib/assetUrl";
+---
+
+<SiteLayout path="/404" bodyClass="page iifr-redesign-scope iifr-hero-contrast">
+  <div class="iifr-page-hero iifr-hero-contrast--404">
+    <div
+      class="iifr-page-hero__bg iifr-page-hero__bg--404"
+      style={`background-image:url('${assetUrl("assets/images/academy/3.jpeg")}');`}
+    ></div>
+    <div class="iifr-page-hero__inner">
+      <span class="iifr-page-hero__eyebrow">404 — Page Not Found</span>
+      <h1>We couldn't find that page.</h1>
+      <p>
+        The page you were looking for has moved, been renamed, or never existed.
+        Try one of the paths below, or head back home.
+      </p>
+      <div class="iifr-page-hero__cta">
+        <a href="/" class="iifr-btn-primary">Back to Home</a>
+        <a href="/contact" class="iifr-btn-outline">Report a broken link</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="iifr-section">
+    <div class="iifr-section__head iifr-section__head--center">
+      <span class="iifr-eyebrow">Popular Pages</span>
+      <h2>Try one of these instead</h2>
+      <hr class="iifr-gold-line-center" />
+      <p class="iifr-lead">
+        IIFR's most-visited pages, in case the URL you typed has moved.
+      </p>
+    </div>
+
+    <div class="iifr-404-grid">
+      <a class="iifr-404-card" href="/programmes">
+        <span class="iifr-404-card__tag">Programmes</span>
+        <h3>Explore Programmes</h3>
+        <p>ECP, EFM, and applied-research pathways.</p>
+      </a>
+      <a class="iifr-404-card" href="/ecp">
+        <span class="iifr-404-card__tag">ECP</span>
+        <h3>Educators' Certificate Programme</h3>
+        <p>21 Aug 2026 cohort — founding-scholarship details.</p>
+      </a>
+      <a class="iifr-404-card" href="/efm">
+        <span class="iifr-404-card__tag">EFM</span>
+        <h3>Executive Fellow in Management</h3>
+        <p>February 2027 cohort for senior practitioners.</p>
+      </a>
+      <a class="iifr-404-card" href="/applied-research">
+        <span class="iifr-404-card__tag">Research</span>
+        <h3>Research &amp; Faculty Workshops</h3>
+        <p>Short-format applied-research programmes.</p>
+      </a>
+      <a class="iifr-404-card" href="/insights">
+        <span class="iifr-404-card__tag">Insights</span>
+        <h3>Perspectives from IIFR</h3>
+        <p>Essays on faculty development and higher education.</p>
+      </a>
+      <a class="iifr-404-card" href="/contact">
+        <span class="iifr-404-card__tag">Contact</span>
+        <h3>Get in touch</h3>
+        <p>Reach the IIFR team for partnerships or admissions.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="iifr-section iifr-cream">
+    <div class="iifr-404-help">
+      <span class="iifr-eyebrow">Need Help?</span>
+      <h2>If you arrived here from a link on our site, please let us know.</h2>
+      <p>
+        A broken internal link is a bug — tell us which page sent you here and
+        we'll fix the redirect.
+      </p>
+      <a class="iifr-btn-dark" href="mailto:info@iifr.global?subject=Broken%20link%20on%20iifr.global">
+        Email info@iifr.global
+      </a>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  /* Page-local styles for the 404 — kept narrow to design-system tokens. */
+  .iifr-404-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  @media (max-width: 991.98px) {
+    .iifr-404-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 575.98px) {
+    .iifr-404-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .iifr-404-card {
+    border: 1px solid var(--iifr-line);
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    text-decoration: none;
+    color: var(--iifr-ink);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition:
+      transform 0.28s ease,
+      box-shadow 0.28s ease,
+      border-color 0.28s ease;
+  }
+  .iifr-404-card:hover,
+  .iifr-404-card:focus-visible {
+    border-color: var(--iifr-gold);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(13, 27, 62, 0.08);
+    outline: none;
+  }
+  .iifr-404-card__tag {
+    align-self: flex-start;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--iifr-gold-deep);
+    background: var(--iifr-cream);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .iifr-404-card h3 {
+    font-family: var(--iifr-font-serif);
+    color: var(--iifr-navy);
+    margin: 0;
+    font-size: 20px;
+  }
+  .iifr-404-card p {
+    color: var(--iifr-ink-soft);
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .iifr-404-help {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 24px;
+  }
+  .iifr-404-help h2 {
+    font-family: var(--iifr-font-serif);
+    color: var(--iifr-navy);
+    margin: 0 0 12px;
+    font-size: 28px;
+  }
+  .iifr-404-help p {
+    color: var(--iifr-ink-soft);
+    margin: 0 0 24px;
+  }
+</style>

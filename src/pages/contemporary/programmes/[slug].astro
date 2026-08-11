@@ -26,6 +26,7 @@ export async function getStaticPaths() {
 const { programme } = Astro.props as { programme: ReturnType<typeof getProgramme> & object };
 if (!programme) throw new Error("programme is required");
 const cohort = programme.cohorts[0];
+const applicationHref = cohort?.applicationUrl ?? `/contemporary/start?intent=${programme.status === "by-enquiry" ? "enquire" : "apply"}&programme=${programme.slug}`;
 
 const seo = {
   title: `${programme.title} | IIFR programme`,
@@ -64,6 +65,9 @@ const statusLabel: Record<typeof programme.status, string> = {
       </span>
       <h1>{programme.title}</h1>
       <p class="cp-lead">{programme.proposition}</p>
+      <p class="cp-programme-pracademic">
+        Built for the <strong>pracademic</strong> — practitioners who teach, research, and lead at the bridge between the classroom and the field.
+      </p>
       <dl class="cp-facts">
         <div><dt>Duration</dt><dd>{programme.duration}</dd></div>
         <div><dt>Format</dt><dd>{programme.format}</dd></div>
@@ -72,7 +76,7 @@ const statusLabel: Record<typeof programme.status, string> = {
         {cohort && <div><dt>Fee</dt><dd>{cohort.fee}</dd></div>}
       </dl>
       <div class="cp-row">
-        <a class="cp-button cp-button--primary" href={`/contemporary/start?intent=${programme.status === "by-enquiry" ? "enquire" : "apply"}&programme=${programme.slug}`}>
+        <a class="cp-button cp-button--primary" href={applicationHref}>
           {programme.status === "by-enquiry" ? "Enquire about this programme" : "Apply for this programme"}
         </a>
         <a class="cp-button cp-button--outline" href={`/contemporary/start?intent=brochure&programme=${programme.slug}`}>
@@ -143,7 +147,7 @@ const statusLabel: Record<typeof programme.status, string> = {
           {cohort.applicationDeadline && <div><dt>Application deadline</dt><dd>{cohort.applicationDeadline}</dd></div>}
           <div><dt>Format</dt><dd>{cohort.format}</dd></div>
           <div><dt>Location</dt><dd>{cohort.location}</dd></div>
-          <div><dt>Capacity</dt><dd>{cohort.capacity}</dd></div>
+          {cohort.capacity && <div><dt>Capacity</dt><dd>{cohort.capacity}</dd></div>}
           <div><dt>Fee</dt><dd>{cohort.fee}</dd></div>
         </dl>
         <p class="cp-cohort-owner">
@@ -166,10 +170,10 @@ const statusLabel: Record<typeof programme.status, string> = {
       <p>
         {programme.status === "by-enquiry"
           ? "Talk to IIFR admissions. We will respond within two working days."
-          : "Apply now or request the brochure. The form is a placeholder in this prototype — no live submission yet."}
+          : "Apply now or request the brochure."}
       </p>
       <div class="cp-row">
-        <a class="cp-button cp-button--primary" href={`/contemporary/start?intent=${programme.status === "by-enquiry" ? "enquire" : "apply"}&programme=${programme.slug}`}>
+        <a class="cp-button cp-button--primary" href={applicationHref}>
           {programme.status === "by-enquiry" ? "Enquire" : "Apply"}
         </a>
         <a class="cp-button cp-button--outline" href="/contemporary/programmes/compare">
@@ -193,6 +197,19 @@ const statusLabel: Record<typeof programme.status, string> = {
 
   .cp-page-header--programme .cp-row {
     margin-top: 1.5rem;
+  }
+
+  .cp-programme-pracademic {
+    margin: 0.25rem 0 0;
+    color: var(--cp-color-text-muted);
+    font-size: 1rem;
+    line-height: 1.55;
+    max-width: 60ch;
+  }
+
+  .cp-programme-pracademic strong {
+    color: var(--cp-color-maroon);
+    font-weight: 600;
   }
 
   .cp-facts {

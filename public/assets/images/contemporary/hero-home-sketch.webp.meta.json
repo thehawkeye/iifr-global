@@ -1,0 +1,15 @@
+{
+  "source_url": "https://staging-dev.iifr.global/assets/images/hero-home.webp",
+  "local_path": "/Users/lyraai/Documents/hawkeye/pages/webdev/iifr-global-contemporary-home/public/assets/images/contemporary/hero-home-sketch.webp",
+  "mime_type": "image/webp",
+  "byte_size": 185352,
+  "width": 1694,
+  "height": 929,
+  "sha256": "3e01cb3c0233073bf3d52fc729669241f9a709520b13d20d4095cb5f5a361c11",
+  "downloaded_at": "2026-08-07T10:47:45Z",
+  "http_status": 200,
+  "staging_origin": "staging-dev.iifr.global",
+  "etag": "\"2d408-6a36c56b-fa426eca4389c444;;;\"",
+  "last_modified": "Sat, 20 Jun 2026 16:52:59 GMT",
+  "notes": "Hero watercolor sketch asset for IIFR contemporary home. Downloaded from staging, not hotlinked. Acceptance: HTTP 200, image/webp, 185352 bytes, 1694x929."
+}

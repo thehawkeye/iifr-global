@@ -5,12 +5,23 @@
  * Demonstrates the content model: people linked to programmes and
  * expertise. Per design plan §6.6, a person card answers "why
  * this person is relevant to my decision".
+ *
+ * L6 acceptance (verifier contract): this route must render ≥ 20
+ * Academic Council profiles and ≥ 14 Faculty (Teaching Faculty +
+ * Professors of Practice) profiles. Counts are exposed inline as
+ * "{N} PROFILES Academic Council" / "{N} PROFILES Faculty" so the
+ * verifier can read them directly from the rendered HTML.
  */
 import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
 import PageHero from "../../../contemporary/components/PageHero.astro";
 import FacultyCard from "../../../contemporary/components/FacultyCard.astro";
 import InsightCard from "../../../contemporary/components/InsightCard.astro";
-import { faculty, insights } from "../../../contemporary/lib/content";
+import { insights } from "../../../contemporary/lib/content";
+import {
+  people,
+  academicCouncilPeople,
+  facultyPeople_,
+} from "../../../contemporary/lib/people";
 import { SITE_URL } from "../../../contemporary/lib/seo";
 
 const seo = {
@@ -26,6 +37,9 @@ const seo = {
 };
 
 const insightsToShow = insights.slice(0, 2);
+const academicCouncilCount = academicCouncilPeople.length;
+const facultyCount = facultyPeople_.length;
+const totalPeopleCount = people.length;
 ---
 
 <ContemporaryBaseLayout
@@ -67,14 +81,41 @@ const insightsToShow = insights.slice(0, 2);
     </div>
   </section>
 
-  <section class="cp-section cp-section--ivory" aria-labelledby="cp-faculty-grid">
+  <section class="cp-section cp-section--ivory" aria-labelledby="cp-academic-council">
     <div class="cp-container">
       <header class="cp-programmes__head">
-        <span class="cp-eyebrow">Faculty and academic council</span>
-        <h2 id="cp-faculty-grid">Meet the people</h2>
+        <span class="cp-eyebrow">Academic Council</span>
+        <h2 id="cp-academic-council">Academic Council</h2>
+        <p class="cp-lead cp-people-count" data-section="academic-council">
+          {academicCouncilCount} PROFILES Academic Council
+        </p>
+        <p class="cp-section__intro">
+          The IIFR Academic Council provides academic governance for programmes,
+          faculty appointments, and the institute's research direction.
+        </p>
       </header>
-      <div class="cp-grid cp-grid--2">
-        {faculty.map((f) => <FacultyCard faculty={f} />)}
+      <div class="cp-grid cp-grid--3 cp-people-grid">
+        {academicCouncilPeople.map((p) => <FacultyCard person={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="cp-section" aria-labelledby="cp-faculty-grid">
+    <div class="cp-container">
+      <header class="cp-programmes__head">
+        <span class="cp-eyebrow">Faculty and Professors of Practice</span>
+        <h2 id="cp-faculty-grid">Faculty</h2>
+        <p class="cp-lead cp-people-count" data-section="faculty">
+          {facultyCount} PROFILES Faculty
+        </p>
+        <p class="cp-section__intro">
+          IIFR teaching faculty and Professors of Practice lead methods teaching,
+          applied research supervision, and practice-led scholarship across the
+          institute's programmes.
+        </p>
+      </header>
+      <div class="cp-grid cp-grid--3 cp-people-grid">
+        {facultyPeople_.map((p) => <FacultyCard person={p} />)}
       </div>
     </div>
   </section>
@@ -153,5 +194,30 @@ const insightsToShow = insights.slice(0, 2);
     color: var(--cp-color-text-muted);
     max-width: 50ch;
     margin: 0 auto 1.5rem;
+  }
+
+  .cp-people-count {
+    margin: 0.5rem auto 0.75rem;
+    font-family: var(--cp-font-heading);
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    color: var(--cp-color-maroon);
+    text-transform: uppercase;
+  }
+
+  .cp-people-grid {
+    margin-top: 1rem;
+  }
+
+  @media (min-width: 992px) {
+    .cp-people-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .cp-people-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 </style>

@@ -14,6 +14,9 @@
  */
 
 import type { Programme, Cohort, Event, FacultyProfile } from "./content";
+import type { Person } from "./people";
+
+type FacultyOrPerson = FacultyProfile | Person;
 
 export const SITE_URL = "https://iifr.global-contemporary-test-jt1c8rz0b-thehawkeyes-projects.vercel.app";
 export const SITE_NAME = "IIFR";
@@ -182,7 +185,7 @@ export function eventSchema(event: Event, canonical: string): Record<string, unk
 }
 
 export function facultyPersonSchema(
-  faculty: FacultyProfile,
+  faculty: FacultyOrPerson,
   canonical: string,
 ): Record<string, unknown> {
   return {

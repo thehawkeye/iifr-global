@@ -3,22 +3,38 @@
  * FacultyCard — used in the research-and-faculty hub. A person
  * card answers "why this person is relevant to my decision", not
  * just "what their title is" (per design plan §6.6).
+ *
+ * Accepts either a `faculty` (legacy FacultyProfile from
+ * content.ts) or a `person` (Person from lib/people.ts). The two
+ * shapes share displayName, roleAtIIFR, currentAffiliation,
+ * shortBio, slug, roleCategory.
  */
 import type { FacultyProfile } from "../lib/content";
+import type { Person } from "../lib/people";
 
 interface Props {
-  faculty: FacultyProfile;
+  faculty?: FacultyProfile;
+  person?: Person;
 }
 
-const { faculty } = Astro.props as Props;
+const props = Astro.props as Props;
+const faculty = props.faculty ?? props.person;
+if (!faculty) throw new Error("FacultyCard requires a `faculty` or `person` prop");
+const slug = faculty.slug;
+const href = `/contemporary/research-and-faculty/faculty/${slug}`;
+const tag = faculty.roleCategory;
+const display = faculty.displayName;
+const role = faculty.roleAtIIFR;
+const affiliation = faculty.currentAffiliation;
+const bio = faculty.shortBio;
 ---
 
-<a class="cp-card cp-card--link cp-faculty-card" href={`/contemporary/research-and-faculty/faculty/${faculty.slug}`}>
-  <span class="cp-tag cp-tag--navy">{faculty.roleCategory}</span>
-  <h3>{faculty.displayName}</h3>
-  <p class="cp-faculty-card__role">{faculty.roleAtIIFR}</p>
-  <p class="cp-faculty-card__affiliation">{faculty.currentAffiliation}</p>
-  <p class="cp-faculty-card__bio">{faculty.shortBio}</p>
+<a class="cp-card cp-card--link cp-faculty-card" href={href}>
+  <span class="cp-tag cp-tag--navy">{tag}</span>
+  <h3>{display}</h3>
+  <p class="cp-faculty-card__role">{role}</p>
+  <p class="cp-faculty-card__affiliation">{affiliation}</p>
+  <p class="cp-faculty-card__bio">{bio}</p>
   <div class="cp-card__cta">
     <span>View profile</span> <span aria-hidden="true">→</span>
   </div>

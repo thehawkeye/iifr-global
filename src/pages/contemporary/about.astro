@@ -10,6 +10,30 @@ import ContemporaryBaseLayout from "../../contemporary/layouts/ContemporaryBaseL
 import PageHero from "../../contemporary/components/PageHero.astro";
 import { SITE_URL } from "../../contemporary/lib/seo";
 
+const executiveBoard = [
+  { name: "Banwarilal Purohit", role: "Chairman, IIFR" },
+  { name: "Rajendra Srivastava", role: "Vice Chairman, IIFR" },
+  { name: "Rohit Bansal", role: "Member" },
+  { name: "Siva Prasad", role: "Member" },
+  { name: "Aruna Reddy", role: "Member" },
+  { name: "PR Kaushik", role: "Member" },
+];
+
+const strategicPartners = [
+  {
+    name: "Bharatiya Vidya Bhavan",
+    href: "https://www.bhavans.info/",
+  },
+  {
+    name: "LatticEd",
+    href: "https://latticed.in/",
+  },
+  {
+    name: "EFMD",
+    href: "https://www.efmdglobal.org/",
+  },
+];
+
 const seo = {
   title: "About IIFR | An autonomous academic institute of Bharatiya Vidya Bhavan",
   description:
@@ -34,7 +58,7 @@ const seo = {
   <PageHero
     eyebrow="About IIFR"
     title="An autonomous academic institute of Bharatiya Vidya Bhavan."
-    lead="The International Institute for Faculty & Research (IIFR) is an autonomous academic institute established by Bharatiya Vidya Bhavan. It strengthens faculty capability, research excellence, and academic leadership across India and the Global South, with a focus on practice-led scholarship and &quot;pracademic&quot; education."
+    lead={'The International Institute for Faculty & Research (IIFR) is an autonomous academic institute established by Bharatiya Vidya Bhavan. It strengthens faculty capability, research excellence, and academic leadership across India and the Global South, with a focus on practice-led scholarship and "pracademic" education.'}
     image={{ src: "/assets/images/contemporary/about-hero.png", alt: "Educators and practitioners walking through a contemporary academic campus" }}
   />
 
@@ -52,32 +76,50 @@ const seo = {
   </section>
 
   <section class="cp-section cp-section--ivory" id="governance" aria-labelledby="cp-about-governance">
-    <div class="cp-container cp-container--narrow">
-      <h2 id="cp-about-governance">Governance</h2>
-      <p>
-        IIFR is governed by its Academic Council, with academic oversight of
-        programmes, faculty appointments, and the institute's research
-        direction. The institute is established by Bharatiya Vidya Bhavan and
-        operates from New Delhi.
-      </p>
-      <p>
-        Governance and quality-assurance details that affect public claims
-        (faculty titles, accreditation language, partner relationships,
-        fees, scholarships, and outcome statements) are subject to approval
-        by the Academic Council and the institute's director.
-      </p>
+    <div class="cp-container">
+      <header class="cp-about__section-head">
+        <span class="cp-eyebrow">Governance</span>
+        <h2 id="cp-about-governance">Executive Board</h2>
+        <p class="cp-lead">
+          The Executive Board is highlighted here as the institute's senior
+          leadership body.
+        </p>
+      </header>
+      <div class="cp-grid cp-grid--3 cp-executive-board">
+        {executiveBoard.map((member) => (
+          <article class="cp-card cp-board-member">
+            <span class="cp-board-member__monogram" aria-hidden="true">
+              {member.name.split(" ").map((part) => part[0]).join("")}
+            </span>
+            <h3>{member.name}</h3>
+            <p>{member.role}</p>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
   <section class="cp-section" id="partners" aria-labelledby="cp-about-partners">
-    <div class="cp-container cp-container--narrow">
-      <h2 id="cp-about-partners">Strategic partners</h2>
-      <p>
-        IIFR works with academic, institutional, and sector partners across
-        India and the Global South. A current, verified partner list is
-        maintained in the editorial system; public-facing references are
-        published only after partner approval.
-      </p>
+    <div class="cp-container">
+      <header class="cp-about__section-head">
+        <span class="cp-eyebrow">Institutional network</span>
+        <h2 id="cp-about-partners">Strategic partners</h2>
+        <p class="cp-lead">
+          Learn more about the organisations named on IIFR's public About page.
+        </p>
+      </header>
+      <div class="cp-grid cp-grid--3 cp-partner-grid">
+        {strategicPartners.map((partner) => (
+          <article class="cp-card cp-partner-card">
+            <h3>{partner.name}</h3>
+            <div class="cp-card__cta">
+              <a href={partner.href} target="_blank" rel="noopener noreferrer">
+                Visit organisation <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -108,9 +150,59 @@ const seo = {
 </ContemporaryBaseLayout>
 
 <style>
-  .cp-page-header {
-    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
-    background: var(--cp-color-ivory);
-    border-bottom: 1px solid var(--cp-color-divider);
+  .cp-about__section-head {
+    margin: 0 auto 2.5rem;
+    max-width: 44rem;
+    text-align: center;
+  }
+
+  .cp-about__section-head .cp-lead {
+    margin: 0 auto;
+  }
+
+  .cp-executive-board {
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+
+  .cp-board-member {
+    align-items: flex-start;
+    border-top: 4px solid var(--cp-color-maroon);
+    min-height: 13rem;
+  }
+
+  .cp-board-member h3,
+  .cp-partner-card h3 {
+    margin: 0;
+  }
+
+  .cp-board-member p {
+    margin: 0.45rem 0 0;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-board-member__monogram {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-bottom: 1.5rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--cp-color-navy);
+    color: var(--cp-color-white);
+    font-family: var(--cp-font-heading);
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .cp-partner-card {
+    min-height: 10rem;
+  }
+
+  @media (max-width: 767px) {
+    .cp-board-member,
+    .cp-partner-card {
+      min-height: 0;
+    }
   }
 </style>

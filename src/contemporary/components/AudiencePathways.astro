@@ -9,6 +9,7 @@ interface Pathway {
   description: string;
   cta: string;
   href: string;
+  icon: "teaching" | "faculty" | "institution" | "research";
   /** Optional eyebrow tag, e.g. "Individuals" / "Institutions". */
   audience: "Individuals" | "Faculty" | "Institutions" | "Researchers";
 }
@@ -21,6 +22,7 @@ const pathways: Pathway[] = [
       "Move industry experience into credible teaching, executive education, and academic influence through ECP or EFM.",
     cta: "Compare ECP and EFM",
     href: "/contemporary/programmes/compare",
+    icon: "teaching",
   },
   {
     audience: "Faculty",
@@ -29,6 +31,7 @@ const pathways: Pathway[] = [
       "Workshops and applied research support for existing faculty, programme leads, and academic leaders.",
     cta: "Explore faculty development",
     href: "/contemporary/programmes/faculty-development",
+    icon: "faculty",
   },
   {
     audience: "Institutions",
@@ -37,6 +40,7 @@ const pathways: Pathway[] = [
       "Co-designed faculty capability, executive education, and academic leadership programmes for institutions.",
     cta: "Discuss an institutional need",
     href: "/contemporary/for-institutions",
+    icon: "institution",
   },
   {
     audience: "Researchers",
@@ -45,6 +49,7 @@ const pathways: Pathway[] = [
       "Research partnerships, residencies, and projects on practice-led questions with IIFR research faculty.",
     cta: "Explore research and partnerships",
     href: "/contemporary/research-and-faculty",
+    icon: "research",
   },
 ];
 ---
@@ -61,6 +66,37 @@ const pathways: Pathway[] = [
     <ul class="cp-pathways__grid">
       {pathways.map((p) => (
         <li class="cp-card cp-card--link cp-pathways__card">
+          <span class={`cp-pathways__icon cp-pathways__icon--${p.icon}`} aria-hidden="true">
+            {p.icon === "teaching" && (
+              <svg viewBox="0 0 48 48" fill="none" focusable="false">
+                <path d="M6 11.5c6.8-2.8 12.8-2.1 18 2.1v27c-5.2-4.2-11.2-4.9-18-2.1v-27Z" />
+                <path d="M42 11.5c-6.8-2.8-12.8-2.1-18 2.1v27c5.2-4.2 11.2-4.9 18-2.1v-27Z" />
+                <path d="M13 19h6M13 25h6M35 19h-6M35 25h-6" />
+              </svg>
+            )}
+            {p.icon === "faculty" && (
+              <svg viewBox="0 0 48 48" fill="none" focusable="false">
+                <path d="M10 7h22a4 4 0 0 1 4 4v29H14a4 4 0 0 1-4-4V7Z" />
+                <path d="M16 17h14M16 23h14M16 29h8" />
+                <path d="m34 34 3 3 6-7" />
+              </svg>
+            )}
+            {p.icon === "institution" && (
+              <svg viewBox="0 0 48 48" fill="none" focusable="false">
+                <path d="M6 19 24 8l18 11" />
+                <path d="M9 21h30M12 40h24M15 21v15M24 21v15M33 21v15" />
+                <path d="M6 40h36" />
+              </svg>
+            )}
+            {p.icon === "research" && (
+              <svg viewBox="0 0 48 48" fill="none" focusable="false">
+                <circle cx="21" cy="21" r="11" />
+                <path d="m29 29 10 10M17 21h8M21 17v8" />
+                <circle cx="38" cy="10" r="3" />
+                <path d="m29 15 6-3" />
+              </svg>
+            )}
+          </span>
           <span class="cp-tag">{p.audience}</span>
           <h3>{p.title}</h3>
           <p>{p.description}</p>
@@ -97,6 +133,39 @@ const pathways: Pathway[] = [
 
   .cp-pathways__card h3 {
     margin: 0.75rem 0 0.5rem;
+  }
+
+  .cp-pathways__icon {
+    align-items: center;
+    background: var(--cp-color-ivory);
+    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+    border-radius: 50%;
+    color: var(--cp-color-maroon);
+    display: inline-flex;
+    height: clamp(2.75rem, 5vw, 3.5rem);
+    justify-content: center;
+    width: clamp(2.75rem, 5vw, 3.5rem);
+  }
+
+  .cp-pathways__icon--faculty {
+    color: var(--cp-color-navy);
+  }
+
+  .cp-pathways__icon--institution {
+    color: var(--cp-color-gold);
+  }
+
+  .cp-pathways__icon--research {
+    color: var(--cp-color-maroon);
+  }
+
+  .cp-pathways__icon svg {
+    height: 58%;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.5;
+    width: 58%;
   }
 
   .cp-pathways__card p {

@@ -4,20 +4,24 @@
  *
  * Per design plan §7.5, the profile makes relevance visible (which
  * programmes, which expertise, which role) rather than just a title.
+ *
+ * Backed by the lib/people.ts directory (≥ 38 profiles covering
+ * Academic Council + Teaching Faculty + Professor of Practice).
  */
 import ContemporaryBaseLayout from "../../../../contemporary/layouts/ContemporaryBaseLayout.astro";
-import { faculty, programmes, getFaculty } from "../../../../contemporary/lib/content";
+import { programmes } from "../../../../contemporary/lib/content";
+import { people, getPerson } from "../../../../contemporary/lib/people";
 import { SITE_URL, facultyPersonSchema } from "../../../../contemporary/lib/seo";
 
 export async function getStaticPaths() {
-  return faculty.map((f) => ({
-    params: { slug: f.slug },
-    props: { faculty: f },
+  return people.map((p) => ({
+    params: { slug: p.slug },
+    props: { person: p },
   }));
 }
 
-const { faculty: person } = Astro.props as { faculty: ReturnType<typeof getFaculty> & object };
-if (!person) throw new Error("faculty is required");
+const { person } = Astro.props as { person: ReturnType<typeof getPerson> & object };
+if (!person) throw new Error("person is required");
 
 const linkedProgrammes = programmes.filter((p) => person.programmes.includes(p.slug));
 

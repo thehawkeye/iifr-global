@@ -52,8 +52,8 @@ export interface Cohort {
   fee: string;
   format: string;
   location: string;
-  capacity: string;
-  /** Brochure / application / external links are placeholders only. */
+  capacity: string | null;
+  /** Brochure / application links must point to their verified destination. */
   applicationUrl: string;
   brochureUrl: string;
   owner: Owner;
@@ -187,8 +187,8 @@ export const programmes: Programme[] = [
       "Faculty and educators",
       "L&D and CHRO leaders",
     ],
-    duration: "8 learning days",
-    format: "Cohort-based, in-person",
+    duration: "4-month programme",
+    format: "On campus, New Delhi",
     outcomes: [
       "Design a course you can actually teach",
       "Build a publishable case or applied note",
@@ -222,26 +222,26 @@ export const programmes: Programme[] = [
       { name: "Professors of Practice", role: "Practitioner faculty" },
     ],
     certification:
-      "IIFR Certificate of Completion, EFMD-recognised programme (see certification language note).",
+      "IIFR Certificate of Completion, EFMD-recognised programme (see certification language note). Founding Batch Scholarship",
     cohorts: [
       {
         id: "ecp-2026-08",
         name: "August 2026 cohort",
         status: "registration-open",
         startDate: "2026-08-21",
-        endDate: "2026-11-30",
-        applicationDeadline: "2026-08-10",
-        fee: "₹1,50,000 + GST as applicable",
-        format: "In-person, New Delhi",
+        endDate: null,
+        applicationDeadline: null,
+        fee: "Rs. 5,00,000 + GST",
+        format: "On campus, New Delhi",
         location: "Bharatiya Vidya Bhavan, New Delhi",
-        capacity: "Limited to 36 participants",
-        applicationUrl: "/contemporary/start?intent=apply&programme=ecp",
+        capacity: null,
+        applicationUrl: "https://admissions.iifr.global/ecp/#apply_now",
         brochureUrl: "/contemporary/start?intent=brochure&programme=ecp",
         owner: standardOwner,
       },
     ],
     status: "open",
-    source: "iifr.global/ecp — verified 2026-08-04",
+    source: "staging-dev.iifr.global/ecp.php — verified 2026-08-10",
     owner: standardOwner,
   },
   {
@@ -292,25 +292,9 @@ export const programmes: Programme[] = [
     ],
     certification:
       "IIFR Executive Fellow designation. Credential language is under review with the academic council and must not be characterised as a degree until approved.",
-    cohorts: [
-      {
-        id: "efm-2027-02",
-        name: "February 2027 cohort (intake by enquiry)",
-        status: "registration-closed",
-        startDate: "2027-02-15",
-        endDate: "2028-04-30",
-        applicationDeadline: "2026-11-30",
-        fee: "By enquiry",
-        format: "Modular",
-        location: "New Delhi + applied research placement",
-        capacity: "Small cohort",
-        applicationUrl: "/contemporary/start?intent=enquire&programme=efm",
-        brochureUrl: "/contemporary/start?intent=brochure&programme=efm",
-        owner: standardOwner,
-      },
-    ],
-    status: "by-enquiry",
-    source: "iifr.global/efm — verified 2026-08-04 (credential language under review)",
+    cohorts: [],
+    status: "coming-soon",
+    source: "Programme state directed for L4 — verified 2026-08-10",
     owner: standardOwner,
   },
   {
@@ -378,8 +362,8 @@ export const programmes: Programme[] = [
         owner: standardOwner,
       },
     ],
-    status: "open",
-    source: "iifr.global/applied-research — verified 2026-08-04",
+    status: "by-enquiry",
+    source: "Programme state directed for L4 — verified 2026-08-10",
     owner: standardOwner,
   },
   {
@@ -520,7 +504,7 @@ export const faculty: FacultyProfile[] = [
 export const events: Event[] = [
   {
     slug: "ecp-august-2026-briefing",
-    title: "ECP August 2026 cohort — pre-application briefing",
+    title: "ECP Cohort 1 Participant Briefing — 14 August 2026",
     eventType: "workshop",
     summary:
       "A live briefing for prospective ECP participants, faculty, and sponsors on the August 2026 cohort.",
@@ -530,7 +514,7 @@ export const events: Event[] = [
       { name: "IIFR Admissions", affiliation: "IIFR" },
       { name: "IIFR Faculty", affiliation: "IIFR" },
     ],
-    dateTime: "2026-08-05T16:00:00+05:30",
+    dateTime: "2026-08-14T16:00:00+05:30",
     timeZone: "Asia/Kolkata",
     duration: "60 minutes",
     format: "Online (registration required)",

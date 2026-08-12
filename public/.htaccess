@@ -1,0 +1,113 @@
+# ==============================================================
+# IIFR — Apache redirects + base config for Hostinger (public_html)
+# Phase 2 / T7b build output
+#
+# IMPORTANT (Phase 2): This file is the **production** redirect map.
+# It mirrors `vercel.json` redirects and is emitted from
+# `scripts/sync-redirects.ts`. **Single source of truth = vercel.json.**
+#
+# NOTE (T7a deferred): destinations are driven by the locked spec
+# decision "sitemap.xml (14 .php URLs) + live crawl — no GSC export"
+# because the Search Console top-URLs pull was archived on 2026-08-10
+# without producing a CSV. If Google has indexed the clean shape
+# alongside the `.php` shape, both will still 301 to the same clean
+# destination — no orphan URLs.
+#
+# STATUS: build output. Lives in `dist/` after `npm run build`.
+# DEPLOY: only with Murali's explicit per-action approval (Phase 5).
+# NEVER executed in Phase 2.
+# ==============================================================
+
+# --- Block direct access to internal / sensitive files ---
+<FilesMatch "^(iifr-config|iifr-config\.local|iifr-config\.local\.SAMPLE|iifr-mail|dev-router)\.php$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "\.(docx|md|markdown|gitignore|sample|local|log|sql)$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+# --- Rewrite engine ---
+RewriteEngine On
+RewriteBase /
+
+# Force HTTPS (uncomment after the SSL certificate is issued on Hostinger)
+# RewriteCond %{HTTPS} !=on
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# --- .php → clean URL redirects (mirror of vercel.json) ---
+# >>> sync-redirects:start
+# EMITTED by scripts/sync-redirects.ts from vercel.json — DO NOT EDIT
+# Re-run `node scripts/sync-redirects.ts` to regenerate.
+
+RewriteRule ^home\.php$ / [R=301,L]
+RewriteRule ^about\.php$ /about [R=301,L]
+RewriteRule ^programmes\.php$ /programmes [R=301,L]
+RewriteRule ^programs\.php$ /programmes [R=301,L]
+RewriteRule ^programs$ /programmes [R=301,L]
+RewriteRule ^ecp\.php$ /ecp [R=301,L]
+RewriteRule ^efm\.php$ /efm [R=301,L]
+RewriteRule ^applied-research\.php$ /applied-research [R=301,L]
+RewriteRule ^research\.php$ /research [R=301,L]
+RewriteRule ^faculty\.php$ /faculty [R=301,L]
+RewriteRule ^apply\.php$ /apply [R=301,L]
+RewriteRule ^contact\.php$ /contact [R=301,L]
+RewriteRule ^privacy-policy\.php$ /privacy-policy [R=301,L]
+RewriteRule ^insights\.php$ /insights [R=301,L]
+RewriteRule ^insight/blog/([^/]+)\.php$ /insights/$1 [R=301,L]
+RewriteRule ^pracademic-identity\.php$ /about [R=301,L]
+RewriteRule ^befm\.php$ /efm [R=301,L]
+RewriteRule ^admin/(.*)$ /keystatic [L]
+# <<< sync-redirects:end
+
+# --- /admin/* → Keystatic UI (non-permanent; Keystatic handles its own auth) ---
+# This rule is intentionally outside the sync block — it has no analogue
+# in vercel.json (Vercel doesn't need an Apache-style rewrite). Keep here.
+RewriteRule ^admin/(.*)$ /keystatic/$1 [L]
+
+# --- Security headers (mirror vercel.json headers) ---
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+  Header always set Content-Security-Policy "frame-src 'self' https://forms.zohopublic.in; frame-ancestors 'self'; img-src 'self' https://iifr.global data:; default-src 'self'"
+</IfModule>
+
+# --- Let Apache serve real static files first ---
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# --- Custom error document → static 404 page ---
+ErrorDocument 404 /404.html
+
+# --- MIME tweaks ---
+<IfModule mod_mime.c>
+  AddType image/avif .avif
+  AddType image/webp .webp
+  AddType font/woff2 .woff2
+</IfModule>
+
+# --- Caching for static assets ---
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                "access plus 7 days"
+  ExpiresByType application/javascript  "access plus 7 days"
+  ExpiresByType image/jpeg              "access plus 30 days"
+  ExpiresByType image/png               "access plus 30 days"
+  ExpiresByType image/webp              "access plus 30 days"
+  ExpiresByType image/avif              "access plus 30 days"
+  ExpiresByType image/svg+xml           "access plus 30 days"
+  ExpiresByType font/woff2              "access plus 365 days"
+</IfModule>
+
+# --- Gzip compression ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+# --- Directory options ---
+DirectoryIndex index.html
+Options -Indexes

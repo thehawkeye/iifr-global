@@ -12,7 +12,11 @@
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-src 'self' https://forms.zohopublic.in; frame-ancestors 'self'; img-src 'self' https://iifr.global data:; default-src 'self'"
+        }
       ]
     },
     {
@@ -22,5 +26,36 @@
       ]
     }
   ],
-  "redirects": []
+  "redirects": [
+    { "source": "/home.php", "destination": "/", "permanent": true },
+    { "source": "/about.php", "destination": "/about", "permanent": true },
+    { "source": "/programmes.php", "destination": "/programmes", "permanent": true },
+    { "source": "/programs.php", "destination": "/programmes", "permanent": true },
+    { "source": "/programs", "destination": "/programmes", "permanent": true },
+    { "source": "/ecp.php", "destination": "/ecp", "permanent": true },
+    { "source": "/efm.php", "destination": "/efm", "permanent": true },
+    { "source": "/applied-research.php", "destination": "/applied-research", "permanent": true },
+    { "source": "/research.php", "destination": "/research", "permanent": true },
+    { "source": "/faculty.php", "destination": "/faculty", "permanent": true },
+    { "source": "/apply.php", "destination": "/apply", "permanent": true },
+    { "source": "/contact.php", "destination": "/contact", "permanent": true },
+    { "source": "/privacy-policy.php", "destination": "/privacy-policy", "permanent": true },
+    { "source": "/insights.php", "destination": "/insights", "permanent": true },
+    {
+      "source": "/insight/blog/:slug.php",
+      "destination": "/insights/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/pracademic-identity.php",
+      "destination": "/about",
+      "permanent": true
+    },
+    { "source": "/befm.php", "destination": "/efm", "permanent": true },
+    {
+      "source": "/admin/:path*",
+      "destination": "/keystatic",
+      "permanent": false
+    }
+  ]
 }

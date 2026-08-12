@@ -36,8 +36,10 @@ const CONTENT_ROOT = join(process.cwd(), "src/content/programmes");
 
 /**
  * Minimal YAML frontmatter parser. Handles the slice's flat
- * string-only frontmatter. Anything else is a parse error — fail
- * loudly rather than guess.
+ * string-only frontmatter, plus tolerance for other fields (e.g.
+ * `tagline`) that Keystatic wraps in a multi-line YAML folded-scalar
+ * block (`>-`) once they get long — this reader only consumes `fee`,
+ * so those continuation lines are skipped rather than parsed.
  */
 function parseFrontmatter(source: string): {
   data: Record<string, string>;
@@ -50,6 +52,9 @@ function parseFrontmatter(source: string): {
   const [, fm, body] = match;
   const data: Record<string, string> = {};
   for (const rawLine of fm.split(/\r?\n/)) {
+    // A line indented relative to top-level keys is a continuation of a
+    // multi-line YAML block scalar (e.g. `>-` folded tagline) — skip it.
+    if (/^\s+\S/.test(rawLine)) continue;
     const line = rawLine.trim();
     if (!line || line.startsWith("#")) continue;
     const sep = line.indexOf(":");

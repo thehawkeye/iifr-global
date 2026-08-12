@@ -1,43 +1,73 @@
 /* ================================================================
- * IIFR design tokens (extracted per webdev-build-spec.md §2.7)
+ * Canonical IIFR design tokens.
+ * Source: /Users/lyraai/Documents/Mac Mini Sync/IIFR design.md
  *
- * IMPORTANT (Phase 2): this file is **documentation only**. Pages link
- * the Hostinger-hosted `assets/css/iifr-redesign.css` (and the rest of
- * the legacy stylesheet bundle) directly via `LegacyStyles.astro` per
- * M5 — the 91 MB `assets/` tree is NOT recompiled into the Astro repo.
- * The variables below mirror what `iifr-redesign.css` and the existing
- * components already use, so future in-repo CSS can stay consistent.
- *
- * When the site is rebuilt design-system-first (Phase 7+), the
- * `iifr-redesign.css` source is moved into `src/styles/` and these
- * tokens become the canonical source of truth.
+ * Phase 2 still loads the locked legacy stylesheet after this bundle via
+ * LegacyStyles.astro. That stylesheet intentionally wins for its existing
+ * --iifr-* runtime aliases until the full CSS migration is in scope. New
+ * in-repo work should use the canonical --color-*, typography, and layout
+ * tokens below. Intentional runtime discrepancies are recorded in
+ * docs/t2-repair-handoff-2026-08-04.md.
  * ================================================================ */
 
 :root {
-  /* ---- Brand colour palette ---- */
-  --iifr-navy: #0a1a3a;        /* primary institutional navy */
-  --iifr-navy-soft: #1c2a55;   /* hover / depth */
-  --iifr-gold: #c8a253;        /* CTA, accent */
-  --iifr-gold-deep: #a8862f;   /* hover on gold */
-  --iifr-cream: #faf6ee;       /* soft section background */
-  --iifr-cream-deep: #f1ead8;  /* deeper cream, dividers */
+  /* ---- Canonical brand palette ---- */
+  --color-black: #000000;
+  --color-maroon: #6c131b;
+  --color-navy: #242f4c;
+  --color-gold: #c79906;
+  --color-ivory: #efebe5;
+  --color-white: #ffffff;
+  --color-border: #d4d1cc;
+  --color-divider: #e8e5e0;
 
-  /* ---- Neutrals ---- */
-  --iifr-ink: #1f2937;         /* body copy */
-  --iifr-ink-soft: #4b5563;    /* secondary copy */
-  --iifr-muted: #6b7280;       /* meta / captions */
-  --iifr-line: #e5e7eb;        /* hairlines */
-  --iifr-bg: #ffffff;          /* page surface */
+  /* Compatibility aliases for in-repo components. */
+  --iifr-maroon: var(--color-maroon);
+  --iifr-navy: var(--color-navy);
+  --iifr-gold: var(--color-gold);
+  --iifr-cream: var(--color-ivory);
+  --iifr-ink: var(--color-black);
+  --iifr-line: var(--color-border);
+  --iifr-bg: var(--color-white);
 
   /* ---- Feedback ---- */
   --iifr-success: #1f7a4d;
   --iifr-danger:  #b3261e;
   --iifr-warning: #b8860b;
 
-  /* ---- Typography (matches the Google Fonts preconnect in style.php) ---- */
+  /* ---- Canonical typography ---- */
+  --font-heading: "Roboto Slab", Georgia, "Times New Roman", serif;
+  --font-body: "Roboto", system-ui, -apple-system, "Segoe UI",
+    "Helvetica Neue", Arial, sans-serif;
+  --font-size-title: 50px;
+  --font-size-h1: 40px;
+  --font-size-h2: 35px;
+  --font-size-h3: 30px;
+  --font-size-h4: 25px;
+  --font-size-overline: 25px;
+  --font-size-body: 18px;
+  --font-size-button: 14px;
+
   --iifr-font-sans: "Roboto", system-ui, -apple-system, "Segoe UI",
     "Helvetica Neue", Arial, sans-serif;
   --iifr-font-serif: "Roboto Slab", Georgia, "Times New Roman", serif;
+
+  /* ---- Canonical spacing, radii, elevation, and motion ---- */
+  --content-width: 1200px;
+  --content-width-narrow: 800px;
+  --content-width-wide: 1400px;
+  --section-padding-x: 80px;
+  --section-padding-y: 96px;
+  --card-padding: 32px;
+  --card-padding-compact: 24px;
+  --grid-gap: 32px;
+  --radius-button: 4px;
+  --radius-card: 8px;
+  --radius-feature: 12px;
+  --radius-pill: 9999px;
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --transition-standard: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   /* ---- Bootstrap 5 breakpoints (kept in sync with the legacy CSS) ---- */
   --iifr-bp-sm: 576px;

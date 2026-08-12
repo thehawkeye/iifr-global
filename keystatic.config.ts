@@ -14,7 +14,12 @@ import { config, fields, collection, singleton } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: 'local',
+    kind: 'github',
+    repo: {
+      owner: 'thehawkeye',
+      name: 'iifr-global',
+    },
+    branchPrefix: 'keystatic/',
   },
   singletons: {
     siteSettings: singleton({
@@ -89,9 +94,31 @@ export default config({
             validation: { isRequired: true },
           },
         }),
+        format: fields.select({
+          label: 'Format',
+          options: [
+            { label: 'Practitioner essay', value: 'practitioner-essay' },
+            { label: 'Research note', value: 'research-note' },
+            { label: 'Case study', value: 'case-study' },
+          ],
+          defaultValue: 'practitioner-essay',
+        }),
+        dek: fields.text({ label: 'Dek (subheading)', multiline: true }),
+        authorName: fields.text({ label: 'Author name' }),
+        authorProfile: fields.text({
+          label: 'Author profile slug (points at people.ts entry — not enforced in Phase 1)',
+        }),
         publishDate: fields.date({ label: 'Publish date' }),
-        author: fields.text({ label: 'Author' }),
-        excerpt: fields.text({ label: 'Excerpt' }),
+        updateDate: fields.date({ label: 'Update date' }),
+        readingTime: fields.text({ label: 'Reading time' }),
+        topic: fields.text({ label: 'Topic' }),
+        audience: fields.text({ label: 'Audience' }),
+        relatedProgramme: fields.text({
+          label: 'Related programme slug (matches programmes collection)',
+        }),
+        source: fields.text({
+          label: 'Source (informational; readonly after first write)',
+        }),
         body: fields.markdoc({ label: 'Body' }),
       },
     }),

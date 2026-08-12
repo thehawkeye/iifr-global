@@ -1,0 +1,182 @@
+---
+/**
+ * /contemporary/research-and-faculty — research and faculty hub.
+ *
+ * Demonstrates the content model: people linked to programmes and
+ * expertise. Per design plan §6.6, a person card answers "why
+ * this person is relevant to my decision".
+ */
+import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import PageHero from "../../../contemporary/components/PageHero.astro";
+import InsightCard from "../../../contemporary/components/InsightCard.astro";
+import { insights } from "../../../contemporary/lib/content";
+import { getPeopleInGroup, peopleGroupMeta } from "../../../contemporary/lib/people";
+import { SITE_URL } from "../../../contemporary/lib/seo";
+
+const seo = {
+  title: "Research and faculty | IIFR",
+  description:
+    "IIFR brings together globally connected academicians, senior industry professionals, Professors of Practice, and research leaders. Explore the research and faculty hub.",
+  keywords:
+    "IIFR research and faculty, applied research India, Professors of Practice, pracademic faculty, IIFR Academic Council",
+  canonical: `${SITE_URL}/contemporary/research-and-faculty`,
+  image: `${SITE_URL}/assets/images/contemporary/research-and-faculty-hero.png`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+
+const insightsToShow = insights.slice(0, 2);
+const peopleGroups = ["academic-council", "faculty"] as const;
+---
+
+<ContemporaryBaseLayout
+  path="/contemporary/research-and-faculty"
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Research and faculty" },
+  ]}
+>
+  <PageHero
+    eyebrow="Research and faculty"
+    title="People and applied work at the bridge."
+    lead="IIFR brings together globally connected academicians, senior industry professionals, Professors of Practice, and research leaders. The people below shape programmes, supervise applied research, and write the institute's insights."
+    image={{ src: "/assets/images/contemporary/research-and-faculty-hero.png", alt: "Academics and practitioners in conversation around a research table" }}
+  />
+
+  <section class="cp-section" id="agenda" aria-labelledby="cp-research-agenda">
+    <div class="cp-container">
+      <header class="cp-programmes__head">
+        <span class="cp-eyebrow">Research agenda</span>
+        <h2 id="cp-research-agenda">What we work on</h2>
+        <p class="cp-lead">
+          IIFR's research priorities are framed by the institute's mission:
+          faculty capability, research excellence, and academic leadership
+          across India and the Global South. Active project list is a
+          future-state addition — see the design plan §7.4 for the model.
+        </p>
+      </header>
+      <ul class="cp-themes">
+        <li>Faculty development and teaching excellence</li>
+        <li>Professors of Practice and pracademic pathways</li>
+        <li>Applied research and research methods</li>
+        <li>Academic leadership and institutional capability</li>
+        <li>Executive education for academic and industry leaders</li>
+        <li>Academia–industry–policy collaboration</li>
+        <li>AI-enabled pedagogy and responsible use of AI in education</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory" aria-labelledby="cp-people-groups">
+    <div class="cp-container">
+      <header class="cp-programmes__head">
+        <span class="cp-eyebrow">People at IIFR</span>
+        <h2 id="cp-people-groups">Academic Council and Faculty</h2>
+        <p class="cp-lead">
+          Explore the two groups separately. Each route lists the people in
+          that group and links to the IIFR-published profile details.
+        </p>
+      </header>
+      <div class="cp-grid cp-grid--2">
+        {peopleGroups.map((group) => {
+          const meta = peopleGroupMeta[group];
+          const count = getPeopleInGroup(group).length;
+          return (
+            <a class="cp-card cp-card--link cp-group-card" href={`/contemporary/research-and-faculty/${group}`}>
+              <span class="cp-tag cp-tag--navy">{count} profiles</span>
+              <h3>{meta.title}</h3>
+              <p>{meta.lead}</p>
+              <span class="cp-card__cta">Explore {meta.label} <span aria-hidden="true">→</span></span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="cp-section" aria-labelledby="cp-research-cta">
+    <div class="cp-container">
+      <div class="cp-card cp-card--ivory cp-card--centered">
+        <h2 id="cp-research-cta">Propose a collaboration</h2>
+        <p>
+          If you are a researcher, funder, or institutional partner and want
+          to discuss an applied question, propose a residency, or explore a
+          joint project, talk to IIFR's research office.
+        </p>
+        <a class="cp-button cp-button--primary" href="/contemporary/start?intent=partner&topic=research">
+          Discuss a research collaboration
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory" aria-labelledby="cp-related-insights">
+    <div class="cp-container">
+      <header class="cp-programmes__head">
+        <span class="cp-eyebrow">From the research and faculty hub</span>
+        <h2 id="cp-related-insights">Recent thinking</h2>
+      </header>
+      <div class="cp-grid cp-grid--2">
+        {insightsToShow.map((i) => <InsightCard insight={i} />)}
+      </div>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-programmes__head {
+    text-align: center;
+    margin: 0 auto 2.5rem;
+    max-width: 720px;
+  }
+
+  .cp-themes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .cp-themes {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .cp-themes li {
+    background: var(--cp-color-white);
+    border: 1px solid var(--cp-color-divider);
+    border-radius: var(--cp-radius-card);
+    padding: 0.85rem 1rem;
+    color: var(--cp-color-navy);
+  }
+
+  .cp-card--centered {
+    text-align: center;
+    align-items: center;
+  }
+
+  .cp-card--centered p {
+    color: var(--cp-color-text-muted);
+    max-width: 50ch;
+    margin: 0 auto 1.5rem;
+  }
+
+  .cp-group-card h3 {
+    margin: 0.75rem 0;
+    font-size: 1.35rem;
+  }
+
+  .cp-group-card p {
+    color: var(--cp-color-text-muted);
+  }
+</style>

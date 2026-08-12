@@ -1,0 +1,183 @@
+---
+/**
+ * /contemporary/start — canonical admissions route.
+ *
+ * This page intentionally renders the live ECP Zoho form rather than a
+ * local proxy. The formperma and iframe origin are the live values from
+ * https://admissions.iifr.global/ecp/ (verified 2026-08-06).
+ */
+import ContemporaryBaseLayout from "../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { SITE_URL } from "../../contemporary/lib/seo";
+
+const url = new URL(Astro.request.url);
+const programme = url.searchParams.get("programme");
+const intent = url.searchParams.get("intent") ?? "apply";
+const formPerma = "JIkkyIxy-JzgBjeM2mtokApARaUtHuPRkuhIre5c3Qs";
+const formOrigin = "https://forms.zohopublic.in/infoii1/form/LandingPageLeadGen/formperma";
+
+const seo = {
+  title: "Apply to the Educators' Certificate Programme | IIFR",
+  description: "Submit an application for IIFR's Educators' Certificate Programme.",
+  keywords: "IIFR admissions, Educators' Certificate Programme application, ECP application",
+  canonical: `${SITE_URL}/contemporary/start`,
+  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+
+const requestedProgramme = programme === "ecp" ? "the Educators' Certificate Programme" : "IIFR";
+const pageLabel = intent === "brochure" ? "Request the ECP brochure" : `Apply to ${requestedProgramme}`;
+---
+
+<ContemporaryBaseLayout
+  path="/contemporary/start"
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Admissions" },
+  ]}
+>
+  <header class="admissions-hero">
+    <div class="cp-container admissions-hero__grid">
+      <div>
+        <span class="cp-eyebrow">Admissions</span>
+        <h1>{pageLabel}</h1>
+        <p class="cp-lead">
+          The Educators' Certificate Programme is designed for experienced professionals moving into teaching, executive education, and academic leadership.
+        </p>
+      </div>
+      <dl class="admissions-facts" aria-label="ECP at a glance">
+        <div><dt>Start date</dt><dd>21 August 2026</dd></div>
+        <div><dt>Format</dt><dd>4 months, 3 weekend residencies</dd></div>
+        <div><dt>Campus</dt><dd>IIFR, New Delhi</dd></div>
+        <div><dt>Certification</dt><dd>IIFR + EFMD Global</dd></div>
+      </dl>
+    </div>
+  </header>
+
+  <section class="cp-section cp-section--ivory" id="apply_now" aria-labelledby="application-form-title">
+    <div class="cp-container admissions-form-layout">
+      <aside class="admissions-form-intro">
+        <span class="cp-eyebrow">Application form</span>
+        <h2 id="application-form-title">Tell us about yourself</h2>
+        <p>
+          Complete the form to begin an admissions conversation with IIFR. Fields and submission handling are provided directly by Zoho.
+        </p>
+        <p class="admissions-form-intro__note">
+          Please do not share information that is not requested in the form.
+        </p>
+      </aside>
+
+      <div class="admissions-form-card">
+        <div id={`zf_div_${formPerma}`} data-zoho-form aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<script is:inline define:vars={{ formPerma, formOrigin }}>
+  (function () {
+    var container = document.getElementById("zf_div_" + formPerma);
+    if (!container || container.querySelector("iframe")) return;
+
+    var params = new URLSearchParams(window.location.search);
+    var iframeSource = formOrigin + "/" + formPerma + "?zf_rszfm=1";
+    var trackingParams = [
+      "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+      "gclid", "gbraid", "wbraid", "fbclid", "li_fat_id", "msclkid",
+    ];
+
+    trackingParams.forEach(function (name) {
+      var value = params.get(name);
+      if (value) {
+        iframeSource += "&" + (name.indexOf("utm_") === 0 ? "zf_" + name : name) + "=" + encodeURIComponent(value);
+      }
+    });
+
+    if (document.referrer) iframeSource += "&referrername=" + encodeURIComponent(document.referrer);
+
+    var iframe = document.createElement("iframe");
+    iframe.src = iframeSource;
+    iframe.style.border = "none";
+    iframe.style.height = "756px";
+    iframe.style.width = "100%";
+    iframe.style.transition = "all 0.5s ease";
+    iframe.setAttribute("title", "IIFR Educators' Certificate Programme application form");
+    iframe.setAttribute("allow", "geolocation");
+    container.appendChild(iframe);
+
+    window.addEventListener("message", function (event) {
+      if (event.origin !== "https://forms.zohopublic.in" || typeof event.data !== "string") return;
+      var fields = event.data.split("|");
+      if (fields[0] !== "formperma" || fields[1] !== formPerma) return;
+
+      var newHeight = parseInt(fields[fields.length - 1], 10);
+      if (!Number.isNaN(newHeight)) iframe.style.height = newHeight + "px";
+      if (fields.length === 3) iframe.scrollIntoView({ block: "start", behavior: "smooth" });
+    });
+  })();
+</script>
+
+<style>
+  .admissions-hero {
+    background: var(--cp-color-white);
+    border-bottom: 1px solid var(--cp-color-divider);
+    padding: clamp(3rem, 1.5rem + 5vw, 5.5rem) 0;
+  }
+
+  .admissions-hero__grid,
+  .admissions-form-layout {
+    display: grid;
+    gap: clamp(2rem, 1rem + 4vw, 5rem);
+  }
+
+  .admissions-hero h1 { margin-bottom: 1rem; }
+
+  .admissions-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .admissions-facts div {
+    border-top: 2px solid var(--cp-color-gold);
+    padding-top: 0.65rem;
+  }
+
+  .admissions-facts dt {
+    color: var(--cp-color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .admissions-facts dd {
+    color: var(--cp-color-navy);
+    font-family: var(--cp-font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0.25rem 0 0;
+  }
+
+  .admissions-form-intro__note {
+    border-left: 3px solid var(--cp-color-gold);
+    color: var(--cp-color-text-muted);
+    font-size: var(--cp-font-size-small);
+    padding-left: 1rem;
+  }
+
+  .admissions-form-card {
+    background: var(--cp-color-white);
+    border: 1px solid var(--cp-color-border);
+    box-shadow: var(--cp-shadow-card);
+    min-width: 0;
+    padding: clamp(1rem, 0.5rem + 2vw, 2rem);
+  }
+
+  @media (min-width: 900px) {
+    .admissions-hero__grid { grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr); align-items: end; }
+    .admissions-form-layout { grid-template-columns: minmax(220px, 0.35fr) minmax(0, 0.65fr); align-items: start; }
+  }
+</style>

@@ -1,0 +1,194 @@
+---
+/**
+ * /contemporary/events-and-insights/events/[slug] — event detail.
+ *
+ * Date, time zone, format, speakers, and registration status are all
+ * visible in the page body — matches the GEO plan §11 requirement.
+ */
+import ContemporaryBaseLayout from "../../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { events, getEvent, getProgramme } from "../../../../contemporary/lib/content";
+import { SITE_URL, eventSchema } from "../../../../contemporary/lib/seo";
+
+export async function getStaticPaths() {
+  return events.map((e) => ({
+    params: { slug: e.slug },
+    props: { event: e },
+  }));
+}
+
+const { event } = Astro.props as { event: ReturnType<typeof getEvent> & object };
+if (!event) throw new Error("event is required");
+
+const related = event.relatedProgramme ? getProgramme(event.relatedProgramme) : null;
+const start = new Date(event.dateTime);
+const dateLabel = start.toLocaleDateString("en-IN", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+const timeLabel = start.toLocaleTimeString("en-IN", {
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: event.timeZone,
+});
+
+const seo = {
+  title: `${event.title} | IIFR events`,
+  description: event.summary,
+  keywords: `${event.title}, IIFR ${event.eventType}, ${event.topic}`,
+  canonical: `${SITE_URL}/contemporary/events-and-insights/events/${event.slug}`,
+  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+
+const schema = eventSchema(event, seo.canonical);
+---
+
+<ContemporaryBaseLayout
+  path={`/contemporary/events-and-insights/events/${event.slug}`}
+  seo={seo}
+  schema={schema}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Events and insights", href: "/contemporary/events-and-insights" },
+    { label: event.title },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container cp-container--narrow">
+      <span class="cp-tag">{event.eventType}</span>
+      <h1>{event.title}</h1>
+      <p class="cp-lead">{event.summary}</p>
+      <dl class="cp-event-facts">
+        <div><dt>Date</dt><dd>{dateLabel}</dd></div>
+        <div><dt>Time</dt><dd>{timeLabel} {event.timeZone}</dd></div>
+        <div><dt>Duration</dt><dd>{event.duration}</dd></div>
+        <div><dt>Format</dt><dd>{event.format}</dd></div>
+        <div><dt>Audience</dt><dd>{event.audience}</dd></div>
+        <div><dt>Topic</dt><dd>{event.topic}</dd></div>
+        <div><dt>Status</dt><dd>{event.status}</dd></div>
+      </dl>
+      <div class="cp-row">
+        <a class="cp-button cp-button--primary" href={event.registrationUrl}>
+          {event.status === "upcoming" || event.status === "registration-open" ? "Register" : "View registration status"}
+        </a>
+        {related && (
+          <a class="cp-button cp-button--outline" href={`/contemporary/programmes/${related.slug}`}>
+            Related: {related.shortName}
+          </a>
+        )}
+      </div>
+    </div>
+  </header>
+
+  <section class="cp-section">
+    <div class="cp-container cp-container--narrow">
+      <h2>Speakers</h2>
+      <ul class="cp-speakers">
+        {event.speakers.map((s) => (
+          <li>
+            <strong>{s.name}</strong>
+            <span>{s.affiliation}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory">
+    <div class="cp-container cp-container--narrow">
+      <h2>What you will get from this event</h2>
+      <p>{event.summary}</p>
+    </div>
+  </section>
+
+  <section class="cp-section">
+    <div class="cp-container cp-container--narrow">
+      <h2>Event governance</h2>
+      <p class="cp-event-owner">
+        Owner: {event.owner.name} · Last reviewed {event.owner.lastReviewedAt} ·
+        Source: {event.source}
+      </p>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-page-header .cp-row {
+    margin-top: 1.5rem;
+  }
+
+  .cp-event-facts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem 1.5rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .cp-event-facts {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .cp-event-facts div {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-event-facts dt {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-event-facts dd {
+    margin: 0;
+    color: var(--cp-color-navy);
+    font-weight: 500;
+  }
+
+  .cp-speakers {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cp-speakers li {
+    background: var(--cp-color-ivory);
+    padding: 0.85rem 1rem;
+    border-radius: var(--cp-radius-card);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cp-speakers strong {
+    color: var(--cp-color-navy);
+    font-family: var(--cp-font-heading);
+  }
+
+  .cp-speakers span {
+    color: var(--cp-color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .cp-event-owner {
+    color: var(--cp-color-text-muted);
+    font-size: 0.9rem;
+  }
+</style>

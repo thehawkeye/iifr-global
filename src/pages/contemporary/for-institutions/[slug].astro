@@ -1,0 +1,184 @@
+---
+/**
+ * /contemporary/for-institutions/[slug] — institutional solution
+ * detail (problem-led, per design plan §7.7).
+ */
+import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { institutionalSolutions, getSolution } from "../../../contemporary/lib/content";
+import { SITE_URL } from "../../../contemporary/lib/seo";
+
+export async function getStaticPaths() {
+  return institutionalSolutions.map((s) => ({
+    params: { slug: s.slug },
+    props: { solution: s },
+  }));
+}
+
+const { solution } = Astro.props as { solution: ReturnType<typeof getSolution> & object };
+if (!solution) throw new Error("solution is required");
+
+const seo = {
+  title: `${solution.title} | IIFR for institutions`,
+  description: solution.problemArea,
+  keywords: `${solution.title}, IIFR partnerships, ${solution.audience}`,
+  canonical: `${SITE_URL}/contemporary/for-institutions/${solution.slug}`,
+  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+---
+
+<ContemporaryBaseLayout
+  path={`/contemporary/for-institutions/${solution.slug}`}
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "For institutions", href: "/contemporary/for-institutions" },
+    { label: solution.title },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container cp-container--narrow">
+      <span class="cp-eyebrow">For institutions</span>
+      <h1>{solution.title}</h1>
+      <p class="cp-lead"><strong>Problem:</strong> {solution.problemArea}</p>
+    </div>
+  </header>
+
+  <section class="cp-section">
+    <div class="cp-container cp-container--narrow">
+      <h2>Audience and solution shape</h2>
+      <dl class="cp-facts">
+        <div><dt>Audience</dt><dd>{solution.audience}</dd></div>
+        <div><dt>Solution type</dt><dd>{solution.solutionType}</dd></div>
+        <div><dt>Faculty mix</dt><dd>{solution.facultyMix}</dd></div>
+        <div><dt>Sectors served</dt><dd>{solution.sectorsServed.join("; ")}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory">
+    <div class="cp-container cp-container--narrow">
+      <h2>Delivery modes</h2>
+      <ul>
+        {solution.deliveryModes.map((m) => <li>{m}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="cp-section">
+    <div class="cp-container cp-container--narrow">
+      <h2>Process</h2>
+      <ol class="cp-solution-process">
+        {solution.process.map((p, i) => (
+          <li>
+            <span>{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h3>{p.step}</h3>
+              <p>{p.description}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--navy">
+    <div class="cp-container">
+      <h2 class="cp-cta-title">Ready to discuss this engagement?</h2>
+      <p class="cp-cta-lead">
+        Share the problem you are trying to solve. We will respond within two working days.
+      </p>
+      <a class="cp-button cp-button--primary" href={solution.ctaTarget}>
+        {solution.ctaLabel}
+      </a>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-facts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .cp-facts {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .cp-facts div {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-facts dt {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-facts dd {
+    margin: 0;
+    color: var(--cp-color-navy);
+    font-weight: 500;
+  }
+
+  .cp-solution-process {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .cp-solution-process li {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-solution-process span {
+    font-family: var(--cp-font-heading);
+    font-size: 1.5rem;
+    color: var(--cp-color-maroon);
+    font-weight: 700;
+  }
+
+  .cp-solution-process h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1.1rem;
+  }
+
+  .cp-solution-process p {
+    margin: 0;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-cta-title {
+    color: var(--cp-color-white);
+    margin: 0 0 1rem;
+  }
+
+  .cp-cta-lead {
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 60ch;
+    margin: 0 0 1.5rem;
+  }
+</style>

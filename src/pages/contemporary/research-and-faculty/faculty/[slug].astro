@@ -1,0 +1,169 @@
+---
+/**
+ * /contemporary/research-and-faculty/faculty/[slug] — faculty profile.
+ *
+ * Per design plan §7.5, the profile makes relevance visible (which
+ * programmes, which expertise, which role) rather than just a title.
+ */
+import ContemporaryBaseLayout from "../../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { faculty, programmes, getFaculty } from "../../../../contemporary/lib/content";
+import { SITE_URL, facultyPersonSchema } from "../../../../contemporary/lib/seo";
+
+export async function getStaticPaths() {
+  return faculty.map((f) => ({
+    params: { slug: f.slug },
+    props: { faculty: f },
+  }));
+}
+
+const { faculty: person } = Astro.props as { faculty: ReturnType<typeof getFaculty> & object };
+if (!person) throw new Error("faculty is required");
+
+const linkedProgrammes = programmes.filter((p) => person.programmes.includes(p.slug));
+
+const seo = {
+  title: `${person.displayName} | IIFR research and faculty`,
+  description: person.shortBio,
+  keywords: `${person.displayName}, IIFR, ${person.expertise.join(", ")}`,
+  canonical: `${SITE_URL}/contemporary/research-and-faculty/faculty/${person.slug}`,
+  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+
+const schema = facultyPersonSchema(person, seo.canonical);
+---
+
+<ContemporaryBaseLayout
+  path={`/contemporary/research-and-faculty/faculty/${person.slug}`}
+  seo={seo}
+  schema={schema}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Research and faculty", href: "/contemporary/research-and-faculty" },
+    { label: person.displayName },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container cp-container--narrow">
+      <span class="cp-tag cp-tag--navy">{person.roleCategory}</span>
+      <h1>{person.displayName}</h1>
+      <p class="cp-lead">{person.roleAtIIFR}</p>
+      <p class="cp-faculty__affiliation">{person.currentAffiliation}</p>
+    </div>
+  </header>
+
+  <section class="cp-section">
+    <div class="cp-container cp-container--narrow">
+      <h2>About</h2>
+      <p>{person.shortBio}</p>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory">
+    <div class="cp-container cp-container--narrow">
+      <h2>Expertise</h2>
+      <ul class="cp-expertise">
+        {person.expertise.map((e) => <li>{e}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  {linkedProgrammes.length > 0 && (
+    <section class="cp-section">
+      <div class="cp-container cp-container--narrow">
+        <h2>Programmes this person is involved with</h2>
+        <ul class="cp-programme-links">
+          {linkedProgrammes.map((p) => (
+            <li>
+              <a href={`/contemporary/programmes/${p.slug}`}>
+                <strong>{p.title}</strong>
+                <span>{p.shortName} · {p.proposition}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section class="cp-section cp-section--ivory">
+    <div class="cp-container cp-container--narrow">
+      <h2>Profile governance</h2>
+      <p class="cp-faculty__owner">
+        Owner: {person.owner.name} · Last reviewed {person.owner.lastReviewedAt} ·
+        Consent on file: {person.consent ? "yes" : "no (not for publication)"}
+      </p>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-faculty__affiliation {
+    color: var(--cp-color-text-muted);
+    margin: 0.5rem 0 0;
+  }
+
+  .cp-expertise {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cp-expertise li {
+    background: var(--cp-color-ivory-deep);
+    color: var(--cp-color-navy);
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--cp-radius-pill);
+    font-size: 0.875rem;
+  }
+
+  .cp-programme-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cp-programme-links a {
+    display: block;
+    padding: 1rem 1.25rem;
+    background: var(--cp-color-white);
+    border: 1px solid var(--cp-color-divider);
+    border-radius: var(--cp-radius-card);
+    color: var(--cp-color-navy);
+  }
+
+  .cp-programme-links a:hover,
+  .cp-programme-links a:focus-visible {
+    border-color: var(--cp-color-maroon);
+    text-decoration: none;
+  }
+
+  .cp-programme-links strong {
+    display: block;
+    font-family: var(--cp-font-heading);
+    margin-bottom: 0.2rem;
+  }
+
+  .cp-programme-links span {
+    color: var(--cp-color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .cp-faculty__owner {
+    color: var(--cp-color-text-muted);
+    font-size: 0.9rem;
+  }
+</style>

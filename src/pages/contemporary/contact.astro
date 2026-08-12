@@ -1,0 +1,109 @@
+---
+/**
+ * /contemporary/contact — contact page.
+ *
+ * Lists the contact channels and routes enquiries to the right
+ * place. No live form or CRM wiring — this prototype uses the
+ * /contemporary/start route for admissions applications.
+ */
+import ContemporaryBaseLayout from "../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { INFO_EMAIL, PHONE, SITE_URL } from "../../contemporary/lib/seo";
+
+const seo = {
+  title: "Contact IIFR | Admissions, partnerships, programmes",
+  description:
+    "Contact IIFR in New Delhi for admissions, institutional partnerships, faculty development, research collaborations, and general enquiries.",
+  keywords:
+    "contact IIFR, IIFR admissions, IIFR partnerships, IIFR research collaboration, IIFR New Delhi",
+  canonical: `${SITE_URL}/contemporary/contact`,
+  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+---
+
+<ContemporaryBaseLayout
+  path="/contemporary/contact"
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Contact" },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container">
+      <span class="cp-eyebrow">Contact</span>
+      <h1>How to reach IIFR.</h1>
+      <p class="cp-lead">
+        Use the route that matches your question. The fastest answer usually
+        comes from the dedicated channel.
+      </p>
+    </div>
+  </header>
+
+  <section class="cp-section">
+    <div class="cp-container">
+      <div class="cp-grid cp-grid--2">
+        <article class="cp-card cp-card--ivory">
+          <h2>Admissions (programmes)</h2>
+          <p>ECP, EFM, faculty development workshops.</p>
+          <p>
+            <a class="cp-button cp-button--primary" href="/contemporary/start?intent=apply">
+              Start an application
+            </a>
+          </p>
+        </article>
+        <article class="cp-card cp-card--ivory">
+          <h2>Institutional partnerships</h2>
+          <p>Faculty capability, executive education, academic–industry collaboration.</p>
+          <p>
+            <a class="cp-button cp-button--primary" href="/contemporary/start?intent=partner">
+              Request a partnership conversation
+            </a>
+          </p>
+        </article>
+        <article class="cp-card cp-card--ivory">
+          <h2>Research collaboration</h2>
+          <p>Applied research, residencies, joint projects with IIFR research faculty.</p>
+          <p>
+            <a class="cp-button cp-button--primary" href="/contemporary/start?intent=partner&topic=research">
+              Propose a research collaboration
+            </a>
+          </p>
+        </article>
+        <article class="cp-card cp-card--ivory">
+          <h2>Media, speaking, general</h2>
+          <p>Press, conferences, alumni, sponsors, nominations, and other enquiries.</p>
+          <p>
+            <a class="cp-button cp-button--secondary" href={`mailto:${INFO_EMAIL}`}>
+              Email IIFR
+            </a>
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory">
+    <div class="cp-container cp-container--narrow">
+      <h2>Direct details</h2>
+      <p>
+        Bharatiya Vidya Bhavan Campus<br />
+        KG Marg, Copernicus Marg<br />
+        New Delhi 110001, India
+      </p>
+      <p>
+        Email: <a href={`mailto:${INFO_EMAIL}`}>{INFO_EMAIL}</a><br />
+        Phone: <a href={`tel:${PHONE.replace(/[^+\d]/g, "")}`}>{PHONE}</a>
+      </p>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+</style>

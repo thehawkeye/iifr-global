@@ -1,0 +1,50 @@
+---
+/**
+ * FacultyCard — used in the research-and-faculty hub. A person
+ * card answers "why this person is relevant to my decision", not
+ * just "what their title is" (per design plan §6.6).
+ */
+import type { FacultyProfile } from "../lib/content";
+
+interface Props {
+  faculty: FacultyProfile;
+}
+
+const { faculty } = Astro.props as Props;
+---
+
+<a class="cp-card cp-card--link cp-faculty-card" href={`/contemporary/research-and-faculty/faculty/${faculty.slug}`}>
+  <span class="cp-tag cp-tag--navy">{faculty.roleCategory}</span>
+  <h3>{faculty.displayName}</h3>
+  <p class="cp-faculty-card__role">{faculty.roleAtIIFR}</p>
+  <p class="cp-faculty-card__affiliation">{faculty.currentAffiliation}</p>
+  <p class="cp-faculty-card__bio">{faculty.shortBio}</p>
+  <div class="cp-card__cta">
+    <span>View profile</span> <span aria-hidden="true">→</span>
+  </div>
+</a>
+
+<style>
+  .cp-faculty-card h3 {
+    margin: 0.75rem 0 0.25rem;
+    font-size: 1.25rem;
+  }
+
+  .cp-faculty-card__role {
+    margin: 0;
+    color: var(--cp-color-maroon);
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .cp-faculty-card__affiliation {
+    margin: 0.4rem 0 1rem;
+    color: var(--cp-color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .cp-faculty-card__bio {
+    color: var(--cp-color-text-muted);
+    margin: 0 0 1rem;
+  }
+</style>

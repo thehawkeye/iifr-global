@@ -1,0 +1,284 @@
+---
+/**
+ * SiteHeader — contemporary prototype header.
+ *
+ * Renders the 5 primary destinations + 2 contextual actions from
+ * iifr-contemporary-website-design-plan.md §4.1:
+ *
+ *   1. Programmes
+ *   2. Research & faculty
+ *   3. For institutions
+ *   4. Events & insights
+ *   5. About IIFR
+ *
+ *   + Find your pathway
+ *   + Apply / enquire (contextual)
+ *
+ * Murali spec (L1, t_dadf4467, 2026-08-06):
+ *   - Add inline IIFR icon mark next to the wordmark.
+ *   - Show the full institute name once (already present).
+ *   - Remove the "An autonomous academic institute of Bharatiya Vidya
+ *     Bhavan" tagline (replaced by the new IIFR + BVB institutional
+ *     badges rendered inside the hero, not the header).
+ *
+ * No gradients, no emoji, no rounded corners on the header bar.
+ * Sticky on scroll, collapses to a mobile menu under 992px.
+ *
+ * The "Apply" label is contextual — it switches to "Enquire" when
+ * no programme is in `registration-open` status.
+ */
+
+interface Props {
+  /** Current request path, e.g. "/contemporary/programmes". */
+  path: string;
+}
+
+const { path } = Astro.props as Props;
+
+const applyLabel = "APPLY NOW";
+
+const navItems: { href: string; label: string }[] = [
+  { href: "/contemporary/programmes", label: "Programmes" },
+  { href: "/contemporary/research-and-faculty", label: "Research & faculty" },
+  { href: "/contemporary/for-institutions", label: "For institutions" },
+  { href: "/contemporary/events-and-insights", label: "Events & insights" },
+  { href: "/contemporary/about", label: "About IIFR" },
+];
+
+function isActive(href: string): string {
+  if (href === "/contemporary" && path === "/contemporary") return " active";
+  if (href !== "/contemporary" && path.startsWith(href)) return " active";
+  return "";
+}
+---
+
+<header class="cp-header" data-component="site-header">
+  <div class="cp-container cp-container--wide cp-header__inner">
+    <a class="cp-header__brand" href="/contemporary" aria-label="IIFR — International Institute for Faculty & Research — home">
+      <img
+        class="cp-header__mark"
+        src="/assets/logo.webp"
+        alt="IIFR emblem"
+        width="40"
+        height="40"
+        decoding="async"
+      />
+      <span class="cp-header__brand-mark" aria-hidden="true">IIFR<span class="cp-header__brand-dot">.</span></span>
+    </a>
+
+    <button
+      class="cp-header__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="cp-primary-nav"
+      aria-label="Open primary menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="cp-header__nav" id="cp-primary-nav" aria-label="Primary">
+      <ul class="cp-header__list">
+        {navItems.map((item) => (
+          <li>
+            <a class={`cp-header__link${isActive(item.href)}`} href={item.href}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <div class="cp-header__actions">
+        <a class="cp-button cp-button--ghost cp-header__action" href="/contemporary/find-your-pathway">
+          Find your pathway
+        </a>
+        <a class="cp-button cp-button--primary cp-header__action" href="/contemporary/start?intent=apply">
+          {applyLabel}
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .cp-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cp-color-white);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .cp-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--cp-color-navy);
+  }
+
+  .cp-header__brand:hover,
+  .cp-header__brand:focus-visible {
+    color: var(--cp-color-navy);
+    text-decoration: none;
+  }
+
+  .cp-header__mark {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  /*
+   * Murali spec (L1, t_dadf4467, 2026-08-06):
+   * - Header shows just the emblem + short "IIFR." wordmark — the
+   *   full institute name belongs to the hero crest only. Showing it
+   *   in both creates a redundant top fold.
+   * - The wordmark + dot treatment matches iifr.global exactly.
+   */
+  .cp-header__brand-mark {
+    font-family: var(--cp-font-heading);
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--cp-color-maroon);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .cp-header__brand-dot {
+    color: var(--cp-color-gold);
+  }
+
+  .cp-header__toggle {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    background: transparent;
+    border: 1px solid var(--cp-color-border);
+    border-radius: var(--cp-radius-button);
+    padding: 0.5rem 0.6rem;
+    cursor: pointer;
+  }
+
+  .cp-header__toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--cp-color-navy);
+  }
+
+  @media (min-width: 992px) {
+    .cp-header__toggle {
+      display: none;
+    }
+  }
+
+  .cp-header__nav {
+    display: none;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 992px) {
+    .cp-header__nav {
+      display: flex;
+    }
+  }
+
+  .cp-header__list {
+    display: flex;
+    flex-wrap: nowrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .cp-header__link {
+    font-family: var(--cp-font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--cp-color-navy);
+    padding: 0.5rem 0.25rem;
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .cp-header__link:hover,
+  .cp-header__link:focus-visible {
+    color: var(--cp-color-maroon);
+    text-decoration: none;
+  }
+
+  .cp-header__link.active {
+    border-bottom-color: var(--cp-color-maroon);
+    color: var(--cp-color-maroon);
+  }
+
+  .cp-header__actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .cp-header__action {
+    white-space: nowrap;
+  }
+
+  /* Mobile menu */
+  @media (max-width: 991.98px) {
+    .cp-header__nav[data-open="true"] {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--cp-color-white);
+      border-bottom: 1px solid var(--cp-color-divider);
+      padding: 1.25rem var(--cp-section-padding-x) 1.5rem;
+      gap: 1rem;
+    }
+    .cp-header__nav[data-open="true"] .cp-header__list {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .cp-header__nav[data-open="true"] .cp-header__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector('[data-component="site-header"]');
+  if (header) {
+    const toggle = header.querySelector(".cp-header__toggle");
+    const nav = header.querySelector("#cp-primary-nav");
+    if (toggle && nav) {
+      toggle.addEventListener("click", () => {
+        const open = nav.getAttribute("data-open") === "true";
+        nav.setAttribute("data-open", open ? "false" : "true");
+        toggle.setAttribute("aria-expanded", open ? "false" : "true");
+        toggle.setAttribute(
+          "aria-label",
+          open ? "Open primary menu" : "Close primary menu",
+        );
+      });
+    }
+  }
+</script>

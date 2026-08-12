@@ -1,0 +1,331 @@
+---
+/**
+ * Hero — homepage and top-of-page hero.
+ *
+ * Murali spec (L1, t_dadf4467, 2026-08-06, refined 22:48 IST) +
+ * R2 staging-asset swap (t_654cef90, 2026-08-07):
+ *   - Real raster hero asset (hero-home-sketch.webp, 1694x929, 185352 bytes)
+ *     sits behind the copy with object-fit:cover so it scales without
+ *     distortion across viewports. A restrained solid/linear overlay above
+ *     the art keeps text readable without hiding the painting. Clear fade
+ *     to ivory at the bottom so the hero lands visually into the rest of
+ *     the page. The asset is committed under public/assets/images/
+ *     contemporary/; the raster is NOT hotlinked from staging.
+ *   - IIFR emblem + full institute name as a quiet crest above the title.
+ *   - TrustStrip moved to a separate <TrustStrip /> component below
+ *     (matches iifr.global's navy band with label/value pairs).
+ *   - NO live-cohort signal pill in the hero (Murali 22:48 — classy,
+ *     not crass; the pill decoration was the wrong call).
+ *   - NO Founding Batch Scholarship callout in the hero (same).
+ *     The term lives in the ECP detail body as plain prose.
+ *   - NO "Pracademic" highlight in the hero (Murali 22:48 — the term
+ *     belongs in body copy, not in styled callouts).
+ *   - NO artwork-producing CSS gradients/blooms. The overlay is a single
+ *     ivory→transparent→ivory linear gradient.
+ * R3 (t_1e66bbdc, 2026-08-07): hero copy flipped from white to the
+ *   canonical navy (`--cp-color-navy`, #242f4c) so the institute name,
+ *   title, and lead read as proper editorial navy on the watercolor /
+ *   sketch artwork instead of washed-out white. The overlay now uses
+ *   a restrained ivory wash at the text region so navy text remains
+ *   legible without crushing the paper grain of the raster. The navy
+ *   text-shadow (which was added for white-on-watercolor contrast) is
+ *   removed — with the ivory wash underneath, a navy shadow on navy
+ *   text becomes muddy. Both CTAs stay usable; the outline button
+ *   switches from white-bordered to navy-bordered to match.
+ */
+import { programmes } from "../lib/content";
+
+interface Cta {
+  href: string;
+  label: string;
+  variant?: "primary" | "outline" | "ghost" | "secondary";
+}
+
+interface Props {
+  title: string;
+  /** A one- or two-sentence value proposition. */
+  lead: string;
+  primary: Cta;
+  secondary?: Cta;
+}
+
+const { title, lead, primary, secondary } = Astro.props as Props;
+
+// `programmes` is imported to keep the live-cohort signal logic available
+// for callers that opt in later (e.g. the ECP detail page), but the home
+// hero does not render it.
+void programmes;
+
+// Staging-derived hero raster (t_654cef90). Committed locally; the staging
+// URL is recorded in hero-home-sketch.webp.meta.json. Focal point sits
+// slightly right-of-centre so the navy text-safe field of the sketch
+// stays behind the copy on desktop.
+const HERO_SRC = "/assets/images/contemporary/hero-home-sketch.webp";
+const HERO_WIDTH = 1694;
+const HERO_HEIGHT = 929;
+---
+
+<section class="cp-hero" aria-labelledby="cp-hero-title">
+  <picture class="cp-hero__art" aria-hidden="true">
+    <img
+      class="cp-hero__art-img"
+      src={HERO_SRC}
+      alt=""
+      width={HERO_WIDTH}
+      height={HERO_HEIGHT}
+      decoding="async"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </picture>
+  <div class="cp-hero__overlay" aria-hidden="true"></div>
+
+  <div class="cp-container cp-container--wide cp-hero__inner">
+    <div class="cp-hero__copy">
+      <a class="cp-hero__brand" href="/contemporary" aria-label="IIFR — home">
+        <img
+          class="cp-hero__emblem"
+          src="/assets/logo.webp"
+          alt="IIFR emblem"
+          width="56"
+          height="56"
+          decoding="async"
+        />
+        <span class="cp-hero__brand-name">
+          International Institute for Faculty &amp; Research
+        </span>
+      </a>
+
+      <h1 id="cp-hero-title" class="cp-hero__title">{title}</h1>
+      <p class="cp-hero__lead">{lead}</p>
+
+      <div class="cp-hero__actions">
+        <a class={`cp-button cp-button--${primary.variant ?? "primary"}`} href={primary.href}>
+          {primary.label}
+        </a>
+        {secondary && (
+          <a class={`cp-button cp-button--${secondary.variant ?? "outline"}`} href={secondary.href}>
+            {secondary.label}
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /*
+   * Hero raster: real raster (hero-home-sketch.webp, 1694x929) sits
+   * behind a restrained ivory wash. The wash is light enough to keep
+   * the paper grain visible while giving navy copy a clean field to
+   * read against. The wash fades to transparent in the middle so the
+   * sketch still breathes, then to ivory at the bottom so the hero
+   * lands visually into the rest of the page.
+   *
+   * R2 (t_654cef90, 2026-08-07): the raster was swapped from the
+   * locally-generated watercolor (2400x1125, home-watercolor-hero.webp)
+   * to the staging-derived sketch (1694x929, hero-home-sketch.webp).
+   * The overlay is still a single linear gradient so the raster stays
+   * the artwork source.
+   *
+   * R3 (t_1e66bbdc, 2026-08-07): copy flipped from white to navy
+   * (`--cp-color-navy`, #242f4c). The overlay was rebalanced to a
+   * translucent ivory wash at the top so navy text reads cleanly
+   * without the muddy navy text-shadow that was used for white-on-
+   * watercolor contrast. The shadow block is now removed.
+   */
+  /*
+   * Z-index scheme (FIX 2026-08-07, Murali: "no watercolor hero on home"):
+   *   .cp-hero         — no opaque background; art supplies the colour.
+   *   .cp-hero__art    — z-index 0; the raster watercolour layer.
+   *   .cp-hero__overlay— z-index 1; readable-text overlay, fades to ivory.
+   *   .cp-hero__inner  — z-index 2; copy + CTAs read on top of art.
+   * No `isolation: isolate` — we want everything in normal flow.
+   */
+  .cp-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(440px, 62vh, 660px);
+    display: flex;
+    align-items: center;
+    /*
+     * R3 (t_1e66bbdc): copy is now navy on a translucent ivory wash,
+     * not white. The base color follows the copy.
+     */
+    color: var(--cp-color-navy);
+    padding: clamp(3rem, 2rem + 4vw, 5rem) 0;
+    background: var(--cp-color-ivory);
+  }
+
+  .cp-hero__art {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .cp-hero__art-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: 60% 40%;
+  }
+
+  .cp-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    /*
+     * R3 (t_1e66bbdc): ivory wash replaces the navy darkening. The
+     * wash is mostly opaque at the top so navy copy reads cleanly
+     * against the watercolor / sketch, then fades to transparent in
+     * the middle so the raster stays visible, then lands on full
+     * ivory at the bottom so the hero blends into the page. One
+     * single linear gradient — no stacked artwork layers.
+     */
+    background:
+      linear-gradient(
+        180deg,
+        rgba(239, 235, 229, 0.78) 0%,
+        rgba(239, 235, 229, 0.55) 35%,
+        rgba(239, 235, 229, 0) 65%,
+        var(--cp-color-ivory) 100%
+      );
+    pointer-events: none;
+  }
+
+  .cp-hero__inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .cp-hero__copy {
+    max-width: 60ch;
+  }
+
+  .cp-hero__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .cp-hero__brand:hover,
+  .cp-hero__brand:focus-visible {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .cp-hero__emblem {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+  }
+
+  .cp-hero__brand-name {
+    font-family: var(--cp-font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    /*
+     * R3 (t_1e66bbdc): institute name is editorial navy, not white.
+     */
+    color: var(--cp-color-navy);
+    line-height: 1.25;
+    max-width: 26ch;
+  }
+
+  .cp-hero__title {
+    /*
+     * R3 (t_1e66bbdc): title is editorial navy on an ivory wash. The
+     * R1 navy text-shadow that gave white copy contrast against the
+     * watercolor is removed — a navy shadow on navy text becomes
+     * muddy against the ivory wash. The ivory wash itself now
+     * provides legibility.
+     */
+    color: var(--cp-color-navy);
+    font-size: var(--cp-font-size-title);
+    margin: 0 0 1rem;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .cp-hero__lead {
+    /*
+     * R3 (t_1e66bbdc): lead is editorial navy. The R1 navy text-shadow
+     * that gave white copy contrast is removed — navy shadow on navy
+     * text against an ivory wash becomes muddy. The wash handles it.
+     */
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--cp-color-navy);
+    max-width: 58ch;
+    margin: 0 0 1.75rem;
+    opacity: 0.92;
+  }
+
+  .cp-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /*
+   * R3 (t_1e66bbdc): the outline button switches from white-bordered
+   * (for white copy on the navy overlay) to navy-bordered to match the
+   * navy copy on the ivory wash. Hover keeps the inverted treatment.
+   */
+  .cp-hero__actions .cp-button--outline {
+    color: var(--cp-color-navy);
+    border-color: var(--cp-color-navy);
+  }
+
+  .cp-hero__actions .cp-button--outline:hover,
+  .cp-hero__actions .cp-button--outline:focus-visible {
+    background: var(--cp-color-navy);
+    color: var(--cp-color-ivory);
+  }
+
+  /*
+   * Mobile gets a slightly heavier top wash because small viewports
+   * crop the sketch tighter and the navy text-safe centre may not be
+   * fully behind the copy at narrow widths. The wash is restrained
+   * (0.86 → 0.62 → 0.05) so paper grain is not crushed and the raster
+   * still breathes through.
+   */
+  @media (max-width: 767.98px) {
+    .cp-hero__art-img {
+      object-position: 50% 35%;
+    }
+
+    .cp-hero__overlay {
+      background:
+        linear-gradient(
+          180deg,
+          rgba(239, 235, 229, 0.86) 0%,
+          rgba(239, 235, 229, 0.62) 30%,
+          rgba(239, 235, 229, 0.05) 60%,
+          var(--cp-color-ivory) 100%
+        );
+    }
+  }
+
+  /*
+   * Reduced motion: keep the art and overlay static — the original
+   * animated bloom discs are gone, so this block is here to document
+   * intent and to guard against any future motion creep on the hero.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .cp-hero__art,
+    .cp-hero__art-img,
+    .cp-hero__overlay {
+      animation: none;
+      transition: none;
+    }
+  }
+</style>

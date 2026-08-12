@@ -1,0 +1,94 @@
+---
+/**
+ * CtaSplit — final decision block from design plan §6.8.
+ * Two side-by-side CTAs: one for individuals, one for institutions.
+ */
+interface CtaPanel {
+  title: string;
+  description: string;
+  cta: { label: string; href: string };
+}
+
+interface Props {
+  individual: CtaPanel;
+  institution: CtaPanel;
+  /** Optional promise line — only shown if operations can honour it. */
+  responseExpectation?: string;
+}
+
+const { individual, institution, responseExpectation } = Astro.props as Props;
+---
+
+<section class="cp-section cp-section--navy cp-cta-split" aria-labelledby="cp-cta-split-title">
+  <div class="cp-container">
+    <h2 id="cp-cta-split-title" class="cp-cta-split__title">
+      Two ways to engage with IIFR
+    </h2>
+    <div class="cp-cta-split__grid">
+      <div class="cp-cta-split__panel">
+        <span class="cp-eyebrow">For individuals</span>
+        <h3>{individual.title}</h3>
+        <p>{individual.description}</p>
+        <a class="cp-button cp-button--primary" href={individual.cta.href}>
+          {individual.cta.label}
+        </a>
+      </div>
+      <div class="cp-cta-split__panel">
+        <span class="cp-eyebrow">For institutions</span>
+        <h3>{institution.title}</h3>
+        <p>{institution.description}</p>
+        <a class="cp-button cp-button--outline" href={institution.cta.href}>
+          {institution.cta.label}
+        </a>
+      </div>
+    </div>
+    {responseExpectation && (
+      <p class="cp-cta-split__promise">{responseExpectation}</p>
+    )}
+  </div>
+</section>
+
+<style>
+  .cp-cta-split__title {
+    text-align: center;
+    margin: 0 auto 2.5rem;
+    color: var(--cp-color-white);
+    max-width: 720px;
+  }
+
+  .cp-cta-split__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .cp-cta-split__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .cp-cta-split__panel {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--cp-radius-card);
+    padding: 2rem;
+  }
+
+  .cp-cta-split__panel h3 {
+    color: var(--cp-color-white);
+    margin: 0.4rem 0 0.75rem;
+  }
+
+  .cp-cta-split__panel p {
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 1.5rem;
+  }
+
+  .cp-cta-split__promise {
+    text-align: center;
+    margin: 2rem 0 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+  }
+</style>

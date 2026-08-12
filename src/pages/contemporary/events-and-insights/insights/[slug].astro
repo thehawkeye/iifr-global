@@ -1,0 +1,116 @@
+---
+/**
+ * /contemporary/events-and-insights/insights/[slug] — insight article.
+ *
+ * Question-shaped heading followed by a concise answer, then the
+ * longer body — per GEO plan §11. Author, affiliation, publish and
+ * update dates, source, and a related programme CTA are visible.
+ */
+import ContemporaryBaseLayout from "../../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { getProgramme, formatDDMMMYYYY } from "../../../../contemporary/lib/content";
+import { readInsight, readAllInsights } from "../../../../contemporary/lib/read-insights";
+import { SITE_URL } from "../../../../contemporary/lib/seo";
+
+export async function getStaticPaths() {
+  return readAllInsights().map((i) => ({
+    params: { slug: i.slug },
+    props: { insight: readInsight(i.slug) },
+  }));
+}
+
+const { insight } = Astro.props as { insight: ReturnType<typeof readInsight> };
+if (!insight) throw new Error("insight is required");
+
+const related = insight.relatedProgramme ? getProgramme(insight.relatedProgramme) : null;
+const published = formatDDMMMYYYY(insight.publishDate);
+const updated = insight.updateDate !== insight.publishDate
+  ? formatDDMMMYYYY(insight.updateDate)
+  : null;
+
+const seo = {
+  title: `${insight.title} | IIFR insights`,
+  description: insight.dek,
+  keywords: `${insight.title}, IIFR, ${insight.topic}, ${insight.audience}`,
+  canonical: `${SITE_URL}/contemporary/events-and-insights/insights/${insight.slug}`,
+  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  type: "article" as const,
+  schema: "Article" as const,
+  datePublished: insight.publishDate,
+};
+---
+
+<ContemporaryBaseLayout
+  path={`/contemporary/events-and-insights/insights/${insight.slug}`}
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Events and insights", href: "/contemporary/events-and-insights" },
+    { label: insight.title },
+  ]}
+>
+  <article>
+    <header class="cp-page-header">
+      <div class="cp-container cp-container--narrow">
+        <span class="cp-tag cp-tag--navy">{insight.topic}</span>
+        <h1>{insight.title}</h1>
+        <p class="cp-lead">{insight.dek}</p>
+        <p class="cp-article-meta">
+          <strong>{insight.authorName}</strong> · Published {published}
+          {updated && <> · Updated {updated}</>}
+          · {insight.readingTime}
+        </p>
+      </div>
+    </header>
+
+    <section class="cp-section">
+      <div class="cp-container cp-container--narrow">
+        <h2>What this piece argues</h2>
+        <p>{insight.body}</p>
+      </div>
+    </section>
+
+    {related && (
+      <section class="cp-section cp-section--ivory">
+        <div class="cp-container cp-container--narrow">
+          <h2>Take it further</h2>
+          <p>
+            If this piece is relevant, the most useful next step is the
+            {" "}<strong>{related.title}</strong> ({related.shortName}).
+          </p>
+          <a class="cp-button cp-button--primary" href={`/contemporary/programmes/${related.slug}`}>
+            View {related.shortName}
+          </a>
+        </div>
+      </section>
+    )}
+
+    <section class="cp-section">
+      <div class="cp-container cp-container--narrow">
+        <h2>Source and governance</h2>
+        <p class="cp-article-owner">
+          Owner: {insight.owner.name} · Last reviewed {insight.owner.lastReviewedAt} ·
+          Source: {insight.source}
+        </p>
+      </div>
+    </section>
+  </article>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-article-meta {
+    color: var(--cp-color-text-muted);
+    font-size: 0.9rem;
+    margin: 0.5rem 0 0;
+  }
+
+  .cp-article-owner {
+    color: var(--cp-color-text-muted);
+    font-size: 0.9rem;
+  }
+</style>

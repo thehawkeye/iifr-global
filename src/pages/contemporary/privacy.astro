@@ -1,0 +1,80 @@
+---
+/**
+ * /contemporary/privacy — privacy policy placeholder.
+ *
+ * The full privacy policy is owned by IIFR and is not rewritten here.
+ * This page links to the current production privacy policy and
+ * declares the prototype's data-handling stance (no analytics, no
+ * form, no CRM).
+ */
+import ContemporaryBaseLayout from "../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { SITE_URL } from "../../contemporary/lib/seo";
+
+const seo = {
+  title: "Privacy policy | IIFR contemporary prototype",
+  description:
+    "The IIFR contemporary prototype does not collect personal data, fire analytics, or wire forms. The current production privacy policy remains the authoritative source.",
+  keywords: "IIFR privacy policy, contemporary prototype, data protection",
+  canonical: `${SITE_URL}/contemporary/privacy`,
+  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+---
+
+<ContemporaryBaseLayout
+  path="/contemporary/privacy"
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Privacy" },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container cp-container--narrow">
+      <span class="cp-eyebrow">Privacy</span>
+      <h1>Privacy stance for the contemporary prototype.</h1>
+      <p class="cp-lead">
+        The contemporary prototype is a reviewable, front-end-only
+        build. It does not collect personal data, run analytics,
+        embed third-party scripts, or wire forms or CRM.
+      </p>
+    </div>
+  </header>
+
+  <section class="cp-section">
+    <div class="cp-container cp-container--narrow">
+      <h2>Authoritative privacy policy</h2>
+      <p>
+        The full IIFR privacy policy is the authoritative source and
+        lives on the current site. Refer to it for any data-handling
+        question:
+      </p>
+      <p>
+        <a href={`${SITE_URL}/privacy-policy`}>IIFR privacy policy</a>
+      </p>
+
+      <h2>What the prototype does and does not do</h2>
+      <ul>
+        <li>Does not collect personal data from visitors.</li>
+        <li>Does not run Google Tag Manager, Google Analytics, or other analytics.</li>
+        <li>Does not embed third-party scripts, fonts loaded from third parties, or social media widgets.</li>
+        <li>Does not wire forms, CRM (Zoho, Bigin), or marketing automation.</li>
+        <li>Does set a single <code>theme-color</code> meta tag (HTML head only, no JS).</li>
+      </ul>
+      <p>
+        When the prototype graduates to a reviewable Vercel preview, it
+        will be deployed as a static build, with a <code>noindex</code>
+        hint in the meta robots tag set on the deploy preview.
+      </p>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+</style>

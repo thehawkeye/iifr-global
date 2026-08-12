@@ -1,0 +1,203 @@
+---
+/**
+ * SiteFooter — contemporary prototype footer.
+ *
+ * Mirrors the design plan §4 navigation, with a contact strip
+ * (response expectation), navigation, and legal links. No CRM
+ * wiring — the form route is `/contemporary/start?intent=...`.
+ */
+import { INFO_EMAIL, PHONE, SITE_URL } from "../lib/seo";
+
+const currentYear = new Date().getFullYear();
+
+const groups: { title: string; links: { href: string; label: string }[] }[] = [
+  {
+    title: "Programmes",
+    links: [
+      { href: "/contemporary/programmes", label: "All programmes" },
+      { href: "/contemporary/programmes/ecp", label: "Educators' Certificate Programme (ECP)" },
+      { href: "/contemporary/programmes/efm", label: "Executive Fellow in Management (EFM)" },
+      { href: "/contemporary/programmes/faculty-development", label: "Faculty development workshops" },
+      { href: "/contemporary/programmes/executive-education", label: "Custom executive and institutional programmes" },
+      { href: "/contemporary/programmes/compare", label: "Compare programmes" },
+    ],
+  },
+  {
+    title: "Research & faculty",
+    links: [
+      { href: "/contemporary/research-and-faculty", label: "Research and faculty hub" },
+      { href: "/contemporary/research-and-faculty#agenda", label: "Research agenda" },
+      { href: "/contemporary/research-and-faculty/faculty/academic-council", label: "Academic Council" },
+      { href: "/contemporary/research-and-faculty/faculty/professors-of-practice", label: "Professors of Practice" },
+      { href: "/contemporary/events-and-insights", label: "Events and insights" },
+    ],
+  },
+  {
+    title: "For institutions",
+    links: [
+      { href: "/contemporary/for-institutions", label: "Institutional solutions" },
+      { href: "/contemporary/for-institutions/faculty-capability", label: "Faculty capability building" },
+      { href: "/contemporary/for-institutions/executive-education", label: "Custom executive education" },
+      { href: "/contemporary/for-institutions/academic-industry-partnerships", label: "Academic–industry partnerships" },
+    ],
+  },
+  {
+    title: "About",
+    links: [
+      { href: "/contemporary/about", label: "About IIFR" },
+      { href: "/contemporary/about#governance", label: "Governance" },
+      { href: "/contemporary/about#partners", label: "Strategic partners" },
+      { href: "/contemporary/contact", label: "Contact" },
+    ],
+  },
+];
+---
+
+<footer class="cp-footer">
+  <div class="cp-container cp-container--wide">
+    <div class="cp-footer__top">
+      <div class="cp-footer__brand">
+        <span class="cp-footer__wordmark">IIFR.</span>
+        <p>
+          An autonomous academic institute established by
+          <strong>Bharatiya Vidya Bhavan</strong>, strengthening faculty
+          capability, research excellence, and academic leadership
+          across India and the Global South.
+        </p>
+        <address class="cp-footer__address">
+          Bharatiya Vidya Bhavan Campus<br />
+          KG Marg, Copernicus Marg<br />
+          New Delhi 110001, India
+        </address>
+        <p class="cp-footer__contact">
+          <a href={`mailto:${INFO_EMAIL}`}>{INFO_EMAIL}</a>
+          <span aria-hidden="true">·</span>
+          <a href={`tel:${PHONE.replace(/[^+\d]/g, "")}`}>{PHONE}</a>
+        </p>
+      </div>
+
+      <nav class="cp-footer__nav" aria-label="Footer">
+        {groups.map((g) => (
+          <div class="cp-footer__group">
+            <h3>{g.title}</h3>
+            <ul>
+              {g.links.map((l) => (
+                <li><a href={l.href}>{l.label}</a></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
+    </div>
+
+    <div class="cp-footer__bottom">
+      <p>© {currentYear} International Institute for Faculty &amp; Research. All rights reserved.</p>
+      <ul class="cp-footer__legal">
+        <li><a href="/contemporary/privacy">Privacy policy</a></li>
+        <li><a href="/contemporary/about#governance">Governance</a></li>
+        <li><a href={SITE_URL}>Back to current site</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .cp-footer {
+    background: var(--cp-color-navy);
+    color: rgba(255, 255, 255, 0.9);
+    padding: 4rem 0 2rem;
+  }
+
+  .cp-footer h3 {
+    color: var(--cp-color-white);
+    font-family: var(--cp-font-heading);
+    font-size: 1.05rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .cp-footer a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+  }
+
+  .cp-footer a:hover,
+  .cp-footer a:focus-visible {
+    color: var(--cp-color-gold);
+    text-decoration: none;
+  }
+
+  .cp-footer__top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  @media (min-width: 992px) {
+    .cp-footer__top {
+      grid-template-columns: 1.2fr 2fr;
+    }
+  }
+
+  .cp-footer__wordmark {
+    display: block;
+    font-family: var(--cp-font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--cp-color-gold);
+    margin-bottom: 1rem;
+  }
+
+  .cp-footer__address {
+    font-style: normal;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 1rem 0;
+  }
+
+  .cp-footer__contact a {
+    color: var(--cp-color-white);
+    font-weight: 500;
+  }
+
+  .cp-footer__nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .cp-footer__nav {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .cp-footer__nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cp-footer__nav li {
+    margin-bottom: 0.4rem;
+  }
+
+  .cp-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+  }
+
+  .cp-footer__legal {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+</style>

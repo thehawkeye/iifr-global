@@ -1,0 +1,71 @@
+/* ================================================================
+ * Contemporary prototype — design tokens
+ * Source: /Users/lyraai/Documents/Mac Mini Sync/IIFR design.md
+ *
+ * This file is the *single source of truth* for the contemporary
+ * prototype's runtime styling. It re-declares the canonical IIFR
+ * tokens under a `cp-` namespace so the prototype is fully
+ * decoupled from the legacy `iifr-redesign.css` bundle used by the
+ * Phase 2 T2-T5 migration. The tokens are byte-identical to the
+ * canonical palette and typography.
+ *
+ * Intentional discrepancies from the canonical source are
+ * documented in /docs/contemporary-prototype-readme.md.
+ * ================================================================ */
+
+:root {
+  /* ---- Canonical brand palette (do not change) ---- */
+  --cp-color-black: #000000;
+  --cp-color-maroon: #6c131b;
+  --cp-color-maroon-dark: #4e0d14;
+  --cp-color-navy: #242f4c;
+  --cp-color-navy-dark: #18213a;
+  --cp-color-gold: #c79906;
+  --cp-color-ivory: #efebe5;
+  --cp-color-ivory-deep: #e8e2d8;
+  --cp-color-white: #ffffff;
+  --cp-color-border: #d4d1cc;
+  --cp-color-divider: #e8e5e0;
+  --cp-color-text: #1c1c1c;
+  --cp-color-text-muted: #4a4a4a;
+
+  /* ---- Typography (canonical) ---- */
+  --cp-font-heading: "Roboto Slab", Georgia, "Times New Roman", serif;
+  --cp-font-body: "Roboto", system-ui, -apple-system, "Segoe UI",
+    "Helvetica Neue", Arial, sans-serif;
+  --cp-font-size-title: clamp(2.25rem, 1.4rem + 3.4vw, 3.125rem);
+  --cp-font-size-h1: clamp(1.875rem, 1.2rem + 2.8vw, 2.5rem);
+  --cp-font-size-h2: clamp(1.5rem, 1.1rem + 1.6vw, 2.1875rem);
+  --cp-font-size-h3: clamp(1.25rem, 1.05rem + 0.8vw, 1.875rem);
+  --cp-font-size-h4: 1.25rem;
+  --cp-font-size-overline: 0.875rem;
+  --cp-font-size-body: 1.0625rem;
+  --cp-font-size-small: 0.875rem;
+
+  /* ---- Spacing ---- */
+  --cp-content-width: 1200px;
+  --cp-content-width-narrow: 800px;
+  --cp-content-width-wide: 1400px;
+  --cp-section-padding-y: clamp(3rem, 1.5rem + 6vw, 6rem);
+  --cp-section-padding-x: clamp(1.25rem, 0.5rem + 3vw, 2.5rem);
+  --cp-card-padding: 2rem;
+  --cp-card-padding-compact: 1.5rem;
+  --cp-grid-gap: 2rem;
+
+  /* ---- Radii / elevation ---- */
+  --cp-radius-button: 4px;
+  --cp-radius-card: 8px;
+  --cp-radius-feature: 12px;
+  --cp-radius-pill: 9999px;
+  --cp-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --cp-shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* ---- Motion ---- */
+  --cp-transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---- Layout breakpoints ---- */
+  --cp-bp-sm: 576px;
+  --cp-bp-md: 768px;
+  --cp-bp-lg: 992px;
+  --cp-bp-xl: 1200px;
+}

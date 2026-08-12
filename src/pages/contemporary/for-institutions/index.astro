@@ -1,0 +1,255 @@
+---
+/**
+ * /contemporary/for-institutions — institutional landing.
+ *
+ * Problem-led (per design plan §6.5). Three named solution patterns
+ * with delivery modes, process, and enquiry CTA.
+ */
+import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import PageHero from "../../../contemporary/components/PageHero.astro";
+
+import { institutionalSolutions } from "../../../contemporary/lib/content";
+import { SITE_URL } from "../../../contemporary/lib/seo";
+
+const seo = {
+  title: "For institutions | IIFR partnerships, executive education, faculty capability",
+  description:
+    "IIFR partners with universities, business schools, corporates, and public institutions on faculty capability, custom executive education, and academic–industry research.",
+  keywords:
+    "IIFR partnerships, faculty capability building, custom executive education, academic industry partnership, IIFR for institutions",
+  canonical: `${SITE_URL}/contemporary/for-institutions`,
+  image: `/assets/images/about/about-hero.jpeg`,
+  type: "website" as const,
+  schema: "WebPage" as const,
+};
+---
+
+<ContemporaryBaseLayout
+  path="/contemporary/for-institutions"
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "For institutions" },
+  ]}
+>
+  <PageHero eyebrow="For institutions" title="Build capability across your faculty, leaders, and learning teams."
+    lead="We co-design with you through open enrolment, in-house delivery, or hybrid cohorts — with a named conversation for every enquiry."
+    image={{ src: "/assets/images/about/about-hero.jpeg", alt: "Bharatiya Vidya Bhavan campus, where IIFR is established" }}
+    primary={{ href: "/contemporary/start?intent=partner", label: "Request a partnership conversation" }}
+    secondary={{ href: "/contemporary/programmes", label: "Explore programmes", variant: "outline" }} />
+
+  <section class="cp-section" aria-labelledby="cp-solutions">
+    <div class="cp-container">
+      <h2 id="cp-solutions" class="cp-visually-hidden-focusable">Institutional solutions</h2>
+      <ul class="cp-solutions">
+        {institutionalSolutions.map((s) => (
+          <li>
+            <article class="cp-card cp-card--link cp-solution">
+              <h3>{s.title}</h3>
+              <p class="cp-solution__problem"><strong>Problem:</strong> {s.problemArea}</p>
+              <dl class="cp-solution__facts">
+                <div><dt>Audience</dt><dd>{s.audience}</dd></div>
+                <div><dt>Solution type</dt><dd>{s.solutionType}</dd></div>
+                <div><dt>Faculty mix</dt><dd>{s.facultyMix}</dd></div>
+              </dl>
+              <h4>Delivery modes</h4>
+              <ul class="cp-solution__modes">
+                {s.deliveryModes.map((m) => <li>{m}</li>)}
+              </ul>
+              <a class="cp-button cp-button--primary" href={s.ctaTarget}>
+                {s.ctaLabel}
+              </a>
+            </article>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory" aria-labelledby="cp-process">
+    <div class="cp-container">
+      <header class="cp-programmes__head">
+        <span class="cp-eyebrow">How we work</span>
+        <h2 id="cp-process">The same three steps for every engagement.</h2>
+      </header>
+      <ol class="cp-process">
+        <li>
+          <span>01</span>
+          <h3>Understand the challenge</h3>
+          <p>Diagnostic conversations with senior leaders and IIFR faculty.</p>
+        </li>
+        <li>
+          <span>02</span>
+          <h3>Co-design the intervention</h3>
+          <p>Joint design of curriculum, delivery, faculty mix, and outcomes.</p>
+        </li>
+        <li>
+          <span>03</span>
+          <h3>Deliver and measure</h3>
+          <p>Delivery, with adoption, impact, and follow-through planned in.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--navy" aria-labelledby="cp-institution-cta">
+    <div class="cp-container">
+      <h2 id="cp-institution-cta" class="cp-cta-title">Talk to IIFR about a capability challenge.</h2>
+      <p class="cp-cta-lead">
+        Share the problem you are trying to solve. We will respond within two
+        working days with a named contact and a suggested next step.
+      </p>
+      <a class="cp-button cp-button--primary" href="/contemporary/start?intent=partner">
+        Request a partnership conversation
+      </a>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-solutions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--cp-grid-gap);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 992px) {
+    .cp-solutions {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    .cp-solutions {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .cp-solutions > li {
+    display: flex;
+    min-width: 0;
+  }
+
+  .cp-solution {
+    flex: 1;
+  }
+
+  .cp-solution h3 {
+    margin: 0 0 0.5rem;
+  }
+
+  .cp-solution__problem {
+    color: var(--cp-color-text-muted);
+    margin: 0 0 1rem;
+  }
+
+  .cp-solution__facts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 0 0 1rem;
+  }
+
+  .cp-solution__facts div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cp-solution__facts dt {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-solution__facts dd {
+    margin: 0;
+    color: var(--cp-color-navy);
+    font-size: 0.95rem;
+  }
+
+  .cp-solution h4 {
+    font-size: 0.95rem;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .cp-solution__modes {
+    list-style: disc;
+    margin: 0 0 1.25rem;
+    padding-left: 1.2em;
+    color: var(--cp-color-text-muted);
+    font-size: 0.95rem;
+  }
+
+  .cp-solution > .cp-button {
+    margin-top: auto;
+  }
+
+  .cp-programmes__head {
+    text-align: center;
+    margin: 0 auto 2.5rem;
+    max-width: 720px;
+  }
+
+  .cp-process {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: step;
+  }
+
+  @media (min-width: 768px) {
+    .cp-process {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .cp-process li {
+    background: var(--cp-color-white);
+    border: 1px solid var(--cp-color-divider);
+    border-radius: var(--cp-radius-card);
+    padding: 1.5rem;
+  }
+
+  .cp-process span {
+    display: inline-block;
+    font-family: var(--cp-font-heading);
+    font-size: 1.5rem;
+    color: var(--cp-color-maroon);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .cp-process h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  .cp-process p {
+    color: var(--cp-color-text-muted);
+    margin: 0;
+  }
+
+  .cp-cta-title {
+    color: var(--cp-color-white);
+    margin: 0 0 1rem;
+  }
+
+  .cp-cta-lead {
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 60ch;
+    margin: 0 0 1.5rem;
+  }
+</style>

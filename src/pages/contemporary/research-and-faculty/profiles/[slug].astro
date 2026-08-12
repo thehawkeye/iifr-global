@@ -1,0 +1,106 @@
+---
+/** Individual profiles linked from the Academic Council and Faculty lists. */
+import ContemporaryBaseLayout from "../../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { people, peopleGroupMeta, type IifrPerson } from "../../../../contemporary/lib/people";
+import { SITE_URL } from "../../../../contemporary/lib/seo";
+
+export function getStaticPaths() {
+  return people.map((person) => ({
+    params: { slug: person.slug },
+    props: { person },
+  }));
+}
+
+const { person } = Astro.props as { person: IifrPerson };
+const groups = person.groups.map((key) => ({ key, meta: peopleGroupMeta[key] }));
+
+const seo = {
+  title: `${person.name} | IIFR research and faculty`,
+  description: person.summary,
+  keywords: `${person.name}, IIFR, ${groups.map(({ meta }) => meta.label).join(", ")}`,
+  canonical: `${SITE_URL}/contemporary/research-and-faculty/profiles/${person.slug}`,
+  image: `${SITE_URL}/assets/images/contemporary/research-and-faculty-hero.png`,
+  type: "website" as const,
+  schema: "Person" as const,
+};
+---
+
+<ContemporaryBaseLayout
+  path={`/contemporary/research-and-faculty/profiles/${person.slug}`}
+  seo={seo}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Research and faculty", href: "/contemporary/research-and-faculty" },
+    { label: person.name },
+  ]}
+>
+  <header class="cp-page-header">
+    <div class="cp-container cp-container--narrow">
+      <span class="cp-eyebrow">{groups.map(({ meta }) => meta.label).join(" · ")}</span>
+      <h1>{person.name}</h1>
+      <p class="cp-lead">{person.role}</p>
+    </div>
+  </header>
+
+  <section class="cp-section">
+    <div class="cp-container cp-container--narrow">
+      <h2>Profile</h2>
+      <p class="cp-profile-summary">{person.summary}</p>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory">
+    <div class="cp-container cp-container--narrow">
+      <h2>Part of IIFR</h2>
+      <ul class="cp-group-links">
+        {groups.map(({ key, meta }) => (
+          <li>
+            <a href={`/contemporary/research-and-faculty/${key}`}>
+              View {meta.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="cp-source-note">
+        Source: <a href={person.sourceUrl} rel="noreferrer" target="_blank">IIFR published profile</a>.
+      </p>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header {
+    padding: clamp(3rem, 1.5rem + 5vw, 5rem) 0 clamp(2rem, 1rem + 3vw, 3rem);
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-profile-summary {
+    color: var(--cp-color-text-muted);
+    font-size: 1.1rem;
+    line-height: 1.75;
+  }
+
+  .cp-group-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cp-group-links a {
+    display: inline-block;
+    border: 1px solid var(--cp-color-divider);
+    border-radius: var(--cp-radius-button);
+    background: var(--cp-color-white);
+    padding: 0.65rem 0.9rem;
+  }
+
+  .cp-source-note {
+    color: var(--cp-color-text-muted);
+    font-size: 0.875rem;
+    margin: 1.5rem 0 0;
+  }
+</style>

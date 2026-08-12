@@ -1,0 +1,317 @@
+---
+/**
+ * /contemporary/programmes/[slug] — programme detail.
+ *
+ * Decision-support anatomy from design plan §5:
+ *   1. Hero (name, status, audience, duration, format)
+ *   2. Outcomes (what you will be able to do)
+ *   3. Curriculum (modules)
+ *   4. Faculty (mix, not individual bios — those live in /faculty)
+ *   5. Cohort facts (separate from programme facts)
+ *   6. Certification
+ *   7. Next step (apply / enquire)
+ *   8. Related content (other programmes, related insights)
+ */
+import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
+import { programmes, getProgramme, formatDDMMMYYYY } from "../../../contemporary/lib/content";
+import { SITE_URL, programmeCourseSchema } from "../../../contemporary/lib/seo";
+import EcpDetailSections from "../../../contemporary/components/EcpDetailSections.astro";
+
+export async function getStaticPaths() {
+  return programmes.map((p) => ({
+    params: { slug: p.slug },
+    props: { programme: p },
+  }));
+}
+
+const { programme } = Astro.props as { programme: ReturnType<typeof getProgramme> & object };
+if (!programme) throw new Error("programme is required");
+const cohort = programme.cohorts[0];
+
+const seo = {
+  title: `${programme.title} | IIFR programme`,
+  description: programme.proposition,
+  keywords: `${programme.title}, IIFR, ${programme.audience.join(", ")}`,
+  canonical: `${SITE_URL}/contemporary/programmes/${programme.slug}`,
+  image: `${SITE_URL}/assets/images/hero-home.webp`,
+  type: "website" as const,
+  schema: "Course" as const,
+};
+
+const schema = cohort ? programmeCourseSchema(programme, cohort, seo.canonical) : undefined;
+
+const statusLabel: Record<typeof programme.status, string> = {
+  "open": "Open for applications",
+  "coming-soon": "Coming soon",
+  "by-enquiry": "By enquiry",
+  "archived": "Archived",
+};
+---
+
+<ContemporaryBaseLayout
+  path={`/contemporary/programmes/${programme.slug}`}
+  seo={seo}
+  schema={schema}
+  breadcrumbs={[
+    { label: "Home", href: "/contemporary" },
+    { label: "Programmes", href: "/contemporary/programmes" },
+    { label: programme.title },
+  ]}
+>
+  <header class="cp-page-header cp-page-header--programme">
+    <div class="cp-container">
+      <span class={`cp-tag cp-tag--${programme.status === "open" ? "maroon" : programme.status === "by-enquiry" ? "gold" : "navy"}`}>
+        {statusLabel[programme.status]}
+      </span>
+      <h1>{programme.title}</h1>
+      <p class="cp-lead">{programme.proposition}</p>
+      <dl class="cp-facts">
+        <div><dt>Duration</dt><dd>{programme.duration}</dd></div>
+        <div><dt>Format</dt><dd>{programme.format}</dd></div>
+        <div><dt>Type</dt><dd>{programme.programmeType}</dd></div>
+        {cohort?.startDate && <div><dt>Next start</dt><dd>{formatDDMMMYYYY(cohort.startDate)}</dd></div>}
+        {cohort && <div><dt>Fee</dt><dd>{cohort.fee}</dd></div>}
+      </dl>
+      <div class="cp-row">
+        <a class="cp-button cp-button--primary" href={`/contemporary/start?intent=${programme.status === "by-enquiry" ? "enquire" : "apply"}&programme=${programme.slug}`}>
+          {programme.status === "by-enquiry" ? "Enquire about this programme" : "Apply for this programme"}
+        </a>
+        <a class="cp-button cp-button--outline" href={`/contemporary/start?intent=brochure&programme=${programme.slug}`}>
+          Request brochure
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="cp-section" aria-labelledby="cp-programme-audience">
+    <div class="cp-container cp-container--narrow">
+      <h2 id="cp-programme-audience">Who this programme is for</h2>
+      <ul class="cp-audience-list">
+        {programme.audience.map((a) => <li>{a}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory" aria-labelledby="cp-programme-outcomes">
+    <div class="cp-container cp-container--narrow">
+      <h2 id="cp-programme-outcomes">What you will be able to do</h2>
+      <ul class="cp-outcomes">
+        {programme.outcomes.map((o) => <li>{o}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="cp-section" aria-labelledby="cp-programme-curriculum">
+    <div class="cp-container cp-container--narrow">
+      <h2 id="cp-programme-curriculum">Curriculum at a glance</h2>
+      <ol class="cp-curriculum">
+        {programme.curriculum.map((m, i) => (
+          <li>
+            <span class="cp-curriculum__num">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h3>{m.module}</h3>
+              <p>{m.description}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="cp-section cp-section--ivory" aria-labelledby="cp-programme-faculty">
+    <div class="cp-container cp-container--narrow">
+      <h2 id="cp-programme-faculty">Faculty mix</h2>
+      <p>{programme.faculty.map((f) => `${f.name} (${f.role})`).join("; ")}.</p>
+      <p>
+        <a href="/contemporary/research-and-faculty">See the full research and faculty hub</a>
+        for named profiles, affiliations, and expertise.
+      </p>
+    </div>
+  </section>
+
+  {cohort && (
+    <section class="cp-section" aria-labelledby="cp-programme-cohort">
+      <div class="cp-container cp-container--narrow">
+        <h2 id="cp-programme-cohort">Cohort facts</h2>
+        <p class="cp-section__intro">
+          Cohort data is published separately from programme data so dates and fees can be updated without rewriting the page.
+        </p>
+        <dl class="cp-facts cp-facts--dense">
+          <div><dt>Cohort</dt><dd>{cohort.name}</dd></div>
+          <div><dt>Status</dt><dd>{cohort.status}</dd></div>
+          {cohort.startDate && <div><dt>Start</dt><dd>{formatDDMMMYYYY(cohort.startDate)}</dd></div>}
+          {cohort.endDate && <div><dt>End</dt><dd>{formatDDMMMYYYY(cohort.endDate)}</dd></div>}
+          {cohort.applicationDeadline && <div><dt>Application deadline</dt><dd>{formatDDMMMYYYY(cohort.applicationDeadline)}</dd></div>}
+          <div><dt>Format</dt><dd>{cohort.format}</dd></div>
+          <div><dt>Location</dt><dd>{cohort.location}</dd></div>
+          <div><dt>Capacity</dt><dd>{cohort.capacity}</dd></div>
+          <div><dt>Fee</dt><dd>{cohort.fee}</dd></div>
+        </dl>
+        <p class="cp-cohort-owner">
+          <small>Owner: {cohort.owner.name} · Last reviewed {cohort.owner.lastReviewedAt} · Source: {programme.source}</small>
+        </p>
+      </div>
+    </section>
+  )}
+
+  <section class="cp-section cp-section--ivory" aria-labelledby="cp-programme-cert">
+    <div class="cp-container cp-container--narrow">
+      <h2 id="cp-programme-cert">Certification</h2>
+      <p>{programme.certification}</p>
+      {programme.slug === "ecp" && (
+        <p class="cp-lead" style="margin-top: 1rem;">
+          The August 2026 cohort is IIFR's first ECP cohort. Limited
+          Founding Batch Scholarships are available for senior practitioners
+          with strong applied-teaching portfolios — covering part of the
+          programme fee for eligible participants. Application deadline
+          10-Aug-2026.
+        </p>
+      )}
+    </div>
+  </section>
+
+  {programme.slug === "ecp" && (
+    <>
+      <EcpDetailSections />
+    </>
+  )}
+
+  <section class="cp-section cp-section--navy" aria-labelledby="cp-programme-next">
+    <div class="cp-container">
+      <h2 id="cp-programme-next" class="cp-programme-next__title">Ready to take the next step?</h2>
+      <p>
+        {programme.status === "by-enquiry"
+          ? "Talk to IIFR admissions. We will respond within two working days."
+          : "Apply now or request the brochure. The form is a placeholder in this prototype — no live submission yet."}
+      </p>
+      <div class="cp-row">
+        <a class="cp-button cp-button--primary" href={`/contemporary/start?intent=${programme.status === "by-enquiry" ? "enquire" : "apply"}&programme=${programme.slug}`}>
+          {programme.status === "by-enquiry" ? "Enquire" : "Apply"}
+        </a>
+        <a class="cp-button cp-button--outline" href="/contemporary/programmes/compare">
+          Compare programmes
+        </a>
+      </div>
+    </div>
+  </section>
+</ContemporaryBaseLayout>
+
+<style>
+  .cp-page-header--programme {
+    background: var(--cp-color-white);
+    border-bottom: 1px solid var(--cp-color-divider);
+    padding-top: clamp(2.5rem, 1rem + 4vw, 4rem);
+  }
+
+  .cp-page-header--programme h1 {
+    margin: 0.5rem 0 1rem;
+  }
+
+  .cp-page-header--programme .cp-row {
+    margin-top: 1.5rem;
+  }
+
+  .cp-facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem 1.5rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .cp-facts {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .cp-facts div {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-facts dt {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-facts dd {
+    margin: 0;
+    color: var(--cp-color-navy);
+    font-weight: 500;
+  }
+
+  .cp-facts--dense {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .cp-facts--dense {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .cp-section__intro {
+    color: var(--cp-color-text-muted);
+    margin: 0 0 1rem;
+  }
+
+  .cp-audience-list,
+  .cp-outcomes {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .cp-audience-list li,
+  .cp-outcomes li {
+    margin-bottom: 0.4rem;
+  }
+
+  .cp-curriculum {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .cp-curriculum li {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1rem;
+    align-items: start;
+    padding: 1rem 0;
+    border-top: 1px solid var(--cp-color-divider);
+  }
+
+  .cp-curriculum__num {
+    font-family: var(--cp-font-heading);
+    font-size: 1.5rem;
+    color: var(--cp-color-maroon);
+    font-weight: 700;
+  }
+
+  .cp-curriculum h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1.1rem;
+  }
+
+  .cp-curriculum p {
+    margin: 0;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-cohort-owner {
+    margin-top: 1rem;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-programme-next__title {
+    color: var(--cp-color-white);
+  }
+</style>

@@ -1,0 +1,177 @@
+---
+/**
+ * AudiencePathways — the four audience pathways from design plan
+ * §6.3. Each card states who it is for, what decision it supports,
+ * and the next action.
+ */
+interface Pathway {
+  /** Visual cue for the pathway's primary job to be done. */
+  icon: "teaching" | "faculty" | "institution" | "research";
+  title: string;
+  description: string;
+  cta: string;
+  href: string;
+  /** Optional eyebrow tag, e.g. "Individuals" / "Institutions". */
+  audience: "Individuals" | "Faculty" | "Institutions" | "Researchers";
+}
+
+const pathways: Pathway[] = [
+  {
+    audience: "Individuals",
+    icon: "teaching",
+    title: "I want to teach or build academic influence",
+    description:
+      "Move industry experience into credible teaching, executive education, and academic influence through ECP or EFM.",
+    cta: "Compare ECP and EFM",
+    href: "/contemporary/programmes/compare",
+  },
+  {
+    audience: "Faculty",
+    icon: "faculty",
+    title: "I want to strengthen teaching or research",
+    description:
+      "Workshops and applied research support for existing faculty, programme leads, and academic leaders.",
+    cta: "Explore faculty development",
+    href: "/contemporary/programmes/faculty-development",
+  },
+  {
+    audience: "Institutions",
+    icon: "institution",
+    title: "I lead an institution or L&D function",
+    description:
+      "Co-designed faculty capability, executive education, and academic leadership programmes for institutions.",
+    cta: "Discuss an institutional need",
+    href: "/contemporary/for-institutions",
+  },
+  {
+    audience: "Researchers",
+    icon: "research",
+    title: "I want to collaborate on applied research",
+    description:
+      "Research partnerships, residencies, and projects on practice-led questions with IIFR research faculty.",
+    cta: "Explore research and partnerships",
+    href: "/contemporary/research-and-faculty",
+  },
+];
+---
+
+<section class="cp-section cp-pathways" aria-labelledby="cp-pathways-title">
+  <div class="cp-container">
+    <header class="cp-pathways__head">
+      <span class="cp-eyebrow">Choose your pathway</span>
+      <h2 id="cp-pathways-title">Where would you like to start?</h2>
+      <p class="cp-lead">
+        Four routes into IIFR, organised around the decision you are trying to make.
+      </p>
+    </header>
+    <ul class="cp-pathways__grid">
+      {pathways.map((p) => (
+        <li class="cp-card cp-card--link cp-pathways__card">
+          <div class="cp-pathways__card-head">
+            <span class="cp-pathways__icon" aria-hidden="true">
+              {p.icon === "teaching" && (
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 9h23a5 5 0 0 1 5 5v25H12a5 5 0 0 0-5 5V9Z" />
+                  <path d="M35 39h5a1 1 0 0 0 1-1V14a5 5 0 0 0-5-5h-1" />
+                  <path d="M14 17h14M14 24h14M14 31h9" />
+                </svg>
+              )}
+              {p.icon === "faculty" && (
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 12h25v25H9z" />
+                  <path d="M14 8h25v25" />
+                  <path d="M16 20h12M16 26h10" />
+                  <circle cx="28" cy="37" r="5" />
+                  <path d="m31.5 40.5 6 4" />
+                </svg>
+              )}
+              {p.icon === "institution" && (
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 18 18-10 18 10" />
+                  <path d="M9 21h30M7 40h34M12 21v19M20 21v19M28 21v19M36 21v19" />
+                </svg>
+              )}
+              {p.icon === "research" && (
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="21" cy="21" r="10" />
+                  <path d="m29 29 10 10M17 21h8M21 17v8" />
+                  <circle cx="37" cy="12" r="3" />
+                  <path d="m30 17 4-3" />
+                </svg>
+              )}
+            </span>
+            <span class="cp-tag">{p.audience}</span>
+          </div>
+          <h3>{p.title}</h3>
+          <p>{p.description}</p>
+          <div class="cp-card__cta">
+            <a href={p.href}>{p.cta} <span aria-hidden="true">→</span></a>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cp-pathways__head {
+    text-align: center;
+    margin: 0 auto 2.5rem;
+    max-width: 720px;
+  }
+
+  .cp-pathways__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--cp-grid-gap);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .cp-pathways__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .cp-pathways__card h3 {
+    margin: 0.75rem 0 0.5rem;
+  }
+
+  .cp-pathways__card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .cp-pathways__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    flex: 0 0 auto;
+    color: var(--cp-color-maroon);
+    background: var(--cp-color-ivory);
+    border: 1px solid var(--cp-color-ivory-deep);
+    border-radius: 50%;
+  }
+
+  .cp-pathways__icon svg {
+    width: 1.65rem;
+    height: 1.65rem;
+  }
+
+  .cp-pathways__card:hover .cp-pathways__icon,
+  .cp-pathways__card:focus-within .cp-pathways__icon {
+    color: var(--cp-color-white);
+    background: var(--cp-color-maroon);
+    border-color: var(--cp-color-maroon);
+  }
+
+  .cp-pathways__card p {
+    color: var(--cp-color-text-muted);
+    margin: 0;
+  }
+</style>

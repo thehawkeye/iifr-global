@@ -1,0 +1,158 @@
+---
+/**
+ * ContemporaryBaseLayout — base layout for the contemporary prototype.
+ *
+ * Renders the head meta, JSON-LD, header, footer, and a breadcrumb
+ * slot. Pages pass:
+ *   - `path`: request path (e.g. "/contemporary/programmes")
+ *   - `seo`: title, description, keywords, canonical, image, type
+ *   - `schema`: optional JSON-LD object (otherwise a WebPage graph
+ *     is generated)
+ *
+ * The layout does NOT pull in the legacy iifr-redesign.css bundle.
+ * Tokens and base styles come from src/contemporary/styles/.
+ */
+import "../styles/base.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { organisationGraph, SITE_URL, SITE_NAME } from "../lib/seo";
+import type { CpSeo } from "../lib/seo";
+
+interface Breadcrumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  path: string;
+  seo: CpSeo;
+  schema?: Record<string, unknown>;
+  breadcrumbs?: Breadcrumb[];
+  bodyClass?: string;
+}
+
+const { path, seo, schema, breadcrumbs = [], bodyClass = "" } = Astro.props as Props;
+const fallbackSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    (organisationGraph() as { "@graph": unknown[] })["@graph"][0],
+    (organisationGraph() as { "@graph": unknown[] })["@graph"][1],
+    {
+      "@type": "WebPage",
+      "@id": `${seo.canonical}#webpage`,
+      url: seo.canonical,
+      name: seo.title,
+      description: seo.description,
+      inLanguage: "en-IN",
+    },
+    ...(breadcrumbs.length > 0
+      ? [
+          {
+            "@type": "BreadcrumbList",
+            "@id": `${seo.canonical}#breadcrumb`,
+            itemListElement: breadcrumbs.map((b, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: b.label,
+              ...(b.href ? { item: `${SITE_URL}${b.href}` } : {}),
+            })),
+          },
+        ]
+      : []),
+  ],
+};
+const jsonLd = JSON.stringify(schema ?? fallbackSchema);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#242f4c" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    {seo.keywords && <meta name="keywords" content={seo.keywords} />}
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="author" content="International Institute for Faculty & Research" />
+    <link rel="canonical" href={seo.canonical} />
+    <link rel="alternate" hreflang="en-IN" href={seo.canonical} />
+    <link rel="alternate" hreflang="x-default" href={seo.canonical} />
+
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content={seo.type} />
+    <meta property="og:title" content={seo.title} />
+    <meta property="og:description" content={seo.description} />
+    <meta property="og:url" content={seo.canonical} />
+    <meta property="og:image" content={seo.image} />
+    <meta property="og:locale" content="en_IN" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={seo.title} />
+    <meta name="twitter:description" content={seo.description} />
+    <meta name="twitter:image" content={seo.image} />
+
+    <script type="application/ld+json" set:html={jsonLd} />
+  </head>
+  <body class={bodyClass}>
+    <a class="cp-skip-link" href="#cp-main">Skip to main content</a>
+    <SiteHeader path={path} />
+    {breadcrumbs.length > 0 && (
+      <nav class="cp-breadcrumbs" aria-label="Breadcrumb">
+        <div class="cp-container">
+          <ol>
+            {breadcrumbs.map((b, i) => (
+              <li>
+                {b.href && i < breadcrumbs.length - 1 ? (
+                  <a href={b.href}>{b.label}</a>
+                ) : (
+                  <span aria-current="page">{b.label}</span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
+      </nav>
+    )}
+    <main id="cp-main"><slot /></main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .cp-breadcrumbs {
+    background: var(--cp-color-ivory);
+    border-bottom: 1px solid var(--cp-color-divider);
+    font-size: 0.875rem;
+  }
+
+  .cp-breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0.6rem 0;
+    gap: 0.4rem;
+    align-items: center;
+  }
+
+  .cp-breadcrumbs li {
+    margin: 0;
+  }
+
+  .cp-breadcrumbs li + li::before {
+    content: "›";
+    margin-right: 0.4rem;
+    color: var(--cp-color-text-muted);
+  }
+
+  .cp-breadcrumbs a {
+    color: var(--cp-color-navy);
+  }
+
+  .cp-breadcrumbs [aria-current="page"] {
+    color: var(--cp-color-text-muted);
+  }
+</style>

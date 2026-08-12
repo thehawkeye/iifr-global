@@ -53,6 +53,11 @@ export default config({
         }),
         tagline: fields.text({ label: 'Tagline' }),
         description: fields.markdoc({ label: 'Description' }),
+        fee: fields.text({
+          label: 'Cohort fee',
+          description:
+            'Primary cohort fee shown on the programme page, e.g. "₹5,00,000 + GST as applicable". Leave blank if the fee is by enquiry.',
+        }),
         status: fields.select({
           label: 'Status',
           options: [

@@ -9,6 +9,15 @@
  * templates.
  */
 
+interface Props {
+  /** ECP cohort fee string, e.g. "₹5,00,000 + GST as applicable". Passed
+   *  in from [slug].astro so the fee FAQ answer can never drift out of
+   *  sync with the cohort facts fee shown elsewhere on the page. */
+  fee: string;
+}
+
+const { fee } = Astro.props;
+
 const capstones = [
   {
     title: "Course design",
@@ -26,7 +35,7 @@ const faqs = [
   {
     question: "What is the programme fee?",
     answer: [
-      "The ECP programme fee is ₹5,00,000 plus applicable GST.",
+      `The ECP programme fee is ${fee}.`,
       "Founding Batch Scholarship support is available for eligible applicants. Speak with the admissions team for the applicable offer and payment details.",
     ],
   },

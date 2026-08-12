@@ -13,12 +13,13 @@
  *   8. Related content (other programmes, related insights)
  */
 import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
-import { programmes, getProgramme, formatDDMMMYYYY } from "../../../contemporary/lib/content";
+import { getProgramme, formatDDMMMYYYY } from "../../../contemporary/lib/content";
+import { readAllProgrammes } from "../../../contemporary/lib/read-programmes";
 import { SITE_URL, programmeCourseSchema } from "../../../contemporary/lib/seo";
 import EcpDetailSections from "../../../contemporary/components/EcpDetailSections.astro";
 
 export async function getStaticPaths() {
-  return programmes.map((p) => ({
+  return readAllProgrammes().map((p) => ({
     params: { slug: p.slug },
     props: { programme: p },
   }));
@@ -170,9 +171,9 @@ const statusLabel: Record<typeof programme.status, string> = {
     </div>
   </section>
 
-  {programme.slug === "ecp" && (
+  {programme.slug === "ecp" && cohort && (
     <>
-      <EcpDetailSections />
+      <EcpDetailSections fee={cohort.fee} />
     </>
   )}
 

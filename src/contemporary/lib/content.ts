@@ -231,7 +231,7 @@ export const programmes: Programme[] = [
         startDate: "2026-08-21",
         endDate: "2026-11-30",
         applicationDeadline: "2026-08-10",
-        fee: "₹1,50,000 + GST as applicable",
+        fee: "₹5,00,000 + GST as applicable",
         format: "In-person, New Delhi",
         location: "Bharatiya Vidya Bhavan, New Delhi",
         capacity: "Limited to 36 participants",

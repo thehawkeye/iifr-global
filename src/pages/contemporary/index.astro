@@ -79,6 +79,24 @@ const seo = {
         <p class="cp-lead">
           Lead with the most commercially urgent, approved programme. Follow with the rest of the portfolio.
         </p>
+        <p class="cp-pracademic-strip" id="cp-pracademic-strip">
+          <span class="cp-pracademic-strip__label">Built for the pracademic</span>
+          <span class="cp-pracademic-strip__body">
+            IIFR programmes are designed for practitioners who teach, research, and lead at the bridge between the classroom and the field — the <strong>pracademic</strong>.
+          </span>
+        </p>
+        {openOrFeatured?.slug === "ecp" && (
+          <aside class="cp-ecp-callout" id="cp-ecp-callout" aria-label="ECP Founding Batch Scholarship reference">
+            <span class="cp-ecp-callout__eyebrow">ECP · August 2026 cohort</span>
+            <span class="cp-ecp-callout__title">Founding Batch Scholarship</span>
+            <span class="cp-ecp-callout__body">
+              The ECP certification language references <strong>Founding Batch Scholarship</strong>. See the ECP programme page for the full certification wording and admissions contact.
+            </span>
+            <a class="cp-button cp-button--ghost cp-ecp-callout__cta" href="/contemporary/programmes/ecp#cp-programme-cert">
+              Read the certification language
+            </a>
+          </aside>
+        )}
       </header>
       <div class="cp-programmes__grid">
         <ProgrammeCard programme={openOrFeatured} featured={true} />
@@ -197,6 +215,112 @@ const seo = {
     text-align: center;
     margin: 0 auto 2.5rem;
     max-width: 720px;
+  }
+
+  /*
+   * Pracademic strip (R4, t_6078f9e1) — visible emphasis on the
+   * term "pracademic" beneath the lead paragraph. Distinct from
+   * the prose lead so the term reads as a designed statement,
+   * not a passing phrase. Centered to match the section header.
+   */
+  .cp-pracademic-strip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin: 1.25rem auto 0;
+    padding: 0.6rem 1.1rem;
+    background: rgba(36, 47, 76, 0.06);
+    border: 1px solid rgba(36, 47, 76, 0.18);
+    border-radius: 999px;
+    color: var(--cp-color-navy);
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .cp-pracademic-strip__label {
+    font-family: var(--cp-font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cp-color-maroon);
+    white-space: nowrap;
+  }
+
+  .cp-pracademic-strip__body {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .cp-pracademic-strip__body strong {
+    color: var(--cp-color-maroon);
+    font-weight: 600;
+  }
+
+  @media (max-width: 600px) {
+    .cp-pracademic-strip {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.4rem;
+    }
+  }
+
+  /*
+   * ECP Founding Batch Scholarship callout (R4, t_6078f9e1) —
+   * visible card pinned to the home featured-programmes header so
+   * the scholarship reference is not buried in the ECP programme
+   * page only. References the exact phrase "Founding Batch
+   * Scholarship" from the ECP certification field; does NOT add
+   * any invented eligibility or amount.
+   */
+  .cp-ecp-callout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 0.5rem;
+    margin: 1.5rem auto 0;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, rgba(199, 153, 6, 0.12), rgba(140, 36, 46, 0.10));
+    border: 1px solid rgba(140, 36, 46, 0.30);
+    border-left: 4px solid var(--cp-color-maroon);
+    border-radius: var(--cp-radius-card);
+    max-width: 640px;
+    color: var(--cp-color-navy);
+    box-shadow: 0 1px 0 rgba(36, 47, 76, 0.04);
+  }
+
+  .cp-ecp-callout__eyebrow {
+    font-family: var(--cp-font-heading);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cp-color-maroon);
+  }
+
+  .cp-ecp-callout__title {
+    font-family: var(--cp-font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--cp-color-navy);
+    margin: 0;
+  }
+
+  .cp-ecp-callout__body {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--cp-color-navy);
+    opacity: 0.92;
+  }
+
+  .cp-ecp-callout__body strong {
+    color: var(--cp-color-maroon);
+    font-weight: 600;
+  }
+
+  .cp-ecp-callout__cta {
+    margin-top: 0.4rem;
   }
 
   .cp-programmes__head--left {

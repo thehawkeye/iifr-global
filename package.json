@@ -17,12 +17,16 @@
     "@astrojs/vercel": "^11.0.4",
     "@keystatic/astro": "^5.2.0",
     "@keystatic/core": "^0.6.4",
+    "@sanity/astro": "^3.5.1",
+    "@sanity/client": "^7.26.2",
+    "@sanity/image-url": "^2.1.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "astro": "^7.1.6",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "sanity": "^6.10.1",
     "tailwindcss": "^4.3.3"
   }
 }

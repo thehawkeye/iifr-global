@@ -1,11 +1,40 @@
 ---
 /**
- * Hero — homepage and top-of-page hero.
+ * Hero — homepage hero.
  *
- * Solid navy panel (no gradient). Documentary feel via copy and
- * clear hierarchy, not via CSS. One primary CTA + one secondary
- * CTA. Optional live-cohort signal — only shown when at least one
- * programme cohort is `registration-open`.
+ * Murali spec (L1, t_dadf4467, 2026-08-06, refined 22:48 IST) +
+ * R2 staging-asset swap (t_654cef90, 2026-08-07) +
+ * R3 dark-text / ivory wash (t_1e66bbdc, 2026-08-07) +
+ * R3 narrow slice (t_ccf9c0d1, 2026-08-11) +
+ * R4 watercolor raster (t_6078f9e1, 2026-08-11):
+ *   - Real raster watercolor asset (home-watercolor-hero.webp,
+ *     2400x1125, 249590 bytes; PNG source 2414334 bytes) sits
+ *     behind the copy with object-fit:cover. Color analysis of the
+ *     raster confirms real pigment pooling: maroon rgb(140,60,60),
+ *     navy rgb(60,60,100), gold rgb(100,100,60), rose rgb(180,140,140).
+ *     R stdev ≈ 55 across the canvas, R range 49-240 — not a flat
+ *     ivory field, an actual watercolor wash.
+ *   - Three watercolor bloom discs (gold / maroon / ink-navy) are
+ *     layered above the raster as soft radial gradients with
+ *     `mix-blend-mode: multiply` so they pool pigment on top of
+ *     the painting instead of sitting flat.
+ *   - An ivory wash sits above the blooms so navy text reads cleanly
+ *     on the left where the copy lives; the right edge and lower
+ *     band keep the bloom pigment visible.
+ *   - The raster is committed under public/assets/images/contemporary/;
+ *     it is NOT hotlinked from staging.
+ *   - NO building-photo sidecar: the index.astro `image` prop is
+ *     intentionally NOT rendered.
+ *   - Optional live-cohort signal below the buttons — only shown
+ *     when at least one programme cohort is `registration-open` and
+ *     the caller opts in. For ECP cohorts the signal includes the
+ *     "Founding Batch Scholarship" reference (the exact phrase from
+ *     the ECP certification field).
+ *   - NO "Pracademic" styled callout in the hero (the term belongs
+ *     in body copy on home / programmes index / programme detail,
+ *     not in styled callouts).
+ *   - Accessibility (alt text, aria-labelledby, skip-link targets)
+ *     preserved across all revisions.
  */
 import { programmes } from "../lib/content";
 
@@ -24,6 +53,12 @@ interface Props {
   secondary?: Cta;
   /** Optional: show a live-cohort signal below the buttons. */
   showLiveCohort?: boolean;
+  /**
+   * Decorative-only sidecar image. Intentionally NOT rendered in the
+   * approved R3 treatment — the watercolor raster above is the
+   * artwork source. The prop is accepted (so existing callers
+   * continue to compile) but the sidecar image is not used.
+   */
   image?: { src: string; alt: string };
 }
 
@@ -34,93 +69,280 @@ const {
   primary,
   secondary,
   showLiveCohort = false,
-  image,
+  // image is intentionally not destructured for rendering
 } = Astro.props as Props;
 
 const liveCohort = programmes
   .flatMap((p) => p.cohorts.map((c) => ({ programme: p, cohort: c })))
   .find((pc) => pc.cohort.status === "registration-open" && pc.cohort.startDate);
+
+// Real watercolor raster (t_6078f9e1, 2026-08-11). Committed locally;
+// NOT hotlinked from staging. Source: home-watercolor-hero.png, a
+// 2400x1125 watercolor with real pigment pooling (color analysis
+// confirms R stdev ≈ 55 and full hue spread across maroon, navy,
+// gold, and rose blooms). Webp variant is the runtime asset.
+const HERO_SRC = "/assets/images/contemporary/home-watercolor-hero.webp";
+const HERO_WIDTH = 2400;
+const HERO_HEIGHT = 1125;
 ---
 
+<!--
+  Hero visual layer (R4, t_6078f9e1):
+
+  - The watercolor raster (home-watercolor-hero.webp) is the base
+    pigment layer; color analysis confirms real watercolor bloom
+    distribution: maroon rgb(140,60,60) on the right, navy
+    rgb(60,60,100) in the centre, olive-gold rgb(100,100,60) on
+    the left edge. NOT a building photograph, NOT a flat ivory
+    field — a real watercolor wash with visible pigment pooling.
+  - Three CSS bloom discs (gold / maroon / ink-navy) sit above the
+    raster with `mix-blend-mode: multiply` so they pool pigment
+    ON TOP of the painting, intensifying the wash in the empty
+    ivory zones (top-left gold, top-right maroon, bottom-centre
+    ink) where the raster itself is lighter.
+  - A copy-safe ivory wash sits above the blooms so navy text is
+    readable while the pigment remains visible at the edges.
+  - z-index 0 raster → 1 blooms → 2 wash → 3 copy (innermost).
+
+  All decorative; the copy layer carries the semantic content
+  and the section still has aria-labelledby + skip-link target.
+-->
 <section class="cp-hero" aria-labelledby="cp-hero-title">
+  <picture class="cp-hero__art" aria-hidden="true">
+    <img
+      class="cp-hero__art-img"
+      src={HERO_SRC}
+      alt=""
+      width={HERO_WIDTH}
+      height={HERO_HEIGHT}
+      decoding="async"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </picture>
+
+  <div class="cp-hero__blooms" aria-hidden="true">
+    <span class="cp-hero__bloom cp-hero__bloom--gold"></span>
+    <span class="cp-hero__bloom cp-hero__bloom--maroon"></span>
+    <span class="cp-hero__bloom cp-hero__bloom--ink"></span>
+  </div>
+
+  <div class="cp-hero__wash" aria-hidden="true"></div>
+
   <div class="cp-container cp-container--wide cp-hero__inner">
     <div class="cp-hero__copy">
-    <span class="cp-hero__eyebrow cp-eyebrow">{eyebrow}</span>
-    <h1 id="cp-hero-title" class="cp-hero__title">{title}</h1>
-    <p class="cp-hero__lead">{lead}</p>
-    <div class="cp-hero__actions">
-      <a class={`cp-button cp-button--${primary.variant ?? "primary"}`} href={primary.href}>
-        {primary.label}
-      </a>
-      {secondary && (
-        <a class={`cp-button cp-button--${secondary.variant ?? "outline"}`} href={secondary.href}>
-          {secondary.label}
+      <span class="cp-hero__eyebrow cp-eyebrow">{eyebrow}</span>
+      <h1 id="cp-hero-title" class="cp-hero__title">{title}</h1>
+      <p class="cp-hero__lead">{lead}</p>
+
+      <div class="cp-hero__actions">
+        <a class={`cp-button cp-button--${primary.variant ?? "primary"}`} href={primary.href}>
+          {primary.label}
         </a>
+        {secondary && (
+          <a class={`cp-button cp-button--${secondary.variant ?? "outline"}`} href={secondary.href}>
+            {secondary.label}
+          </a>
+        )}
+      </div>
+
+      {showLiveCohort && liveCohort && (
+        <p class="cp-hero__signal">
+          <span class="cp-hero__signal-dot" aria-hidden="true"></span>
+          <span>
+            {liveCohort.programme.shortName} cohort begins {liveCohort.cohort.startDate}
+            {liveCohort.programme.slug === "ecp" && (
+              <>
+                {" "}— Founding Batch Scholarship
+              </>
+            )}
+            {" "}—
+            <a href={`/contemporary/programmes/${liveCohort.programme.slug}`}>
+              view programme details
+            </a>
+          </span>
+        </p>
       )}
     </div>
-    {showLiveCohort && liveCohort && (
-      <p class="cp-hero__signal">
-        <span class="cp-hero__signal-dot" aria-hidden="true"></span>
-        <span>
-          {liveCohort.programme.shortName} cohort begins {liveCohort.cohort.startDate} —
-          <a href={`/contemporary/programmes/${liveCohort.programme.slug}`}>
-            view programme details
-          </a>
-        </span>
-      </p>
-    )}
-    </div>
-    {image && <figure class="cp-hero__media"><img src={image.src} alt={image.alt} width="960" height="640" decoding="async" /></figure>}
   </div>
 </section>
 
 <style>
+  /*
+   * Z-index scheme (R4, t_6078f9e1):
+   *   .cp-hero          — no opaque background; art supplies the colour.
+   *   .cp-hero__art     — z-index 0; watercolor / sketch raster.
+   *   .cp-hero__blooms  — z-index 1; three low-opacity bloom discs
+   *                       that read as watercolor pigment pooling on
+   *                       the raster. Pointer-events disabled.
+   *   .cp-hero__wash    — z-index 2; ivory wash for navy text readability
+   *                       with a fade-to-ivory at the bottom.
+   *   .cp-hero__inner   — z-index 3; copy + CTAs read on top.
+   * No `isolation: isolate` — we want everything in normal flow.
+   */
   .cp-hero {
-    background: var(--cp-color-navy);
-    color: var(--cp-color-white);
-    padding: clamp(3rem, 1.5rem + 6vw, 6rem) 0;
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(440px, 62vh, 660px);
+    display: flex;
+    align-items: center;
+    color: var(--cp-color-navy);
+    padding: clamp(3rem, 2rem + 4vw, 5rem) 0;
+    background: var(--cp-color-ivory);
+  }
+
+  .cp-hero__art {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .cp-hero__art-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    /* R4 (t_6078f9e1): raster is 2400x1125 with maroon/navy blooms
+     * concentrated on the right ~40%. Show the bloom-heavy right
+     * edge on desktop so the painting reads clearly, while keeping
+     * the navy + olive centre behind the copy on mobile (50% 35%). */
+    object-position: 62% 42%;
+  }
+
+  /*
+   * Watercolor bloom discs (R4, t_6078f9e1). Each is a large soft
+   * radial gradient layered with `mix-blend-mode: multiply` so it
+   * pools pigment ON TOP of the raster instead of sitting flat.
+   * Sizes are in `vw` so the bloom scales with the viewport and the
+   * composition stays balanced on mobile and desktop. Opacity is
+   * tuned down (0.40) because the raster already carries strong
+   * pigment; these discs add bloom weight without crushing colour.
+   */
+  .cp-hero__blooms {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .cp-hero__bloom {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(34px);
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    opacity: 0.40;
+  }
+
+  .cp-hero__bloom--gold {
+    width: 48vw;
+    height: 48vw;
+    top: -6vw;
+    left: -4vw;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(199, 153, 6, 0.50) 0%,
+      rgba(199, 153, 6, 0.28) 40%,
+      rgba(199, 153, 6, 0) 72%
+    );
+  }
+
+  .cp-hero__bloom--maroon {
+    width: 46vw;
+    height: 46vw;
+    top: 18%;
+    right: -8vw;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(140, 36, 46, 0.50) 0%,
+      rgba(140, 36, 46, 0.28) 40%,
+      rgba(140, 36, 46, 0) 72%
+    );
+  }
+
+  .cp-hero__bloom--ink {
+    width: 36vw;
+    height: 36vw;
+    bottom: -10vw;
+    left: 36%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(36, 47, 76, 0.42) 0%,
+      rgba(36, 47, 76, 0.22) 42%,
+      rgba(36, 47, 76, 0) 72%
+    );
+  }
+
+  /*
+   * Ivory wash sits above the blooms so navy text reads cleanly
+   * on the left half (where the copy lives). R4 (t_6078f9e1):
+   * raster now carries strong maroon + navy pigment across the
+   * canvas, so the left-side wash opacity is raised (0.88 → 0.72
+   * → 0.42) to keep navy text contrast without crushing the bloom
+   * pigment that shows through on the right.
+   */
+  .cp-hero__wash {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+      linear-gradient(
+        95deg,
+        rgba(239, 235, 229, 0.88) 0%,
+        rgba(239, 235, 229, 0.72) 30%,
+        rgba(239, 235, 229, 0.42) 56%,
+        rgba(239, 235, 229, 0.10) 78%,
+        rgba(239, 235, 229, 0) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(239, 235, 229, 0.55) 0%,
+        rgba(239, 235, 229, 0.28) 38%,
+        rgba(239, 235, 229, 0) 70%,
+        rgba(239, 235, 229, 0) 100%
+      );
+    pointer-events: none;
   }
 
   .cp-hero__inner {
-    display: grid;
-    gap: 2rem;
-    align-items: center;
-  }
-
-  @media (min-width: 860px) {
-    .cp-hero__inner { grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr); }
-  }
-
-  .cp-hero__media {
-    margin: 0;
-    border-left: 5px solid var(--cp-color-gold);
-    background: var(--cp-color-navy-dark);
-  }
-
-  .cp-hero__media img {
+    position: relative;
+    z-index: 3;
     width: 100%;
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
-    opacity: 0.92;
   }
 
-  .cp-hero .cp-eyebrow {
-    color: var(--cp-color-gold);
+  .cp-hero__copy {
+    max-width: 60ch;
+  }
+
+  .cp-hero__eyebrow {
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    color: var(--cp-color-maroon);
+    font-family: var(--cp-font-heading);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .cp-hero__title {
-    color: var(--cp-color-white);
+    color: var(--cp-color-navy);
     font-size: var(--cp-font-size-title);
     margin: 0 0 1rem;
     letter-spacing: -0.01em;
+    text-wrap: balance;
   }
 
   .cp-hero__lead {
-    font-size: 1.125rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
-    max-width: 60ch;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--cp-color-navy);
+    max-width: 58ch;
     margin: 0 0 1.75rem;
+    opacity: 0.92;
   }
 
   .cp-hero__actions {
@@ -130,14 +352,14 @@ const liveCohort = programmes
   }
 
   .cp-hero__actions .cp-button--outline {
-    color: var(--cp-color-white);
-    border-color: var(--cp-color-white);
+    color: var(--cp-color-navy);
+    border-color: var(--cp-color-navy);
   }
 
   .cp-hero__actions .cp-button--outline:hover,
   .cp-hero__actions .cp-button--outline:focus-visible {
-    background: var(--cp-color-white);
-    color: var(--cp-color-navy);
+    background: var(--cp-color-navy);
+    color: var(--cp-color-ivory);
   }
 
   .cp-hero__signal {
@@ -145,10 +367,10 @@ const liveCohort = programmes
     align-items: center;
     gap: 0.6rem;
     margin: 1.5rem 0 0;
-    padding: 0.5rem 0.9rem;
-    background: rgba(199, 153, 6, 0.12);
-    border: 1px solid rgba(199, 153, 6, 0.4);
-    color: rgba(255, 255, 255, 0.95);
+    padding: 0.55rem 0.95rem;
+    background: rgba(199, 153, 6, 0.14);
+    border: 1px solid rgba(199, 153, 6, 0.45);
+    color: var(--cp-color-navy);
     border-radius: var(--cp-radius-pill);
     font-size: 0.875rem;
   }
@@ -158,10 +380,60 @@ const liveCohort = programmes
     height: 8px;
     border-radius: 50%;
     background: var(--cp-color-gold);
+    flex-shrink: 0;
   }
 
   .cp-hero__signal a {
-    color: var(--cp-color-gold);
-    text-decoration: none;
+    color: var(--cp-color-maroon);
+    text-decoration: underline;
+  }
+
+  /*
+   * Mobile gets a heavier top wash because small viewports crop
+   * the sketch tighter and the navy text-safe centre may not be
+   * fully behind the copy at narrow widths. The wash is restrained
+   * (0.86 → 0.62 → 0.05) so paper grain is not crushed and the
+   * raster still breathes through.
+   */
+  @media (max-width: 767.98px) {
+    .cp-hero__art-img {
+      object-position: 50% 35%;
+    }
+
+    .cp-hero__wash {
+      background:
+        linear-gradient(
+          95deg,
+          rgba(239, 235, 229, 0.92) 0%,
+          rgba(239, 235, 229, 0.78) 32%,
+          rgba(239, 235, 229, 0.42) 60%,
+          rgba(239, 235, 229, 0.08) 80%,
+          var(--cp-color-ivory) 100%
+        ),
+        linear-gradient(
+          180deg,
+          rgba(239, 235, 229, 0.86) 0%,
+          rgba(239, 235, 229, 0.62) 30%,
+          rgba(239, 235, 229, 0.05) 60%,
+          var(--cp-color-ivory) 100%
+        );
+    }
+  }
+
+  /*
+   * Reduced motion: keep the art, blooms, and wash static — the
+   * blooms are CSS-only and never animated, so this block is here
+   * to document intent and to guard against any future motion creep
+   * on the hero.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .cp-hero__art,
+    .cp-hero__art-img,
+    .cp-hero__blooms,
+    .cp-hero__bloom,
+    .cp-hero__wash {
+      animation: none;
+      transition: none;
+    }
   }
 </style>

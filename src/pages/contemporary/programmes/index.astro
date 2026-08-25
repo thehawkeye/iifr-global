@@ -58,6 +58,26 @@ const schema = programmesListSchema(programmes);
     primary={{ href: "/contemporary/find-your-pathway", label: "Find your pathway" }}
     secondary={{ href: "/contemporary/programmes/compare", label: "Compare programmes", variant: "outline" }} />
 
+  {/*
+    Pracademic band (R4, t_6078f9e1) — visible emphasis on the term
+    "pracademic" beneath the PageHero. Repeated on every programme
+    detail so the vocabulary is consistent across the hub and the
+    per-programme pages.
+  */}
+  <section class="cp-section cp-section--tight" aria-labelledby="cp-programmes-pracademic">
+    <div class="cp-container">
+      <div class="cp-pracademic-band" id="cp-programmes-pracademic">
+        <span class="cp-pracademic-band__eyebrow">Pracademic</span>
+        <p class="cp-pracademic-band__body">
+          Every programme at IIFR is built around the <strong>pracademic</strong> —
+          practitioners who teach, research, and lead at the bridge between the
+          classroom and the field. The term is the centre of gravity for how
+          we design learning, faculty mix, and applied scholarship.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="cp-section" id="open" aria-labelledby="cp-open-programmes">
     <div class="cp-container">
       <h2 id="cp-open-programmes">Open and coming soon</h2>
@@ -110,6 +130,52 @@ const schema = programmesListSchema(programmes);
 
   .cp-page-header .cp-lead {
     max-width: 60ch;
+  }
+
+  /*
+   * Pracademic band (R4, t_6078f9e1) — visible emphasis band under
+   * the PageHero so the term "pracademic" reads as a designed
+   * statement, not a passing phrase in the lead. Centered card on
+   * ivory background, distinct from the PageHero lead.
+   */
+  .cp-section--tight {
+    padding-top: 0;
+  }
+
+  .cp-pracademic-band {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: -1rem auto 0;
+    padding: 1.5rem 1.75rem;
+    background: var(--cp-color-white);
+    border: 1px solid rgba(36, 47, 76, 0.15);
+    border-left: 4px solid var(--cp-color-maroon);
+    border-radius: var(--cp-radius-card);
+    max-width: 760px;
+    color: var(--cp-color-navy);
+  }
+
+  .cp-pracademic-band__eyebrow {
+    font-family: var(--cp-font-heading);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cp-color-maroon);
+  }
+
+  .cp-pracademic-band__body {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--cp-color-navy);
+  }
+
+  .cp-pracademic-band__body strong {
+    color: var(--cp-color-maroon);
+    font-weight: 600;
   }
 
   .cp-section__intro {

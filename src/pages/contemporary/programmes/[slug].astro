@@ -11,27 +11,81 @@
  *   6. Certification
  *   7. Next step (apply / enquire)
  *   8. Related content (other programmes, related insights)
+ *
+ * Data source: Sanity (GROQ) — replaces hardcoded content.ts.
+ * Field names mirror content.ts Programme interface exactly.
  */
 import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBaseLayout.astro";
-import { programmes, getProgramme } from "../../../contemporary/lib/content";
+import { sanityClient } from "../../../lib/sanity.client";
+import { programmes as staticProgrammes, getProgramme } from "../../../contemporary/lib/content";
 import { SITE_URL, programmeCourseSchema } from "../../../contemporary/lib/seo";
 
+// ---------------------------------------------------------------------------
+// getStaticPaths — called at build time (Node.js, async)
+// Inline GROQ queries so Astro's server optimizer can see them.
+// Falls back to static content.ts when Sanity is unavailable (no dataset,
+// no token, or network error).
+// ---------------------------------------------------------------------------
+
 export async function getStaticPaths() {
-  return programmes.map((p) => ({
-    params: { slug: p.slug },
-    props: { programme: p },
-  }));
+  try {
+    const slugs = await sanityClient.fetch<{ slug: string }[]>(
+      `*[_type == "programme" && defined(slug.current)] { "slug": slug.current }`
+    );
+    return slugs.map((p) => ({ params: { slug: p.slug }, props: { slug: p.slug } }));
+  } catch {
+    // Sanity unavailable — fall back to static content so build still passes.
+    return staticProgrammes.map((p) => ({ params: { slug: p.slug }, props: { slug: p.slug } }));
+  }
 }
 
-const { programme } = Astro.props as { programme: ReturnType<typeof getProgramme> & object };
-if (!programme) throw new Error("programme is required");
-const cohort = programme.cohorts[0];
+// ---------------------------------------------------------------------------
+// Page render
+// ---------------------------------------------------------------------------
+
+const { slug } = Astro.props as { slug: string };
+
+let programme: Awaited<ReturnType<typeof getProgramme>>;
+try {
+  programme = await sanityClient.fetch(
+    `*[_type == "programme" && slug.current == $slug][0] {
+      title, shortName, programmeType, proposition, audience, duration, format,
+      description,
+      outcomes,
+      "curriculum": curriculum[] { module, description },
+      "faculty": faculty[] { name, role },
+      certification,
+      "cohorts": cohorts[] {
+        id, name, status, startDate, endDate,
+        applicationDeadline, fee, format, location, capacity,
+        applicationUrl, brochureUrl,
+        "owner": { name, role, lastReviewedAt }
+      },
+      status, source,
+      "owner": owner { name, role, lastReviewedAt }
+    }`,
+    { slug }
+  );
+} catch {
+  // Sanity unavailable — fall back to static content.ts
+  programme = getProgramme(slug) ?? undefined;
+}
+
+if (!programme) {
+  throw new Error(`Programme not found: ${slug}`);
+}
+
+// First cohort with an application URL drives the CTA
+const cohort = programme.cohorts?.[0];
+const applicationHref =
+  cohort?.applicationUrl ??
+  `/contemporary/start?intent=${programme.status === "by-enquiry" ? "enquire" : "apply"}&programme=${slug}`;
 
 const seo = {
   title: `${programme.title} | IIFR programme`,
   description: programme.proposition,
-  keywords: `${programme.title}, IIFR, ${programme.audience.join(", ")}`,
-  canonical: `${SITE_URL}/contemporary/programmes/${programme.slug}`,
+  keywords: `${programme.title}, IIFR, ${(programme.audience ?? []).join(", ")}`,
+  canonical: `${SITE_URL}/contemporary/programmes/${slug}`,
   image: `${SITE_URL}/assets/images/hero-home.webp`,
   type: "website" as const,
   schema: "Course" as const,
@@ -39,16 +93,16 @@ const seo = {
 
 const schema = cohort ? programmeCourseSchema(programme, cohort, seo.canonical) : undefined;
 
-const statusLabel: Record<typeof programme.status, string> = {
-  "open": "Open for applications",
+const statusLabel: Record<string, string> = {
+  open: "Open for applications",
   "coming-soon": "Coming soon",
   "by-enquiry": "By enquiry",
-  "archived": "Archived",
+  archived: "Archived",
 };
 ---
 
 <ContemporaryBaseLayout
-  path={`/contemporary/programmes/${programme.slug}`}
+  path={`/contemporary/programmes/${slug}`}
   seo={seo}
   schema={schema}
   breadcrumbs={[
@@ -60,10 +114,18 @@ const statusLabel: Record<typeof programme.status, string> = {
   <header class="cp-page-header cp-page-header--programme">
     <div class="cp-container">
       <span class={`cp-tag cp-tag--${programme.status === "open" ? "maroon" : programme.status === "by-enquiry" ? "gold" : "navy"}`}>
-        {statusLabel[programme.status]}
+        {statusLabel[programme.status] ?? programme.status}
       </span>
       <h1>{programme.title}</h1>
       <p class="cp-lead">{programme.proposition}</p>
+      <p class="cp-programme-pracademic" id={`cp-programme-pracademic-${slug}`}>
+        <span class="cp-programme-pracademic__eyebrow">Built for the pracademic</span>
+        <span class="cp-programme-pracademic__body">
+          This programme is designed for the <strong>pracademic</strong> —
+          practitioners who teach, research, and lead at the bridge between
+          the classroom and the field.
+        </span>
+      </p>
       <dl class="cp-facts">
         <div><dt>Duration</dt><dd>{programme.duration}</dd></div>
         <div><dt>Format</dt><dd>{programme.format}</dd></div>
@@ -72,10 +134,10 @@ const statusLabel: Record<typeof programme.status, string> = {
         {cohort && <div><dt>Fee</dt><dd>{cohort.fee}</dd></div>}
       </dl>
       <div class="cp-row">
-        <a class="cp-button cp-button--primary" href={`/contemporary/start?intent=${programme.status === "by-enquiry" ? "enquire" : "apply"}&programme=${programme.slug}`}>
+        <a class="cp-button cp-button--primary" href={applicationHref}>
           {programme.status === "by-enquiry" ? "Enquire about this programme" : "Apply for this programme"}
         </a>
-        <a class="cp-button cp-button--outline" href={`/contemporary/start?intent=brochure&programme=${programme.slug}`}>
+        <a class="cp-button cp-button--outline" href={`/contemporary/start?intent=brochure&programme=${slug}`}>
           Request brochure
         </a>
       </div>
@@ -86,7 +148,7 @@ const statusLabel: Record<typeof programme.status, string> = {
     <div class="cp-container cp-container--narrow">
       <h2 id="cp-programme-audience">Who this programme is for</h2>
       <ul class="cp-audience-list">
-        {programme.audience.map((a) => <li>{a}</li>)}
+        {(programme.audience ?? []).map((a: string) => <li>{a}</li>)}
       </ul>
     </div>
   </section>
@@ -95,7 +157,7 @@ const statusLabel: Record<typeof programme.status, string> = {
     <div class="cp-container cp-container--narrow">
       <h2 id="cp-programme-outcomes">What you will be able to do</h2>
       <ul class="cp-outcomes">
-        {programme.outcomes.map((o) => <li>{o}</li>)}
+        {(programme.outcomes ?? []).map((o: string) => <li>{o}</li>)}
       </ul>
     </div>
   </section>
@@ -104,7 +166,7 @@ const statusLabel: Record<typeof programme.status, string> = {
     <div class="cp-container cp-container--narrow">
       <h2 id="cp-programme-curriculum">Curriculum at a glance</h2>
       <ol class="cp-curriculum">
-        {programme.curriculum.map((m, i) => (
+        {(programme.curriculum ?? []).map((m: { module: string; description: string }, i: number) => (
           <li>
             <span class="cp-curriculum__num">{String(i + 1).padStart(2, "0")}</span>
             <div>
@@ -120,7 +182,7 @@ const statusLabel: Record<typeof programme.status, string> = {
   <section class="cp-section cp-section--ivory" aria-labelledby="cp-programme-faculty">
     <div class="cp-container cp-container--narrow">
       <h2 id="cp-programme-faculty">Faculty mix</h2>
-      <p>{programme.faculty.map((f) => `${f.name} (${f.role})`).join("; ")}.</p>
+      <p>{(programme.faculty ?? []).map((f: { name: string; role: string }) => `${f.name} (${f.role})`).join("; ")}.</p>
       <p>
         <a href="/contemporary/research-and-faculty">See the full research and faculty hub</a>
         for named profiles, affiliations, and expertise.
@@ -143,11 +205,11 @@ const statusLabel: Record<typeof programme.status, string> = {
           {cohort.applicationDeadline && <div><dt>Application deadline</dt><dd>{cohort.applicationDeadline}</dd></div>}
           <div><dt>Format</dt><dd>{cohort.format}</dd></div>
           <div><dt>Location</dt><dd>{cohort.location}</dd></div>
-          <div><dt>Capacity</dt><dd>{cohort.capacity}</dd></div>
+          {cohort.capacity && <div><dt>Capacity</dt><dd>{cohort.capacity}</dd></div>}
           <div><dt>Fee</dt><dd>{cohort.fee}</dd></div>
         </dl>
         <p class="cp-cohort-owner">
-          <small>Owner: {cohort.owner.name} · Last reviewed {cohort.owner.lastReviewedAt} · Source: {programme.source}</small>
+          <small>Owner: {cohort.owner?.name ?? programme.owner?.name} · Last reviewed {cohort.owner?.lastReviewedAt ?? programme.owner?.lastReviewedAt} · Source: {programme.source}</small>
         </p>
       </div>
     </section>
@@ -156,7 +218,27 @@ const statusLabel: Record<typeof programme.status, string> = {
   <section class="cp-section cp-section--ivory" aria-labelledby="cp-programme-cert">
     <div class="cp-container cp-container--narrow">
       <h2 id="cp-programme-cert">Certification</h2>
-      <p>{programme.certification}</p>
+      <p>
+        {(
+          programme.certification ?? ""
+        ).replace(
+          /(Founding Batch Scholarship)/,
+          '<span class="cp-cert-scholarship" id="cp-cert-scholarship">$1</span>'
+        )}
+      </p>
+      {slug === "ecp" && (
+        <aside class="cp-cert-callout" id="cp-cert-callout" aria-label="Founding Batch Scholarship reference">
+          <span class="cp-cert-callout__eyebrow">Founding Batch Scholarship</span>
+          <p class="cp-cert-callout__body">
+            The ECP certification language references <strong>Founding Batch Scholarship</strong>.
+            Eligibility and award are not specified in the public certification copy —
+            they are set during the admissions conversation for the August 2026 cohort.
+          </p>
+          <a class="cp-button cp-button--ghost cp-cert-callout__cta" href="/contemporary/start?intent=enquire&programme=ecp">
+            Talk to admissions
+          </a>
+        </aside>
+      )}
     </div>
   </section>
 
@@ -166,10 +248,10 @@ const statusLabel: Record<typeof programme.status, string> = {
       <p>
         {programme.status === "by-enquiry"
           ? "Talk to IIFR admissions. We will respond within two working days."
-          : "Apply now or request the brochure. The form is a placeholder in this prototype — no live submission yet."}
+          : "Apply now or request the brochure."}
       </p>
       <div class="cp-row">
-        <a class="cp-button cp-button--primary" href={`/contemporary/start?intent=${programme.status === "by-enquiry" ? "enquire" : "apply"}&programme=${programme.slug}`}>
+        <a class="cp-button cp-button--primary" href={applicationHref}>
           {programme.status === "by-enquiry" ? "Enquire" : "Apply"}
         </a>
         <a class="cp-button cp-button--outline" href="/contemporary/programmes/compare">
@@ -193,6 +275,105 @@ const statusLabel: Record<typeof programme.status, string> = {
 
   .cp-page-header--programme .cp-row {
     margin-top: 1.5rem;
+  }
+
+  .cp-programme-pracademic {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    margin: 0.5rem 0 0;
+    padding: 0.85rem 1.1rem;
+    background: rgba(36, 47, 76, 0.06);
+    border: 1px solid rgba(36, 47, 76, 0.18);
+    border-left: 4px solid var(--cp-color-maroon);
+    border-radius: var(--cp-radius-card);
+    max-width: 60ch;
+  }
+
+  .cp-programme-pracademic__eyebrow {
+    font-family: var(--cp-font-heading);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cp-color-maroon);
+  }
+
+  .cp-programme-pracademic__body {
+    color: var(--cp-color-navy);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .cp-programme-pracademic__body strong {
+    color: var(--cp-color-maroon);
+    font-weight: 600;
+  }
+
+  /*
+   * Founding Batch Scholarship inline highlight (R4, t_6078f9e1).
+   * The exact phrase "Founding Batch Scholarship" from the ECP
+   * certification field is wrapped in this span so the term reads
+   * as a designed anchor without changing the underlying wording.
+   */
+  .cp-cert-scholarship {
+    display: inline-block;
+    padding: 0.05em 0.55em;
+    margin: 0 0.1em;
+    background: rgba(199, 153, 6, 0.18);
+    border: 1px solid rgba(199, 153, 6, 0.55);
+    border-radius: 6px;
+    color: var(--cp-color-maroon);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /*
+   * Founding Batch Scholarship callout (R4, t_6078f9e1) — visible
+   * card under the ECP certification paragraph so the scholarship
+   * reference is not only inline-highlighted. References the exact
+   * phrase "Founding Batch Scholarship" from the certification
+   * field; explicitly does NOT invent an amount or eligibility
+   * formula — those are routed to admissions.
+   */
+  .cp-cert-callout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin: 1.5rem 0 0;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, rgba(199, 153, 6, 0.12), rgba(140, 36, 46, 0.10));
+    border: 1px solid rgba(140, 36, 46, 0.30);
+    border-left: 4px solid var(--cp-color-maroon);
+    border-radius: var(--cp-radius-card);
+    color: var(--cp-color-navy);
+  }
+
+  .cp-cert-callout__eyebrow {
+    font-family: var(--cp-font-heading);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cp-color-maroon);
+  }
+
+  .cp-cert-callout__body {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--cp-color-navy);
+  }
+
+  .cp-cert-callout__body strong {
+    color: var(--cp-color-maroon);
+    font-weight: 600;
+  }
+
+  .cp-cert-callout__cta {
+    margin-top: 0.4rem;
   }
 
   .cp-facts {

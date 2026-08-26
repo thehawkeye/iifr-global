@@ -4,20 +4,68 @@
  *
  * Date, time zone, format, speakers, and registration status are all
  * visible in the page body — matches the GEO plan §11 requirement.
+ *
+ * Data source: Sanity (GROQ) with graceful fallback to static content.ts.
+ * Field names mirror content.ts Event interface exactly.
  */
 import ContemporaryBaseLayout from "../../../../contemporary/layouts/ContemporaryBaseLayout.astro";
-import { events, getEvent, getProgramme } from "../../../../contemporary/lib/content";
+import { sanityClient } from "../../../../lib/sanity.client";
+import {
+  events as staticEvents,
+  getEvent,
+  getProgramme,
+  type Event,
+} from "../../../../contemporary/lib/content";
 import { SITE_URL, eventSchema } from "../../../../contemporary/lib/seo";
 
+// ---------------------------------------------------------------------------
+// getStaticPaths — called at build time (Node.js, async)
+// Falls back to static content.ts when Sanity is unavailable.
+// ---------------------------------------------------------------------------
+
 export async function getStaticPaths() {
-  return events.map((e) => ({
-    params: { slug: e.slug },
-    props: { event: e },
-  }));
+  try {
+    const slugs = await sanityClient.fetch<{ slug: string }[]>(
+      `*[_type == "event" && defined(slug.current)] { "slug": slug.current }`
+    );
+    return slugs.map((e) => ({
+      params: { slug: e.slug },
+      props: { slug: e.slug },
+    }));
+  } catch {
+    return staticEvents.map((e) => ({
+      params: { slug: e.slug },
+      props: { slug: e.slug },
+    }));
+  }
 }
 
-const { event } = Astro.props as { event: ReturnType<typeof getEvent> & object };
-if (!event) throw new Error("event is required");
+// ---------------------------------------------------------------------------
+// Page render
+// ---------------------------------------------------------------------------
+
+const { slug } = Astro.props as { slug: string };
+
+let event: Event | undefined;
+try {
+  event = await sanityClient.fetch(
+    `*[_type == "event" && slug.current == $slug][0] {
+      "slug": slug.current,
+      title, eventType, summary, audience, topic,
+      speakers, dateTime, timeZone, duration, format,
+      registrationUrl, relatedProgramme, status,
+      source,
+      "owner": owner { name, role, lastReviewedAt }
+    }`,
+    { slug }
+  );
+} catch {
+  event = getEvent(slug);
+}
+
+if (!event) {
+  throw new Error(`Event not found: ${slug}`);
+}
 
 const related = event.relatedProgramme ? getProgramme(event.relatedProgramme) : null;
 const start = new Date(event.dateTime);

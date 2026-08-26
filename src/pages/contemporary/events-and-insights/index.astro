@@ -9,8 +9,48 @@ import ContemporaryBaseLayout from "../../../contemporary/layouts/ContemporaryBa
 import PageHero from "../../../contemporary/components/PageHero.astro";
 import EventCard from "../../../contemporary/components/EventCard.astro";
 import InsightCard from "../../../contemporary/components/InsightCard.astro";
-import { events, insights } from "../../../contemporary/lib/content";
+import { sanityClient } from "../../../lib/sanity.client";
+import {
+  events as staticEvents,
+  insights,
+  type Event,
+} from "../../../contemporary/lib/content";
 import { SITE_URL } from "../../../contemporary/lib/seo";
+
+// Fetch events from Sanity at build time; fall back to static content.ts.
+let events: Event[] = staticEvents;
+try {
+  const rows = await sanityClient.fetch<
+    {
+      slug: { current: string };
+      title: string;
+      eventType: string;
+      summary: string;
+      audience: string;
+      topic: string;
+      speakers: { name: string; affiliation: string }[];
+      dateTime: string;
+      timeZone: string;
+      duration: string;
+      format: string;
+      registrationUrl: string;
+      relatedProgramme: string | null;
+      status: string;
+    }[]
+  >(
+    `*[_type == "event"] | order(dateTime desc) {
+      "slug": slug.current,
+      title, eventType, summary, audience, topic,
+      speakers, dateTime, timeZone, duration, format,
+      registrationUrl, relatedProgramme, status
+    }`
+  );
+  if (rows && rows.length > 0) {
+    events = rows as unknown as Event[];
+  }
+} catch {
+  // Sanity unavailable — use static content.ts
+}
 
 const upcoming = events.filter((e) => e.status !== "past" && e.status !== "archived");
 const past = events.filter((e) => e.status === "past" || e.status === "archived");
